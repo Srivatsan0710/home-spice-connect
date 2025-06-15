@@ -29,7 +29,7 @@ const DiscoverFilters = ({ filterType, setFilterType, regionFilter, setRegionFil
               <SelectValue placeholder="All Regions" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Regions</SelectItem>
+              <SelectItem value="all">All Regions</SelectItem>
               <SelectItem value="South Indian">South Indian</SelectItem>
               <SelectItem value="Bengali">Bengali</SelectItem>
               <SelectItem value="Punjabi">Punjabi</SelectItem>

@@ -10,9 +10,9 @@ const Discover = () => {
   const [searchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("Dishes");
-  const [regionFilter, setRegionFilter] = useState(searchParams.get('region') || "");
+  const [regionFilter, setRegionFilter] = useState(searchParams.get('region') || "all");
   
-  const { getFilteredData } = useDiscoverData(filterType, regionFilter);
+  const { getFilteredData } = useDiscoverData(filterType, regionFilter === "all" ? "" : regionFilter);
 
   const filteredData = getFilteredData().filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

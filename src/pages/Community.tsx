@@ -1,17 +1,18 @@
 
 import { useState } from "react";
-import { Search, Users, MessageSquare, Camera, Star, ArrowRight } from "lucide-react";
+import { Search, Users, MessageSquare, ArrowRight, Calendar, MapPin } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import CommunityChat from "@/components/CommunityChat";
+import { useNavigate } from "react-router-dom";
 
 const Community = () => {
   const [activeTab, setActiveTab] = useState("groups");
   const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const regionalGroups = [
     { 
@@ -48,20 +49,34 @@ const Community = () => {
     }
   ];
 
-  const recipeRequests = [
-    { user: "Priya M.", request: "Looking for authentic Kolkata-style fish curry recipe", responses: 12, time: "2h ago" },
-    { user: "Rajesh K.", request: "Anyone know how to make perfect Lucknowi biryani?", responses: 8, time: "5h ago" },
-    { user: "Meera S.", request: "Need recipe for Kerala-style appam and stew", responses: 15, time: "1d ago" }
-  ];
-
-  const photoShares = [
-    { user: "Anjali D.", dish: "Ghar Jaisa Rajma Chawal", cook: "Aunty Priya", rating: 5, image: "https://images.unsplash.com/photo-1596797038530-2c107229654b?q=80&w=200" },
-    { user: "Suresh P.", dish: "Fish Curry & Rice", cook: "Mala Di", rating: 5, image: "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?q=80&w=200" },
-    { user: "Kavya R.", dish: "Masala Dosa", cook: "Meena Amma", rating: 4, image: "https://images.unsplash.com/photo-1668665780325-b06253455de3?q=80&w=200" }
+  const localCelebrations = [
+    {
+      title: "Onam Feast Potluck",
+      organizer: "Keralites in Bangalore",
+      location: "Koramangala Community Hall",
+      date: "Sep 15, 2024",
+      attendees: 45,
+      description: "Traditional Onam Sadhya with 13 courses. Bring your favorite Kerala dish!"
+    },
+    {
+      title: "Durga Puja Community Cooking",
+      organizer: "Bengali Community Chennai",
+      location: "T. Nagar Community Center",
+      date: "Oct 12, 2024",
+      attendees: 67,
+      description: "Join us for authentic Bengali bhog preparation and distribution"
+    },
+    {
+      title: "Karva Chauth Special Menu",
+      organizer: "North Indian Wives Group",
+      location: "Gurgaon Resident Club",
+      date: "Nov 1, 2024",
+      attendees: 32,
+      description: "Traditional sargi and evening feast preparation together"
+    }
   ];
 
   const handleJoinGroup = (groupName: string) => {
-    // Handle joining group
     console.log(`Joining group: ${groupName}`);
   };
 
@@ -69,6 +84,10 @@ const Community = () => {
     if (isJoined) {
       setSelectedGroup(groupName);
     }
+  };
+
+  const handleFestivalOrder = () => {
+    navigate('/discover?filter=festive');
   };
 
   if (selectedGroup) {
@@ -94,18 +113,16 @@ const Community = () => {
           
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-            <Input placeholder="Search groups, recipes, discussions..." className="pl-10" />
+            <Input placeholder="Search groups, celebrations..." className="pl-10" />
           </div>
         </div>
       </div>
 
       <div className="flex-1 p-4">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="groups">Groups</TabsTrigger>
-            <TabsTrigger value="requests">Requests</TabsTrigger>
-            <TabsTrigger value="photos">Photos</TabsTrigger>
-            <TabsTrigger value="festivals">Festivals</TabsTrigger>
+            <TabsTrigger value="celebrations">Celebrations</TabsTrigger>
           </TabsList>
 
           <TabsContent value="groups" className="space-y-4">
@@ -150,79 +167,47 @@ const Community = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="requests" className="space-y-4">
+          <TabsContent value="celebrations" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  Recipe Requests
-                  <Button size="sm">Post Request</Button>
-                </CardTitle>
+                <CardTitle>Local Celebrations</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {recipeRequests.map((request, index) => (
+                {localCelebrations.map((celebration, index) => (
                   <div key={index} className="border-b pb-4 last:border-b-0">
-                    <div className="flex items-start justify-between">
+                    <div className="flex items-start justify-between mb-2">
                       <div className="flex-1">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <Avatar className="h-6 w-6">
-                            <AvatarFallback className="text-xs">{request.user[0]}</AvatarFallback>
-                          </Avatar>
-                          <span className="font-medium text-sm">{request.user}</span>
-                          <span className="text-xs text-muted-foreground">{request.time}</span>
-                        </div>
-                        <p className="text-sm mb-2">{request.request}</p>
-                        <div className="flex items-center space-x-2">
-                          <MessageSquare className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-xs text-muted-foreground">{request.responses} responses</span>
+                        <h4 className="font-semibold">{celebration.title}</h4>
+                        <p className="text-sm text-muted-foreground mb-2">{celebration.description}</p>
+                        <div className="flex items-center space-x-4 text-xs text-muted-foreground">
+                          <div className="flex items-center space-x-1">
+                            <Users className="h-3 w-3" />
+                            <span>by {celebration.organizer}</span>
+                          </div>
+                          <div className="flex items-center space-x-1">
+                            <MapPin className="h-3 w-3" />
+                            <span>{celebration.location}</span>
+                          </div>
+                          <div className="flex items-center space-x-1">
+                            <Calendar className="h-3 w-3" />
+                            <span>{celebration.date}</span>
+                          </div>
                         </div>
                       </div>
-                      <Button variant="outline" size="sm">Help</Button>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="photos" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Meal Photos & Reviews</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {photoShares.map((photo, index) => (
-                  <div key={index} className="border-b pb-4 last:border-b-0">
-                    <div className="flex items-start space-x-3">
-                      <img src={photo.image} alt={photo.dish} className="w-16 h-16 rounded-lg object-cover" />
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-2 mb-1">
-                          <span className="font-medium text-sm">{photo.user}</span>
-                          <span className="text-xs text-muted-foreground">shared a photo</span>
-                        </div>
-                        <h4 className="font-semibold text-sm">{photo.dish}</h4>
-                        <p className="text-xs text-muted-foreground">by {photo.cook}</p>
-                        <div className="flex items-center space-x-1 mt-2">
-                          {[...Array(photo.rating)].map((_, i) => (
-                            <Star key={i} className="h-3 w-3 text-yellow-400 fill-yellow-400" />
-                          ))}
-                        </div>
-                      </div>
-                      <div className="flex flex-col space-y-1">
-                        <Button variant="ghost" size="sm">
-                          <Camera className="h-4 w-4" />
-                        </Button>
+                      <div className="flex flex-col items-end space-y-1">
+                        <Badge variant="outline">{celebration.attendees} going</Badge>
+                        <Button size="sm" variant="outline">Join</Button>
                       </div>
                     </div>
                   </div>
                 ))}
               </CardContent>
             </Card>
-          </TabsContent>
 
-          <TabsContent value="festivals" className="space-y-4">
+            {/* Festival Celebration Orders Section */}
             <Card>
               <CardHeader>
-                <CardTitle>Festival Celebrations</CardTitle>
+                <CardTitle>Festival Menu Orders</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -231,8 +216,8 @@ const Community = () => {
                     <p className="text-sm text-orange-700">Traditional sweets and savory dishes available now!</p>
                     <div className="flex items-center justify-between mt-2">
                       <Badge className="bg-orange-100 text-orange-800">Ongoing</Badge>
-                      <Button size="sm" variant="outline">
-                        View Menu <ArrowRight className="h-3 w-3 ml-1" />
+                      <Button size="sm" variant="outline" onClick={handleFestivalOrder}>
+                        Order for Festival <ArrowRight className="h-3 w-3 ml-1" />
                       </Button>
                     </div>
                   </div>
@@ -241,8 +226,8 @@ const Community = () => {
                     <p className="text-sm text-green-700">Pre-order your Christmas cakes and special meals</p>
                     <div className="flex items-center justify-between mt-2">
                       <Badge className="bg-green-100 text-green-800">Coming Soon</Badge>
-                      <Button size="sm" variant="outline">
-                        Pre-order <ArrowRight className="h-3 w-3 ml-1" />
+                      <Button size="sm" variant="outline" onClick={handleFestivalOrder}>
+                        Order for Festival <ArrowRight className="h-3 w-3 ml-1" />
                       </Button>
                     </div>
                   </div>
