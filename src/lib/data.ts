@@ -1,9 +1,9 @@
 export const cuisines = [
-  { name: "Punjabi", image: "https://images.unsplash.com/photo-1565554483789-a361092150a2?q=80&w=300" },
-  { name: "Bengali", image: "https://images.unsplash.com/photo-1603894537424-9c4033b2167d?q=80&w=300" },
-  { name: "South Indian", image: "https://images.unsplash.com/photo-1668665780325-b06253455de3?q=80&w=300" },
-  { name: "Gujarati", image: "https://images.unsplash.com/photo-1599865640325-6352ba3d0771?q=80&w=300" },
-  { name: "Rajasthani", image: "https://images.unsplash.com/photo-1626520245059-54a2a1061b4d?q=80&w=300" },
+  { name: "Punjabi", image: "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?q=80&w=300" },
+  { name: "Bengali", image: "https://images.unsplash.com/photo-1626132647523-66f5bf380027?q=80&w=300" },
+  { name: "South Indian", image: "https://images.unsplash.com/photo-1630383249896-424e482df921?q=80&w=300" },
+  { name: "Gujarati", image: "https://images.unsplash.com/photo-1596560548464-f010549b84d7?q=80&w=300" },
+  { name: "Rajasthani", image: "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?q=80&w=300" },
 ];
 
 export const cooks = [

@@ -1,8 +1,10 @@
+
 import Header from "@/components/Header";
 import CuisineCard from "@/components/CuisineCard";
 import CookCard from "@/components/CookCard";
 import DishCard from "@/components/DishCard";
 import PersonalizedRecommendations from "@/components/PersonalizedRecommendations";
+import ComfortFoodRecommendation from "@/components/ComfortFoodRecommendation";
 import BookingDialog from "@/components/BookingDialog";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -77,6 +79,9 @@ const Index = () => {
 
         {/* Personalized Recommendations */}
         <PersonalizedRecommendations />
+
+        {/* AI-Powered Comfort Food Recommendation */}
+        <ComfortFoodRecommendation />
 
         {/* Festival Specials */}
         <Section title="🎉 Festival Specials">
