@@ -90,8 +90,21 @@ const DishDetail = () => {
   }
 
   const handleCookClick = () => {
-    // Navigate to cook profile - assuming cook ID is derived from name
-    const cookId = dish.cook.toLowerCase().replace(/\s+/g, '-');
+    // Create cook ID from cook name for navigation
+    let cookId = '';
+    
+    // Map cook names to their actual IDs from the data
+    if (dish.cook === 'Aunty Manjeet') {
+      cookId = 'aunty-manjeet';
+    } else if (dish.cook === 'Mala Di') {
+      cookId = 'mala-di';
+    } else if (dish.cook === 'Meena Amma' || dish.cook === 'Meera Amma') {
+      cookId = 'meena-amma';
+    } else {
+      // Fallback: create ID from name
+      cookId = dish.cook.toLowerCase().replace(/\s+/g, '-');
+    }
+    
     navigate(`/cook/${cookId}`);
   };
 
