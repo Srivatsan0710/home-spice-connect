@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import CuisineCard from "@/components/CuisineCard";
 import CookCard from "@/components/CookCard";
@@ -28,7 +27,7 @@ const festivalSpecials = [
     cook: "Meena Amma",
     price: 350,
     rating: 4.8,
-    image: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?q=80&w=400",
+    image: "https://images.unsplash.com/photo-1576618148400-fb8a883dc6d8?q=80&w=400",
     story: "Homemade Christmas cake with traditional spices",
     festival: "Christmas",
     bookByDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days from now
@@ -104,6 +103,22 @@ const Index = () => {
                       <p className="text-xs text-muted-foreground">by {dish.cook}</p>
                       <div className="flex items-center justify-between mt-2">
                         <p className="text-sm font-bold text-primary">₹{dish.price}</p>
+                        <BookingDialog
+                          dishName={dish.name}
+                          cookName={dish.cook}
+                          price={dish.price}
+                          image={dish.image}
+                          mealType="dinner"
+                          hasSubscription={true}
+                        >
+                          <Button 
+                            size="sm" 
+                            onClick={(e) => e.stopPropagation()}
+                            className="h-8 px-3"
+                          >
+                            Add
+                          </Button>
+                        </BookingDialog>
                       </div>
                     </div>
                   </Card>

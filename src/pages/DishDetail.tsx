@@ -123,6 +123,53 @@ const extendedDishes = [
       fiber: 6,
       sodium: 420
     }
+  },
+  // Add Festival Specials
+  {
+    name: "Diwali Special Thali",
+    cook: "Aunty Manjeet",
+    price: 450,
+    rating: 4.9,
+    image: "https://images.unsplash.com/photo-1606491956689-2ea866880c84?q=80&w=400",
+    story: "Traditional Diwali feast with sweets and savory delights",
+    orders: 234,
+    isBestVoted: false,
+    mealType: "dinner" as const,
+    isHomeCook: true,
+    ingredients: [
+      "Paneer", "Rice", "Dal", "Roti", "Sweets", "Pickles", "Yogurt", "Vegetables"
+    ],
+    nutrients: {
+      calories: 850,
+      protein: 25,
+      fat: 35,
+      carbs: 120,
+      fiber: 15,
+      sodium: 1200
+    }
+  },
+  {
+    name: "Christmas Plum Cake",
+    cook: "Meena Amma",
+    price: 350,
+    rating: 4.8,
+    image: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?q=80&w=400",
+    story: "Homemade Christmas cake with traditional spices",
+    orders: 189,
+    isBestVoted: true,
+    mealType: "dinner" as const,
+    isHomeCook: true,
+    ingredients: [
+      "Flour", "Eggs", "Butter", "Dried fruits", "Rum", "Spices", "Sugar", "Nuts"
+    ],
+    nutrients: {
+      calories: 420,
+      protein: 8,
+      fat: 18,
+      carbs: 65,
+      fiber: 4,
+      sodium: 280
+    }
   }
 ];
 
@@ -156,12 +203,21 @@ const DishDetail = () => {
       cookId = 'mala-di';
     } else if (dish.cook === 'Meena Amma' || dish.cook === 'Meera Amma') {
       cookId = 'meena-amma';
+    } else if (dish.cook === 'Aunty Kumar') {
+      cookId = 'aunty-manjeet'; // fallback to existing cook
+    } else if (dish.cook === 'Aunty Priya') {
+      cookId = 'aunty-manjeet'; // fallback to existing cook
     } else {
       // Fallback: create ID from name
       cookId = dish.cook.toLowerCase().replace(/\s+/g, '-');
     }
     
-    navigate(`/cook/${cookId}`);
+    // Close overlay first if it's open
+    if (isOverlay) {
+      navigate(`/cook/${cookId}`);
+    } else {
+      navigate(`/cook/${cookId}`);
+    }
   };
 
   const handleClose = () => {
@@ -307,7 +363,7 @@ const DishDetail = () => {
               <div>
                 <p className="font-medium">{dish.cook}</p>
                 <p className="text-sm text-muted-foreground">
-                  {dish.isHomeCook ? 'Home Cook' : 'Professional Chef'} • 4.8 rating
+                  4.8 rating
                 </p>
               </div>
             </button>
@@ -320,7 +376,7 @@ const DishDetail = () => {
   if (isOverlay) {
     return (
       <Drawer open={true} onOpenChange={(open) => !open && handleClose()}>
-        <DrawerContent className="h-[60vh] max-h-[60vh]">
+        <DrawerContent className="h-[80vh] max-h-[80vh] sm:h-[60vh] sm:max-h-[60vh]">
           <DishContent />
         </DrawerContent>
       </Drawer>
