@@ -116,7 +116,7 @@ const ComfortFoodRecommendation = () => {
                       onClick={(e) => e.stopPropagation()}
                       className="h-8 px-3 bg-orange-600 hover:bg-orange-700"
                     >
-                      Order Now
+                      Add
                     </Button>
                   </BookingDialog>
                 </div>

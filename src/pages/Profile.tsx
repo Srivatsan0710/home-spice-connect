@@ -1,5 +1,4 @@
-
-import { User, MapPin, Settings, Heart, Clock, Gift, Bell, HelpCircle, LogOut, ChevronRight } from "lucide-react";
+import { User, MapPin, Settings, Heart, Clock, Gift, Bell, HelpCircle, LogOut, ChevronRight, Coins } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -15,6 +14,7 @@ const Profile = () => {
     { icon: Heart, label: "Favorites", action: () => {} },
     { icon: Clock, label: "Order History", action: () => navigate('/orders') },
     { icon: Gift, label: "Meal Subscriptions", action: () => navigate('/subscriptions') },
+    { icon: Coins, label: "FoodieCoins & Investments", action: () => navigate('/community?tab=investments') },
     { icon: Bell, label: "Notifications", action: () => {} },
     { icon: HelpCircle, label: "Help & Support", action: () => {} },
   ];
@@ -65,7 +65,7 @@ const Profile = () => {
 
       <div className="p-4 space-y-4">
         {/* Stats Cards */}
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-4 gap-3">
           <Card className="text-center">
             <CardContent className="p-3">
               <p className="text-xl font-bold text-amber-700">127</p>
@@ -84,7 +84,42 @@ const Profile = () => {
               <p className="text-xs text-muted-foreground">Reviews</p>
             </CardContent>
           </Card>
+          <Card className="text-center">
+            <CardContent className="p-3">
+              <div className="flex items-center justify-center space-x-1">
+                <Coins className="h-4 w-4 text-amber-600" />
+                <p className="text-lg font-bold text-amber-700">1,250</p>
+              </div>
+              <p className="text-xs text-muted-foreground">FoodieCoins</p>
+            </CardContent>
+          </Card>
         </div>
+
+        {/* FoodieCoins Balance Card */}
+        <Card className="bg-gradient-to-r from-amber-100 to-yellow-100">
+          <CardHeader>
+            <CardTitle className="text-lg text-amber-800 flex items-center space-x-2">
+              <Coins className="h-5 w-5" />
+              <span>FoodieCoins Balance</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-2xl font-bold text-amber-700">₹1,250</p>
+                <p className="text-sm text-amber-600">Available for discounts & investments</p>
+              </div>
+              <Button size="sm" onClick={() => navigate('/community?tab=investments')}>
+                Invest More
+              </Button>
+            </div>
+            <div className="mt-3 text-xs text-amber-600">
+              <p>• Earned from cook investments</p>
+              <p>• Use for exclusive menu access</p>
+              <p>• Get special discounts</p>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Active Subscriptions */}
         {subscriptions.length > 0 && (

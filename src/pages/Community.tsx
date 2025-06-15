@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { Search, Users, MessageSquare, ArrowRight, Calendar, MapPin } from "lucide-react";
+import { Search, Users, MessageSquare, ArrowRight, Calendar, MapPin, TrendingUp, Star, Crown } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -76,6 +75,59 @@ const Community = () => {
     }
   ];
 
+  const investmentOpportunities = [
+    {
+      cookName: "Aunty Manjeet",
+      project: "Traditional Tandoor Installation",
+      description: "Help me install a clay tandoor to make authentic naan and tandoori dishes",
+      targetAmount: 45000,
+      raisedAmount: 32000,
+      investors: 24,
+      expectedReturns: "15% discount + exclusive tandoori menu access",
+      image: "https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=300",
+      status: "active"
+    },
+    {
+      cookName: "Meena Amma",
+      project: "South Indian Spice Grinding Setup",
+      description: "Upgrade to commercial wet grinder for fresh idli/dosa batter and spice powders",
+      targetAmount: 25000,
+      raisedAmount: 25000,
+      investors: 18,
+      expectedReturns: "20% discount + monthly spice packets",
+      image: "https://images.unsplash.com/photo-1554151228-14d9def656e4?q=80&w=300",
+      status: "completed"
+    },
+    {
+      cookName: "Mala Di",
+      project: "Fresh Fish Cold Storage",
+      description: "Install professional refrigeration for daily fresh fish supply",
+      targetAmount: 35000,
+      raisedAmount: 8500,
+      investors: 7,
+      expectedReturns: "12% discount + priority fish curry orders",
+      image: "https://images.unsplash.com/photo-1593104547489-5cfb3839a3b5?q=80&w=300",
+      status: "active"
+    }
+  ];
+
+  const advisoryBoards = [
+    {
+      cookName: "Aunty Manjeet",
+      members: 12,
+      nextMeeting: "Oct 25, 2024",
+      currentDiscussion: "Winter menu planning - Should we add more soup varieties?",
+      status: "open"
+    },
+    {
+      cookName: "Meena Amma",
+      members: 8,
+      nextMeeting: "Nov 2, 2024",
+      currentDiscussion: "Festival special pricing strategy for Diwali sweets",
+      status: "full"
+    }
+  ];
+
   const handleJoinGroup = (groupName: string) => {
     console.log(`Joining group: ${groupName}`);
   };
@@ -120,9 +172,10 @@ const Community = () => {
 
       <div className="flex-1 p-4">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="groups">Groups</TabsTrigger>
             <TabsTrigger value="celebrations">Celebrations</TabsTrigger>
+            <TabsTrigger value="investments">Partnerships</TabsTrigger>
           </TabsList>
 
           <TabsContent value="groups" className="space-y-4">
@@ -232,6 +285,97 @@ const Community = () => {
                     </div>
                   </div>
                 </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="investments" className="space-y-4">
+            {/* Cook Investment Opportunities */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <TrendingUp className="h-5 w-5 text-green-600" />
+                  <span>Cook Investment Opportunities</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {investmentOpportunities.map((opportunity, index) => (
+                  <div key={index} className="border rounded-lg p-4">
+                    <div className="flex items-start space-x-3 mb-3">
+                      <img src={opportunity.image} alt={opportunity.cookName} className="w-12 h-12 rounded-full object-cover" />
+                      <div className="flex-1">
+                        <h4 className="font-semibold">{opportunity.project}</h4>
+                        <p className="text-sm text-muted-foreground">by {opportunity.cookName}</p>
+                        <p className="text-sm text-gray-700 mt-1">{opportunity.description}</p>
+                      </div>
+                      <Badge className={opportunity.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}>
+                        {opportunity.status === 'completed' ? 'Funded' : 'Active'}
+                      </Badge>
+                    </div>
+                    
+                    <div className="space-y-2 mb-3">
+                      <div className="flex justify-between text-sm">
+                        <span>₹{opportunity.raisedAmount.toLocaleString()} raised</span>
+                        <span>₹{opportunity.targetAmount.toLocaleString()} goal</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div 
+                          className="bg-green-600 h-2 rounded-full" 
+                          style={{ width: `${(opportunity.raisedAmount / opportunity.targetAmount) * 100}%` }}
+                        ></div>
+                      </div>
+                      <div className="flex items-center justify-between text-xs text-muted-foreground">
+                        <span>{opportunity.investors} investors</span>
+                        <span>{Math.round((opportunity.raisedAmount / opportunity.targetAmount) * 100)}% funded</span>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-amber-50 p-3 rounded-lg mb-3">
+                      <p className="text-sm font-medium text-amber-800">Returns: {opportunity.expectedReturns}</p>
+                    </div>
+                    
+                    {opportunity.status === 'active' && (
+                      <Button size="sm" className="w-full">
+                        Invest Now
+                      </Button>
+                    )}
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            {/* Community Advisory Boards */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Users className="h-5 w-5 text-blue-600" />
+                  <span>Cook Advisory Councils</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {advisoryBoards.map((board, index) => (
+                  <div key={index} className="border rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-semibold">{board.cookName}'s Advisory Council</h4>
+                      <Badge className={board.status === 'open' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}>
+                        {board.status === 'open' ? 'Open' : 'Full'}
+                      </Badge>
+                    </div>
+                    
+                    <p className="text-sm text-gray-700 mb-3">{board.currentDiscussion}</p>
+                    
+                    <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
+                      <span>{board.members} members</span>
+                      <span>Next meeting: {board.nextMeeting}</span>
+                    </div>
+                    
+                    {board.status === 'open' && (
+                      <Button size="sm" variant="outline" className="w-full">
+                        Join Council
+                      </Button>
+                    )}
+                  </div>
+                ))}
               </CardContent>
             </Card>
           </TabsContent>
