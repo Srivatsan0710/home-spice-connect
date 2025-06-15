@@ -1,3 +1,4 @@
+
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star, User } from "lucide-react";
@@ -53,11 +54,6 @@ const PersonalizedRecommendations = () => {
                 {dish.isBestVoted && (
                   <Badge className="absolute top-1 left-1 bg-yellow-500 text-yellow-900 text-xs">
                     Top Rated
-                  </Badge>
-                )}
-                {dish.isHomeCook && (
-                  <Badge className="absolute bottom-1 left-1 bg-green-500 text-white text-xs">
-                    Home Cook
                   </Badge>
                 )}
               </div>

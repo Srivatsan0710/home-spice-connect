@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
+import SubscriptionCard from "@/components/SubscriptionCard";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -16,6 +17,30 @@ const Profile = () => {
     { icon: Gift, label: "Meal Subscriptions", action: () => navigate('/subscriptions') },
     { icon: Bell, label: "Notifications", action: () => {} },
     { icon: HelpCircle, label: "Help & Support", action: () => {} },
+  ];
+
+  // Sample subscription data
+  const subscriptions = [
+    {
+      id: "sub1",
+      dishName: "Morning Poha",
+      cookName: "Meera Aunty",
+      price: 80,
+      frequency: "weekly" as const,
+      status: "active" as const,
+      nextDelivery: "Tomorrow 8:00 AM",
+      image: "https://images.unsplash.com/photo-1626132647346-f4d2f2d0a5f0?q=80&w=400"
+    },
+    {
+      id: "sub2",
+      dishName: "Ghar Jaisa Rajma Chawal",
+      cookName: "Aunty Priya",
+      price: 120,
+      frequency: "monthly" as const,
+      status: "paused" as const,
+      nextDelivery: "Paused",
+      image: "https://images.unsplash.com/photo-1596797038530-2c107229654b?q=80&w=400"
+    }
   ];
 
   return (
@@ -60,6 +85,25 @@ const Profile = () => {
             </CardContent>
           </Card>
         </div>
+
+        {/* Active Subscriptions */}
+        {subscriptions.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg text-amber-800 flex items-center justify-between">
+                <span>Active Subscriptions</span>
+                <Button variant="ghost" size="sm" onClick={() => navigate('/subscriptions')}>
+                  View All
+                </Button>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {subscriptions.slice(0, 2).map((subscription) => (
+                <SubscriptionCard key={subscription.id} subscription={subscription} />
+              ))}
+            </CardContent>
+          </Card>
+        )}
 
         {/* Menu Items */}
         <Card>
