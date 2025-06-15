@@ -2,6 +2,7 @@
 import type { Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
+// Picked a new harmonious palette: teal/olive/gold/maroon for warmth & regional vibes
 export default {
 	darkMode: ["class"],
 	content: [
@@ -21,8 +22,8 @@ export default {
 		},
 		extend: {
       fontFamily: {
-        sans: ['"Nunito Sans"', ...fontFamily.sans],
-        serif: ['"Lora"', ...fontFamily.serif],
+        serif: ['"Playfair Display"', ...fontFamily.serif],
+        sans: ['"Open Sans"', ...fontFamily.sans],
       },
 			colors: {
 				border: 'hsl(var(--border))',
@@ -31,15 +32,15 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: 'hsl(var(--primary))',
+					DEFAULT: 'hsl(var(--primary))',          // Teal
 					foreground: 'hsl(var(--primary-foreground))'
 				},
 				secondary: {
-					DEFAULT: 'hsl(var(--secondary))',
+					DEFAULT: 'hsl(var(--secondary))',        // Olive/Beige
 					foreground: 'hsl(var(--secondary-foreground))'
 				},
 				destructive: {
-					DEFAULT: 'hsl(var(--destructive))',
+					DEFAULT: 'hsl(var(--destructive))',      // Maroon
 					foreground: 'hsl(var(--destructive-foreground))'
 				},
 				muted: {
@@ -47,7 +48,7 @@ export default {
 					foreground: 'hsl(var(--muted-foreground))'
 				},
 				accent: {
-					DEFAULT: 'hsl(var(--accent))',
+					DEFAULT: 'hsl(var(--accent))',           // Muted gold
 					foreground: 'hsl(var(--accent-foreground))'
 				},
 				popover: {
@@ -70,9 +71,9 @@ export default {
 				}
 			},
 			borderRadius: {
-				lg: 'var(--radius)',
-				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				lg: '1.25rem', // more rounded for soft feel
+				md: '1rem',
+				sm: '0.6rem'
 			},
 			keyframes: {
 				'accordion-down': {

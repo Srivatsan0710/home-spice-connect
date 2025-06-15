@@ -5,66 +5,73 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%; /* Light beige */
-    --foreground: 20 14% 4%; /* Dark brown */
+    /* New color palette:
+    --background: soft light taupe
+    --primary: warm teal
+    --secondary: olive/beige
+    --accent: muted gold
+    --destructive: deep maroon
+    */
+
+    --background: 40 38% 95%;
+    --foreground: 20 30% 8%;
 
     --card: 0 0% 100%;
-    --card-foreground: 20 14% 4%;
+    --card-foreground: 20 30% 8%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 20 14% 4%;
+    --popover-foreground: 20 30% 8%;
 
-    --primary: 25 95% 53%; /* Saffron Orange */
+    --primary: 174 45% 40%;          /* Teal */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 15 80% 95%; /* Light peach */
-    --secondary-foreground: 25 95% 53%;
+    --secondary: 64 23% 80%;         /* Olive/Beige */
+    --secondary-foreground: 174 45% 40%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 42 20% 92%;             /* Light muted gold */
+    --muted-foreground: 28 16% 44%;
 
-    --accent: 0 84.2% 60.2%; /* Deep Red */
-    --accent-foreground: 210 40% 98%;
+    --accent: 44 67% 65%;            /* Muted Gold */
+    --accent-foreground: 20 30% 8%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 348 62% 38%;      /* Deep Maroon/Red */
+    --destructive-foreground: 40 38% 95%;
 
-    --border: 20 5% 90%;
-    --input: 20 5% 90%;
-    --ring: 25 95% 53%;
+    --border: 40 20% 90%;
+    --input: 40 20% 90%;
+    --ring: 44 67% 65%;
 
-    --radius: 0.5rem;
+    --radius: 1.25rem;
   }
 
   .dark {
-    /* For now, we'll keep dark mode simple and similar to light mode */
-    --background: 20 14% 4%;
-    --foreground: 0 0% 98%;
+    --background: 30 15% 17%;
+    --foreground: 44 67% 95%;
 
-    --card: 20 14% 6%;
-    --card-foreground: 0 0% 98%;
+    --card: 30 15% 17%;
+    --card-foreground: 44 67% 95%;
 
-    --popover: 20 14% 4%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 30 15% 17%;
+    --popover-foreground: 44 67% 95%;
 
-    --primary: 25 95% 53%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 176 40% 48%; /* Slightly bolder Teal for dark mode */
+    --primary-foreground: 40 38% 97%;
 
-    --secondary: 25 95% 53%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 64 23% 35%;
+    --secondary-foreground: 40 38% 95%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 40 13% 25%;
+    --muted-foreground: 44 67% 80%;
 
-    --accent: 0 72% 51%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 44 67% 45%;
+    --accent-foreground: 44 67% 95%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 348 74% 25%;
+    --destructive-foreground: 44 67% 95%;
 
-    --border: 20 14% 10%;
-    --input: 20 14% 10%;
-    --ring: 25 95% 53%;
+    --border: 30 15% 30%;
+    --input: 30 15% 30%;
+    --ring: 44 67% 65%;
   }
 }
 
@@ -75,11 +82,13 @@
 
   body {
     @apply bg-background text-foreground font-sans;
+    font-family: 'Open Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif;
+    @apply font-serif text-primary;
+    font-family: 'Playfair Display', serif;
   }
 }
