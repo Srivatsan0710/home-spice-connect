@@ -1,5 +1,6 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Search, Filter, MapPin, Star } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -10,9 +11,18 @@ import CookCard from "@/components/CookCard";
 import DishCard from "@/components/DishCard";
 
 const Discover = () => {
+  const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<"dishes" | "cooks">("dishes");
   const [selectedCuisine, setSelectedCuisine] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Set initial cuisine filter from URL params
+  useEffect(() => {
+    const cuisineParam = searchParams.get('cuisine');
+    if (cuisineParam) {
+      setSelectedCuisine(cuisineParam);
+    }
+  }, [searchParams]);
 
   const filteredDishes = dishes.filter(dish => {
     const matchesSearch = dish.name.toLowerCase().includes(searchQuery.toLowerCase());
