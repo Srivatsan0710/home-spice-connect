@@ -1,10 +1,17 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Star, Clock, User, Heart, Share2 } from "lucide-react";
+
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { ArrowLeft, Star, Clock, User, Heart, Share2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { dishes } from "@/lib/data";
 import BookingDialog from "@/components/BookingDialog";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
 
 // Extended dish data with nutritional information
 const extendedDishes = [
@@ -69,12 +76,61 @@ const extendedDishes = [
       fiber: 6,
       sodium: 420
     }
+  },
+  // Add recommended dishes
+  {
+    name: "Ghar Jaisa Rajma",
+    cook: "Aunty Priya",
+    price: 140,
+    rating: 4.8,
+    image: "https://images.unsplash.com/photo-1596797038530-2c107229654b?q=80&w=400",
+    story: "Just like home-made rajma chawal",
+    orders: 234,
+    isBestVoted: false,
+    mealType: "lunch" as const,
+    isHomeCook: true,
+    ingredients: [
+      "Kidney beans", "Onions", "Tomatoes", "Ginger-garlic paste", "Cumin", "Coriander", "Red chili powder", "Garam masala"
+    ],
+    nutrients: {
+      calories: 340,
+      protein: 20,
+      fat: 10,
+      carbs: 48,
+      fiber: 14,
+      sodium: 680
+    }
+  },
+  {
+    name: "South Indian Breakfast",
+    cook: "Meera Amma",
+    price: 110,
+    rating: 4.9,
+    image: "https://images.unsplash.com/photo-1630383249896-424e482df921?q=80&w=400",
+    story: "Traditional idli with sambar and chutney",
+    orders: 189,
+    isBestVoted: true,
+    mealType: "breakfast" as const,
+    isHomeCook: true,
+    ingredients: [
+      "Rice", "Urad dal", "Fenugreek seeds", "Salt", "Sambar", "Coconut chutney"
+    ],
+    nutrients: {
+      calories: 280,
+      protein: 12,
+      fat: 4,
+      carbs: 52,
+      fiber: 6,
+      sodium: 420
+    }
   }
 ];
 
 const DishDetail = () => {
   const { dishName } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const isOverlay = searchParams.get('overlay') === 'true';
 
   const dish = extendedDishes.find(
     d => d.name.toLowerCase().replace(/\s+/g, '-') === dishName
@@ -108,31 +164,33 @@ const DishDetail = () => {
     navigate(`/cook/${cookId}`);
   };
 
-  return (
-    <div className="flex flex-col min-h-full bg-secondary/30">
+  const handleClose = () => {
+    navigate(-1);
+  };
+
+  const DishContent = () => (
+    <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-white border-b">
-        <div className="flex items-center justify-between p-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate(-1)}
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
+      <div className="flex items-center justify-between p-4 border-b bg-white">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleClose}
+        >
+          {isOverlay ? <X className="h-4 w-4 mr-2" /> : <ArrowLeft className="h-4 w-4 mr-2" />}
+          {isOverlay ? 'Close' : 'Back'}
+        </Button>
+        <div className="flex space-x-2">
+          <Button variant="ghost" size="icon">
+            <Heart className="h-4 w-4" />
           </Button>
-          <div className="flex space-x-2">
-            <Button variant="ghost" size="icon">
-              <Heart className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="icon">
-              <Share2 className="h-4 w-4" />
-            </Button>
-          </div>
+          <Button variant="ghost" size="icon">
+            <Share2 className="h-4 w-4" />
+          </Button>
         </div>
       </div>
 
-      <main className="flex-1 pb-20">
+      <div className="flex-1 overflow-y-auto pb-20">
         {/* Dish Image */}
         <div className="relative">
           <img 
@@ -143,11 +201,6 @@ const DishDetail = () => {
           {dish.isBestVoted && (
             <Badge className="absolute top-4 left-4 bg-yellow-500 text-yellow-900">
               Top Rated
-            </Badge>
-          )}
-          {dish.isHomeCook && (
-            <Badge className="absolute top-4 right-4 bg-green-500 text-white">
-              Home Cook
             </Badge>
           )}
         </div>
@@ -260,7 +313,23 @@ const DishDetail = () => {
             </button>
           </Card>
         </div>
-      </main>
+      </div>
+    </div>
+  );
+
+  if (isOverlay) {
+    return (
+      <Drawer open={true} onOpenChange={(open) => !open && handleClose()}>
+        <DrawerContent className="h-[60vh] max-h-[60vh]">
+          <DishContent />
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+
+  return (
+    <div className="flex flex-col min-h-full bg-secondary/30">
+      <DishContent />
     </div>
   );
 };

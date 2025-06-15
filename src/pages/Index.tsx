@@ -59,7 +59,7 @@ const Index = () => {
 
   const handleDishClick = (dishName: string) => {
     const dishSlug = dishName.toLowerCase().replace(/\s+/g, '-');
-    navigate(`/dish/${dishSlug}`);
+    navigate(`/dish/${dishSlug}?overlay=true`);
   };
 
   return (

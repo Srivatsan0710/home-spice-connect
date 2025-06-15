@@ -29,7 +29,7 @@ const DiscoverContent = ({ filteredData, filterType }: DiscoverContentProps) => 
   const handleItemClick = (item: DiscoverItem) => {
     if (filterType === "Dishes" || filterType === "Festive Specials") {
       const dishSlug = item.name.toLowerCase().replace(/\s+/g, '-');
-      navigate(`/dish/${dishSlug}`);
+      navigate(`/dish/${dishSlug}?overlay=true`);
     }
   };
 

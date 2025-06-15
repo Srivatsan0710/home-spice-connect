@@ -27,7 +27,7 @@ const DishCard = ({ dish }: DishCardProps) => {
 
   const handleCardClick = () => {
     const dishSlug = dish.name.toLowerCase().replace(/\s+/g, '-');
-    navigate(`/dish/${dishSlug}`);
+    navigate(`/dish/${dishSlug}?overlay=true`);
   };
 
   return (
