@@ -159,21 +159,6 @@ const Index = () => {
             ))}
           </div>
         </Section>
-
-        {/* Homesickness Alert */}
-        <div className="p-4">
-          <Card className="bg-gradient-to-r from-orange-50 to-yellow-50 p-4 border-orange-200">
-            <div className="flex items-center space-x-3">
-              <span className="text-2xl">🏠</span>
-              <div>
-                <h3 className="font-bold text-sm">Missing home food?</h3>
-                <p className="text-xs text-muted-foreground">
-                  Try Aunty Manjeet's authentic Punjabi dishes - just like home!
-                </p>
-              </div>
-            </div>
-          </Card>
-        </div>
       </main>
     </div>
   );
