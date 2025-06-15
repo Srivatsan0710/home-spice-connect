@@ -19,6 +19,8 @@ import { UserPreferencesProvider } from "./contexts/UserPreferencesContext";
 import Subscriptions from "./pages/Subscriptions";
 import SearchPage from "./pages/Search";
 import Settings from "./pages/Settings";
+import Dashboard from "./pages/Dashboard";
+import CookDashboard from "./pages/CookDashboard";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +44,8 @@ const App = () => (
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/subscriptions" element={<Subscriptions />} />
                   <Route path="/settings" element={<Settings />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/cook-dashboard" element={<CookDashboard />} />
                   <Route path="/dish/:dishName" element={<DishDetail />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>

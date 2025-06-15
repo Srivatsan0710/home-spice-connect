@@ -1,6 +1,4 @@
-
-import { Search, Filter, MapPin, Clock, Star, X } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Filter, MapPin, Clock, Star, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -8,6 +6,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DishCard from "@/components/DishCard";
 import CookCard from "@/components/CookCard";
+import AdvancedSearch from "@/components/AdvancedSearch";
 
 const cuisineTypes = ["Punjabi", "Bengali", "South Indian", "Gujarati", "Rajasthani", "North Indian"];
 const dietaryFilters = ["Vegetarian", "Vegan", "Gluten-Free", "Healthy", "Traditional"];
@@ -79,6 +78,11 @@ const SearchPage = () => {
     setSelectedPriceRange("");
   };
 
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    // Perform search logic here
+  };
+
   const activeFiltersCount = selectedCuisines.length + selectedDietary.length + (selectedPriceRange ? 1 : 0);
 
   return (
@@ -86,13 +90,10 @@ const SearchPage = () => {
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm p-4 border-b">
         <div className="flex items-center space-x-3 mb-3">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input 
-              placeholder="Search dishes, cooks, cuisines..." 
-              className="pl-10"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+          <div className="flex-1">
+            <AdvancedSearch 
+              onSearch={handleSearch}
+              placeholder="Search dishes, cooks, cuisines..."
             />
           </div>
           <Button 
