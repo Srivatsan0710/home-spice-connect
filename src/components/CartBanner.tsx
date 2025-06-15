@@ -18,7 +18,7 @@ const CartBanner = () => {
   };
 
   return (
-    <div className="sticky bottom-16 z-10 mx-4 mb-2">
+    <div className="absolute bottom-20 left-4 right-4 z-10">
       <Button 
         onClick={handleGoToCart}
         className="w-full h-12 bg-primary text-primary-foreground shadow-lg rounded-full flex items-center justify-between px-6"

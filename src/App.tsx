@@ -53,6 +53,7 @@ const App = () => (
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </div>
+              <CartBanner />
               <BottomNav />
               <CartDrawer />
             </div>
