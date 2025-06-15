@@ -71,11 +71,6 @@ const DishCard = ({ dish }: DishCardProps) => {
               Top Rated
             </Badge>
           )}
-          {dish.isHomeCook && (
-            <Badge className="absolute bottom-1 left-1 bg-green-500 text-white text-xs">
-              Home Cook
-            </Badge>
-          )}
         </div>
         <div className="flex-1 p-3">
           <div className="flex items-start justify-between">
