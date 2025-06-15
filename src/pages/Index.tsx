@@ -46,7 +46,9 @@ const homeCookSpecials = [
     orders: 89,
     isBestVoted: false,
     mealType: "lunch" as const,
-    isHomeCook: true
+    isHomeCook: true,
+    availableMeals: ["Lunch", "Dinner"],
+    hasSubscription: true
   },
   {
     name: "Morning Poha",
@@ -58,7 +60,9 @@ const homeCookSpecials = [
     orders: 156,
     isBestVoted: true,
     mealType: "breakfast" as const,
-    isHomeCook: true
+    isHomeCook: true,
+    availableMeals: ["Breakfast"],
+    hasSubscription: true
   },
   {
     name: "Dal Tadka with Roti",
@@ -70,7 +74,9 @@ const homeCookSpecials = [
     orders: 203,
     isBestVoted: false,
     mealType: "dinner" as const,
-    isHomeCook: true
+    isHomeCook: true,
+    availableMeals: ["Lunch", "Dinner"],
+    hasSubscription: false
   }
 ];
 
@@ -169,7 +175,9 @@ const Index = () => {
               const dishWithBooking = {
                 ...dish,
                 isHomeCook: dish.cook.includes('Aunty') || dish.cook.includes('Amma'),
-                mealType: 'lunch' as const
+                mealType: 'lunch' as const,
+                availableMeals: ["Lunch", "Dinner"],
+                hasSubscription: true
               };
               return <DishCard key={dish.name} dish={dishWithBooking} />;
             })}

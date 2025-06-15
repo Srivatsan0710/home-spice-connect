@@ -6,8 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 const Dashboard = () => {
   const currentOrder = {
     id: "ORD001",
-    status: "cooking" as const,
-    estimatedTime: "25 mins"
+    status: "scheduled" as const,
+    scheduledFor: "Tomorrow 8:00 AM",
+    mealType: "Breakfast"
   };
 
   return (

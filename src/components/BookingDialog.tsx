@@ -15,6 +15,7 @@ interface BookingDialogProps {
   image: string;
   mealType?: 'breakfast' | 'lunch' | 'dinner';
   festiveBooking?: FestiveBooking;
+  hasSubscription?: boolean;
   children: React.ReactNode;
 }
 
@@ -25,11 +26,13 @@ const BookingDialog = ({
   image, 
   mealType, 
   festiveBooking,
+  hasSubscription = false,
   children 
 }: BookingDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
+  const [subscriptionType, setSubscriptionType] = useState<'weekly' | 'monthly' | null>(null);
   const { toast } = useToast();
   const bookingSlots = getBookingTimeSlots();
 
@@ -59,6 +62,14 @@ const BookingDialog = ({
     toast({
       title: "Booking Confirmed!",
       description: `Your ${dishName} has been booked for ${dateText}`,
+    });
+    setIsOpen(false);
+  };
+
+  const handleSubscription = (type: 'weekly' | 'monthly') => {
+    toast({
+      title: "Subscription Added!",
+      description: `${type} subscription for ${dishName} has been set up`,
     });
     setIsOpen(false);
   };
@@ -95,7 +106,7 @@ const BookingDialog = ({
                 size="sm"
                 onClick={() => setShowCalendar(!showCalendar)}
               >
-                {selectedDate ? selectedDate.toLocaleDateString() : 'Select Date'}
+                {selectedDate ? selectedDate.toLocaleDateString() : 'Today'}
               </Button>
             </div>
             
@@ -119,7 +130,7 @@ const BookingDialog = ({
                 <CalendarIcon className="h-4 w-4 text-amber-600" />
                 <span className="font-medium">Festive Special</span>
               </div>
-              <p className="text-sm text-muted-foreground mb-3">
+              <p className="text-xs text-muted-foreground mb-3">
                 Book by: {formatBookingDeadline(festiveBooking.bookByDate)}
               </p>
               <Button 
@@ -147,13 +158,13 @@ const BookingDialog = ({
                   </div>
                   <div className="flex items-center space-x-2">
                     {slot.isBookable ? (
-                      <Badge variant="outline" className="text-green-600 border-green-200">
+                      <Badge variant="outline" className="text-green-600 border-green-200 text-xs">
                         Available
                       </Badge>
                     ) : (
                       <div className="flex items-center space-x-1">
                         <AlertCircle className="h-3 w-3 text-red-500" />
-                        <Badge variant="outline" className="text-red-600 border-red-200">
+                        <Badge variant="outline" className="text-red-600 border-red-200 text-xs">
                           Closed
                         </Badge>
                       </div>
@@ -168,6 +179,31 @@ const BookingDialog = ({
                   </div>
                 </div>
               ))}
+            </div>
+          )}
+
+          {/* Subscription Options */}
+          {hasSubscription && !festiveBooking && (
+            <div className="border rounded-lg p-3">
+              <h4 className="font-medium mb-2">Meal Subscriptions</h4>
+              <div className="space-y-2">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full"
+                  onClick={() => handleSubscription('weekly')}
+                >
+                  Weekly Subscription
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full"
+                  onClick={() => handleSubscription('monthly')}
+                >
+                  Monthly Subscription
+                </Button>
+              </div>
             </div>
           )}
 

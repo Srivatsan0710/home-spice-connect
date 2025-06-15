@@ -19,6 +19,8 @@ interface Dish {
   isBestVoted: boolean;
   mealType?: 'breakfast' | 'lunch' | 'dinner';
   isHomeCook?: boolean;
+  availableMeals?: string[];
+  hasSubscription?: boolean;
 }
 
 interface DishCardProps {
@@ -76,6 +78,18 @@ const DishCard = ({ dish }: DishCardProps) => {
                 <User className="h-3 w-3 text-muted-foreground" />
                 <p className="text-xs text-muted-foreground truncate">{dish.cook}</p>
               </div>
+              
+              {/* Available Meals */}
+              {dish.availableMeals && dish.availableMeals.length > 0 && (
+                <div className="flex flex-wrap gap-1 mb-1">
+                  {dish.availableMeals.map((meal) => (
+                    <Badge key={meal} variant="outline" className="text-xs px-1 py-0">
+                      {meal}
+                    </Badge>
+                  ))}
+                </div>
+              )}
+              
               <div className="flex items-center space-x-2 mb-2">
                 <div className="flex items-center space-x-1">
                   <Star className="h-3 w-3 text-yellow-400 fill-yellow-400" />
@@ -94,6 +108,7 @@ const DishCard = ({ dish }: DishCardProps) => {
                   price={dish.price}
                   image={dish.image}
                   mealType={dish.mealType}
+                  hasSubscription={dish.hasSubscription}
                 >
                   <Button size="sm" className="h-8 px-3 text-xs">
                     Book

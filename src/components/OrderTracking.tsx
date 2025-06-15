@@ -1,5 +1,5 @@
 
-import { Clock, Truck, CheckCircle, ChefHat } from "lucide-react";
+import { Clock, Truck, CheckCircle, ChefHat, Calendar } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -7,27 +7,31 @@ import { Progress } from "@/components/ui/progress";
 interface OrderTrackingProps {
   order: {
     id: string;
-    status: "preparing" | "cooking" | "on-the-way" | "delivered";
+    status: "scheduled" | "preparing" | "cooking" | "on-the-way" | "delivered";
     estimatedTime?: string;
     actualTime?: string;
+    scheduledFor?: string;
+    mealType?: string;
   };
 }
 
 const OrderTracking = ({ order }: OrderTrackingProps) => {
   const getProgressValue = (status: string) => {
     switch (status) {
-      case "preparing": return 25;
-      case "cooking": return 50;
-      case "on-the-way": return 75;
+      case "scheduled": return 10;
+      case "preparing": return 30;
+      case "cooking": return 60;
+      case "on-the-way": return 85;
       case "delivered": return 100;
       default: return 0;
     }
   };
 
   const trackingSteps = [
-    { status: "preparing", icon: Clock, label: "Order Received", time: "2 mins ago" },
-    { status: "cooking", icon: ChefHat, label: "Cooking Started", time: order.status === "preparing" ? "Pending" : "15 mins ago" },
-    { status: "on-the-way", icon: Truck, label: "Out for Delivery", time: ["preparing", "cooking"].includes(order.status) ? "Pending" : "5 mins ago" },
+    { status: "scheduled", icon: Calendar, label: "Order Scheduled", time: order.scheduledFor || "Tomorrow 8:00 AM" },
+    { status: "preparing", icon: Clock, label: "Preparation Started", time: order.status === "scheduled" ? "Pending" : "30 mins ago" },
+    { status: "cooking", icon: ChefHat, label: "Cooking in Progress", time: ["scheduled", "preparing"].includes(order.status) ? "Pending" : "15 mins ago" },
+    { status: "on-the-way", icon: Truck, label: "Out for Delivery", time: ["scheduled", "preparing", "cooking"].includes(order.status) ? "Pending" : "5 mins ago" },
     { status: "delivered", icon: CheckCircle, label: "Delivered", time: order.status === "delivered" ? order.actualTime || "Just now" : "Pending" }
   ];
 
@@ -38,6 +42,11 @@ const OrderTracking = ({ order }: OrderTrackingProps) => {
           <span>Order Tracking</span>
           <Badge variant="outline">#{order.id}</Badge>
         </CardTitle>
+        {order.mealType && (
+          <p className="text-sm text-muted-foreground">
+            {order.mealType} • {order.scheduledFor}
+          </p>
+        )}
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
@@ -51,7 +60,7 @@ const OrderTracking = ({ order }: OrderTrackingProps) => {
         <div className="space-y-3">
           {trackingSteps.map((step, index) => {
             const Icon = step.icon;
-            const isCompleted = getProgressValue(order.status) > index * 25;
+            const isCompleted = getProgressValue(order.status) > index * 20;
             const isCurrent = step.status === order.status;
             
             return (
@@ -72,7 +81,10 @@ const OrderTracking = ({ order }: OrderTrackingProps) => {
           <div className="bg-blue-50 p-3 rounded-lg">
             <p className="text-sm text-blue-700">
               <Clock className="h-4 w-4 inline mr-1" />
-              Estimated delivery: {order.estimatedTime}
+              {order.status === "scheduled" ? 
+                `Scheduled for: ${order.scheduledFor}` : 
+                `Estimated delivery: ${order.estimatedTime}`
+              }
             </p>
           </div>
         )}

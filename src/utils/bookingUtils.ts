@@ -16,7 +16,7 @@ export const getBookingTimeSlots = (): BookingTimeSlot[] => {
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  // Breakfast: book before 6 PM previous day
+  // Breakfast for next day: book before 6 PM today
   const breakfastDeadline = new Date(today);
   breakfastDeadline.setHours(18, 0, 0, 0); // 6 PM today for tomorrow's breakfast
   
@@ -61,7 +61,7 @@ export const formatBookingDeadline = (date: Date): string => {
   const deadline = new Date(date.getFullYear(), date.getMonth(), date.getDate());
   
   if (deadline.getTime() === today.getTime()) {
-    return `Today ${date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}`;
+    return `${date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}`;
   } else if (deadline.getTime() === today.getTime() + 86400000) {
     return `Tomorrow ${date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}`;
   } else {
