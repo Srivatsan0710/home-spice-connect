@@ -1,10 +1,11 @@
-
 import { User, Settings, Heart, Clock, MapPin, Phone, Mail, Bell } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
+  const navigate = useNavigate();
   return (
     <div className="pb-16">
       <header className="sticky top-0 z-10 bg-background/80 p-4 backdrop-blur-sm">
@@ -67,7 +68,13 @@ const Profile = () => {
             </CardContent>
           </Card>
 
-          <Card className="cursor-pointer hover:shadow-md transition-shadow">
+          <Card
+            className="cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() => navigate("/subscriptions")}
+            tabIndex={0}
+            role="button"
+            aria-label="Go to Meal Subscriptions"
+          >
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
