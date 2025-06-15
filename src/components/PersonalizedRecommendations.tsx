@@ -4,10 +4,11 @@ import { Badge } from "@/components/ui/badge";
 import { Star, User } from "lucide-react";
 import { useUserPreferences } from "@/contexts/UserPreferencesContext";
 import { Button } from "@/components/ui/button";
-import BookingDialog from "@/components/BookingDialog";
+import { useNavigate } from "react-router-dom";
 
 const PersonalizedRecommendations = () => {
   const { preferences } = useUserPreferences();
+  const navigate = useNavigate();
 
   const recommendedDishes = [
     {
@@ -40,6 +41,11 @@ const PersonalizedRecommendations = () => {
     }
   ];
 
+  const handleDishClick = (dishName: string) => {
+    const dishSlug = dishName.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/dish/${dishSlug}`);
+  };
+
   return (
     <section className="mt-6">
       <div className="px-4 mb-4">
@@ -49,7 +55,11 @@ const PersonalizedRecommendations = () => {
       
       <div className="grid grid-cols-1 gap-4 px-4">
         {recommendedDishes.map((dish) => (
-          <Card key={dish.name} className="overflow-hidden rounded-2xl border-secondary shadow-sm">
+          <Card 
+            key={dish.name} 
+            className="overflow-hidden rounded-2xl border-secondary shadow-sm cursor-pointer transition-shadow hover:shadow-lg"
+            onClick={() => handleDishClick(dish.name)}
+          >
             <div className="flex">
               <div className="relative flex-shrink-0">
                 <img src={dish.image} alt={dish.name} className="h-24 w-24 object-cover" />
@@ -77,20 +87,6 @@ const PersonalizedRecommendations = () => {
                       <span className="text-xs text-muted-foreground">{dish.orders} orders</span>
                     </div>
                     <p className="text-sm font-bold text-primary">₹{dish.price}</p>
-                  </div>
-                  <div className="flex flex-col space-y-1 ml-2">
-                    <BookingDialog
-                      dishName={dish.name}
-                      cookName={dish.cook}
-                      price={dish.price}
-                      image={dish.image}
-                      hasSubscription={true}
-                      availableMeals={dish.availableMeals}
-                    >
-                      <Button size="sm" className="h-8 px-3 text-xs">
-                        Add
-                      </Button>
-                    </BookingDialog>
                   </div>
                 </div>
               </div>

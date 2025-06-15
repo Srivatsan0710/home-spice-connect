@@ -1,24 +1,9 @@
+
 import { Star, Clock, User } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import BookingDialog from "@/components/BookingDialog";
-
-interface Dish {
-  name: string;
-  cook: string;
-  price: number;
-  rating: number;
-  image: string;
-  story: string;
-  orders: number;
-  isBestVoted: boolean;
-  mealType?: 'breakfast' | 'lunch' | 'dinner';
-  isHomeCook?: boolean;
-  availableMeals?: string[];
-  hasSubscription?: boolean;
-}
 
 interface DishCardProps {
   dish: {
@@ -35,17 +20,14 @@ interface DishCardProps {
     hasSubscription?: boolean;
     availableMeals?: string[];
   };
-  redirectToHome?: boolean;
 }
 
-const DishCard = ({ dish, redirectToHome = false }: DishCardProps) => {
+const DishCard = ({ dish }: DishCardProps) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    if (!redirectToHome) {
-      const dishSlug = dish.name.toLowerCase().replace(/\s+/g, '-');
-      navigate(`/dish/${dishSlug}`);
-    }
+    const dishSlug = dish.name.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/dish/${dishSlug}`);
   };
 
   return (
@@ -91,25 +73,6 @@ const DishCard = ({ dish, redirectToHome = false }: DishCardProps) => {
                 <span className="text-xs text-muted-foreground">{dish.orders} orders</span>
               </div>
               <p className="text-lg font-bold text-primary">₹{dish.price}</p>
-            </div>
-            <div className="flex flex-col space-y-1 ml-2">
-              <BookingDialog
-                dishName={dish.name}
-                cookName={dish.cook}
-                price={dish.price}
-                image={dish.image}
-                mealType={dish.mealType}
-                hasSubscription={dish.hasSubscription}
-                availableMeals={dish.availableMeals}
-              >
-                <Button
-                  size="sm"
-                  onClick={(e) => e.stopPropagation()}
-                  className="h-8 px-3 text-xs"
-                >
-                  Add
-                </Button>
-              </BookingDialog>
             </div>
           </div>
         </div>

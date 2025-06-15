@@ -1,10 +1,10 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Star, Clock, User, Heart, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { dishes } from "@/lib/data";
+import BookingDialog from "@/components/BookingDialog";
 
 // Extended dish data with nutritional information
 const extendedDishes = [
@@ -179,6 +179,16 @@ const DishDetail = () => {
             
             <div className="flex items-center justify-between">
               <span className="text-2xl font-bold text-primary">₹{dish.price}</span>
+              <BookingDialog
+                dishName={dish.name}
+                cookName={dish.cook}
+                price={dish.price}
+                image={dish.image}
+                mealType={dish.mealType}
+                hasSubscription={dish.isHomeCook}
+              >
+                <Button size="lg">Add to Cart</Button>
+              </BookingDialog>
             </div>
           </Card>
         </div>

@@ -10,6 +10,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cuisines, cooks, dishes } from "@/lib/data";
 import { getFestiveBookingInfo, formatBookingDeadline } from "@/utils/bookingUtils";
+import { useNavigate } from "react-router-dom";
 
 const festivalSpecials = [
   {
@@ -54,6 +55,13 @@ const todaysSpecials = [
 ];
 
 const Index = () => {
+  const navigate = useNavigate();
+
+  const handleDishClick = (dishName: string) => {
+    const dishSlug = dishName.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/dish/${dishSlug}`);
+  };
+
   return (
     <div className="flex flex-col min-h-full bg-secondary/30">
       <Header />
@@ -78,7 +86,10 @@ const Index = () => {
               const festiveBooking = getFestiveBookingInfo(dish.bookByDate);
               return (
                 <div key={dish.name} className="flex-shrink-0 w-72">
-                  <Card className="overflow-hidden rounded-2xl border-secondary shadow-sm">
+                  <Card 
+                    className="overflow-hidden rounded-2xl border-secondary shadow-sm cursor-pointer transition-shadow hover:shadow-lg"
+                    onClick={() => handleDishClick(dish.name)}
+                  >
                     <div className="relative">
                       <img src={dish.image} alt={dish.name} className="h-32 w-full object-cover" />
                       <Badge className="absolute top-2 left-2 bg-red-500 text-white">
@@ -93,17 +104,6 @@ const Index = () => {
                       <p className="text-xs text-muted-foreground">by {dish.cook}</p>
                       <div className="flex items-center justify-between mt-2">
                         <p className="text-sm font-bold text-primary">₹{dish.price}</p>
-                        <BookingDialog
-                          dishName={dish.name}
-                          cookName={dish.cook}
-                          price={dish.price}
-                          image={dish.image}
-                          festiveBooking={festiveBooking}
-                        >
-                          <Button size="sm" disabled={!festiveBooking.isBookable}>
-                            {festiveBooking.isBookable ? 'Add' : 'Booking Closed'}
-                          </Button>
-                        </BookingDialog>
                       </div>
                     </div>
                   </Card>
@@ -131,16 +131,9 @@ const Index = () => {
         
         <Section title="Today's Specials">
           <div className="grid grid-cols-1 gap-4 p-4">
-            {todaysSpecials.map((dish) => {
-              // Convert regular dishes to have booking properties for home cooks
-              const dishWithBooking = {
-                ...dish,
-                isHomeCook: dish.cook.includes('Aunty') || dish.cook.includes('Amma'),
-                mealType: 'lunch' as const,
-                hasSubscription: true
-              };
-              return <DishCard key={dish.name} dish={dishWithBooking} redirectToHome={true} />;
-            })}
+            {todaysSpecials.map((dish) => (
+              <DishCard key={dish.name} dish={dish} />
+            ))}
           </div>
         </Section>
 

@@ -3,7 +3,7 @@ import { Star, User } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import BookingDialog from "@/components/BookingDialog";
+import { useNavigate } from "react-router-dom";
 
 interface DiscoverItem {
   name: string;
@@ -24,11 +24,26 @@ interface DiscoverContentProps {
 }
 
 const DiscoverContent = ({ filteredData, filterType }: DiscoverContentProps) => {
+  const navigate = useNavigate();
+
+  const handleItemClick = (item: DiscoverItem) => {
+    if (filterType === "Dishes" || filterType === "Festive Specials") {
+      const dishSlug = item.name.toLowerCase().replace(/\s+/g, '-');
+      navigate(`/dish/${dishSlug}`);
+    }
+  };
+
   return (
     <div className="flex-1 p-4">
       <div className="grid grid-cols-1 gap-4">
         {filteredData.map((item) => (
-          <Card key={item.name} className="overflow-hidden rounded-2xl border-secondary shadow-sm">
+          <Card 
+            key={item.name} 
+            className={`overflow-hidden rounded-2xl border-secondary shadow-sm ${
+              (filterType === "Dishes" || filterType === "Festive Specials") ? 'cursor-pointer transition-shadow hover:shadow-lg' : ''
+            }`}
+            onClick={() => handleItemClick(item)}
+          >
             <div className="flex">
               <div className="relative flex-shrink-0">
                 <img src={item.image} alt={item.name} className="h-24 w-24 object-cover" />
@@ -70,20 +85,15 @@ const DiscoverContent = ({ filteredData, filterType }: DiscoverContentProps) => 
                     )}
                   </div>
                   <div className="flex flex-col space-y-1 ml-2">
-                    {(filterType === "Dishes" || filterType === "Festive Specials") && 'cook' in item && 'price' in item && item.cook && item.price ? (
-                      <BookingDialog
-                        dishName={item.name}
-                        cookName={item.cook}
-                        price={item.price}
-                        image={item.image}
-                        hasSubscription={true}
+                    {filterType === "Cooks" && (
+                      <Button 
+                        size="sm" 
+                        className="h-8 px-3 text-xs"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          // Handle view cook profile
+                        }}
                       >
-                        <Button size="sm" className="h-8 px-3 text-xs">
-                          Add
-                        </Button>
-                      </BookingDialog>
-                    ) : (
-                      <Button size="sm" className="h-8 px-3 text-xs">
                         View
                       </Button>
                     )}
