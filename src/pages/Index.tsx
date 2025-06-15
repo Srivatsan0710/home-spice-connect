@@ -4,6 +4,7 @@ import CuisineCard from "@/components/CuisineCard";
 import CookCard from "@/components/CookCard";
 import DishCard from "@/components/DishCard";
 import PersonalizedRecommendations from "@/components/PersonalizedRecommendations";
+import SchedulingOptions from "@/components/SchedulingOptions";
 import BookingDialog from "@/components/BookingDialog";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -88,6 +89,9 @@ const Index = () => {
           </Card>
         </div>
 
+        {/* Scheduling Options */}
+        <SchedulingOptions />
+
         {/* Personalized Recommendations */}
         <PersonalizedRecommendations />
 
@@ -160,9 +164,15 @@ const Index = () => {
         
         <Section title="Today's Specials">
           <div className="grid grid-cols-1 gap-4 p-4">
-            {dishes.slice(0, 3).map((dish) => (
-              <DishCard key={dish.name} dish={dish} />
-            ))}
+            {dishes.slice(0, 3).map((dish) => {
+              // Convert regular dishes to have booking properties for home cooks
+              const dishWithBooking = {
+                ...dish,
+                isHomeCook: dish.cook.includes('Aunty') || dish.cook.includes('Amma'),
+                mealType: 'lunch' as const
+              };
+              return <DishCard key={dish.name} dish={dishWithBooking} />;
+            })}
           </div>
         </Section>
 

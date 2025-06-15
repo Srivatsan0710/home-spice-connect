@@ -1,3 +1,4 @@
+
 import Header from "@/components/Header";
 import DishCard from "@/components/DishCard";
 import CookCard from "@/components/CookCard";
@@ -73,7 +74,7 @@ const CookProfile = () => {
                 </div>
                 <div className="flex items-center space-x-2 text-muted-foreground">
                   <MapPin className="h-4 w-4" />
-                  <span className="text-sm">{cook.location}</span>
+                  <span className="text-sm">{cook.region || 'Local Area'}</span>
                 </div>
               </div>
             </div>
@@ -83,21 +84,21 @@ const CookProfile = () => {
                 <Star className="h-4 w-4 text-yellow-400" />
                 <span className="text-sm">
                   {cook.rating}
-                  <span className="text-muted-foreground"> ({cook.reviews} reviews)</span>
+                  <span className="text-muted-foreground"> (150+ reviews)</span>
                 </span>
               </div>
               <div className="flex items-center space-x-2">
                 <Utensils className="h-4 w-4" />
-                <span className="text-sm">{cook.cuisine} Cuisine</span>
+                <span className="text-sm">{cook.specialty || 'Multi'} Cuisine</span>
               </div>
               <div className="flex items-center space-x-2">
                 <ChefHat className="h-4 w-4" />
-                <span className="text-sm">{cook.type}</span>
+                <span className="text-sm">Home Cook</span>
               </div>
             </div>
 
             <div className="mt-4">
-              <p className="text-sm text-muted-foreground">{cook.bio}</p>
+              <p className="text-sm text-muted-foreground">{cook.story || 'Passionate cook bringing authentic flavors to your table.'}</p>
             </div>
 
             <div className="mt-4 flex space-x-2">

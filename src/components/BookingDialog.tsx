@@ -2,7 +2,8 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Calendar, AlertCircle } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { Clock, Calendar as CalendarIcon, AlertCircle } from "lucide-react";
 import { getBookingTimeSlots, formatBookingDeadline, FestiveBooking } from "@/utils/bookingUtils";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
@@ -27,6 +28,8 @@ const BookingDialog = ({
   children 
 }: BookingDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  const [showCalendar, setShowCalendar] = useState(false);
   const { toast } = useToast();
   const bookingSlots = getBookingTimeSlots();
 
@@ -52,9 +55,10 @@ const BookingDialog = ({
       }
     }
 
+    const dateText = selectedDate ? selectedDate.toLocaleDateString() : 'today';
     toast({
       title: "Booking Confirmed!",
-      description: `Your ${dishName} has been booked successfully`,
+      description: `Your ${dishName} has been booked for ${dateText}`,
     });
     setIsOpen(false);
   };
@@ -64,9 +68,9 @@ const BookingDialog = ({
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Book Today's Meal</DialogTitle>
+          <DialogTitle>Book Your Meal</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-4">
@@ -79,10 +83,40 @@ const BookingDialog = ({
             </div>
           </div>
 
+          {/* Date Selection */}
+          <div className="border rounded-lg p-3">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center space-x-2">
+                <CalendarIcon className="h-4 w-4 text-amber-600" />
+                <span className="font-medium">Select Date</span>
+              </div>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => setShowCalendar(!showCalendar)}
+              >
+                {selectedDate ? selectedDate.toLocaleDateString() : 'Select Date'}
+              </Button>
+            </div>
+            
+            {showCalendar && (
+              <Calendar
+                mode="single"
+                selected={selectedDate}
+                onSelect={(date) => {
+                  setSelectedDate(date);
+                  setShowCalendar(false);
+                }}
+                disabled={(date) => date < new Date() || date > new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)}
+                className="rounded-md border"
+              />
+            )}
+          </div>
+
           {festiveBooking ? (
             <div className="p-4 border rounded-lg">
               <div className="flex items-center space-x-2 mb-2">
-                <Calendar className="h-4 w-4 text-amber-600" />
+                <CalendarIcon className="h-4 w-4 text-amber-600" />
                 <span className="font-medium">Festive Special</span>
               </div>
               <p className="text-sm text-muted-foreground mb-3">
@@ -93,7 +127,7 @@ const BookingDialog = ({
                 disabled={!festiveBooking.isBookable}
                 className="w-full"
               >
-                {festiveBooking.isBookable ? 'Book Now' : 'Booking Closed'}
+                {festiveBooking.isBookable ? 'Book Festive Special' : 'Booking Closed'}
               </Button>
             </div>
           ) : (
@@ -136,6 +170,22 @@ const BookingDialog = ({
               ))}
             </div>
           )}
+
+          {/* Quick Scheduling Options */}
+          <div className="p-3 bg-secondary/20 rounded-lg">
+            <h4 className="font-medium mb-2">Quick Schedule</h4>
+            <div className="flex flex-wrap gap-2">
+              <Button variant="outline" size="sm" onClick={() => setSelectedDate(new Date())}>
+                Today
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => setSelectedDate(new Date(Date.now() + 24 * 60 * 60 * 1000))}>
+                Tomorrow
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => setSelectedDate(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000))}>
+                Next Week
+              </Button>
+            </div>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

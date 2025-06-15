@@ -12,7 +12,11 @@ import { getFestiveBookingInfo, formatBookingDeadline } from "@/utils/bookingUti
 
 // Extended dish data with booking info
 const extendedDishes = [
-  ...dishes,
+  ...dishes.map(dish => ({
+    ...dish,
+    isHomeCook: dish.cook.includes('Aunty') || dish.cook.includes('Amma'),
+    mealType: 'lunch' as const
+  })),
   {
     name: "Homestyle Rajma",
     cook: "Aunty Kumar",

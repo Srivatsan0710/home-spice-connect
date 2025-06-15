@@ -68,6 +68,11 @@ const Discover = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("all");
 
+  const handleSearch = (searchTerm: string) => {
+    console.log("Searching for:", searchTerm);
+    // Handle search functionality
+  };
+
   const filteredDishes = discoverDishes.filter(dish => {
     if (selectedFilter === "all") return true;
     if (selectedFilter === "home-cook") return dish.isHomeCook;
@@ -97,7 +102,7 @@ const Discover = () => {
         </div>
 
         {/* Advanced Search */}
-        {showFilters && <AdvancedSearch />}
+        {showFilters && <AdvancedSearch onSearch={handleSearch} />}
 
         {/* Filter Tabs */}
         <div className="flex space-x-2 p-4 overflow-x-auto">
