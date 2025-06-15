@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import CuisineCard from "@/components/CuisineCard";
 import CookCard from "@/components/CookCard";
@@ -6,7 +5,6 @@ import DishCard from "@/components/DishCard";
 import PersonalizedRecommendations from "@/components/PersonalizedRecommendations";
 import SchedulingOptions from "@/components/SchedulingOptions";
 import BookingDialog from "@/components/BookingDialog";
-import MealScheduleBanner from "@/components/MealScheduleBanner";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -50,9 +48,6 @@ const Index = () => {
             </p>
           </Card>
         </div>
-
-        {/* Meal Schedule Banner */}
-        <MealScheduleBanner />
 
         {/* Scheduling Options */}
         <SchedulingOptions />
