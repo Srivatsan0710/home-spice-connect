@@ -1,15 +1,19 @@
 
 import { useParams, Link } from "react-router-dom";
 import { cooks, dishes } from "@/lib/data";
-import { ArrowLeft, Star } from "lucide-react";
+import { ArrowLeft, Star, Video } from "lucide-react";
 import DishCard from "@/components/DishCard";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import HighlightCard from "@/components/HighlightCard";
 
 const CookProfile = () => {
   const { id } = useParams<{ id: string }>();
   const cook = cooks.find((c) => c.id === id);
   const cookDishes = dishes.filter((d) => d.cook === cook?.name);
+
+  const mostOrderedDish = cookDishes.length > 0 ? [...cookDishes].sort((a, b) => (b.orders || 0) - (a.orders || 0))[0] : null;
+  const bestVotedDish = cookDishes.find(d => d.isBestVoted);
 
   if (!cook) {
     return (
@@ -47,6 +51,42 @@ const CookProfile = () => {
               <span className="ml-2 text-muted-foreground text-sm">(50+ ratings)</span>
             </div>
         </Card>
+
+        {cook.video && (
+          <section>
+            <h2 className="text-lg font-bold font-serif mb-2">A Glimpse into their Kitchen</h2>
+            <div className="relative rounded-2xl overflow-hidden aspect-video group cursor-pointer">
+              <img src={cook.video} alt={`${cook.name} video thumbnail`} className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+              <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                <Button variant="ghost" size="icon" className="bg-white/80 rounded-full h-16 w-16 backdrop-blur-sm hover:bg-white transition-transform group-hover:scale-110">
+                  <Video className="h-8 w-8 text-primary" />
+                </Button>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {(mostOrderedDish || bestVotedDish) && (
+          <section>
+            <h2 className="text-lg font-bold font-serif mb-2">Highlights</h2>
+            <div className="grid grid-cols-2 gap-4">
+              {mostOrderedDish && (
+                <HighlightCard
+                  dish={mostOrderedDish}
+                  label="Most Ordered"
+                  icon={<span>📈</span>}
+                />
+              )}
+              {bestVotedDish && (
+                <HighlightCard
+                  dish={bestVotedDish}
+                  label="Top Rated"
+                  icon={<span>👑</span>}
+                />
+              )}
+            </div>
+          </section>
+        )}
 
         <Card className="p-4">
           <h2 className="text-lg font-bold font-serif mb-2">Cook's Story</h2>
