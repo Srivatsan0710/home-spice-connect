@@ -26,7 +26,10 @@ const ComfortFoodRecommendation = () => {
   const comfortReasons = [
     "Rainy weather detected 🌧️",
     "3 missed calls from home 📞", 
-    "It's been a tough Monday 😴"
+    "It's been a tough Monday 😴",
+    "Diwali approaching in hometown 🪔",
+    "Festival season starting back home 🎉",
+    "Family WhatsApp active with celebrations 📱"
   ];
 
   const selectedReason = comfortReasons[Math.floor(Math.random() * comfortReasons.length)];
