@@ -1,131 +1,149 @@
 
-import { Heart, Clock, Star } from "lucide-react";
+import { Star, Clock, Heart, TrendingUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useUserPreferences } from "@/contexts/UserPreferencesContext";
-import { useCart } from "@/contexts/CartContext";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
 
-const mockPersonalizedDishes = [
+interface Dish {
+  name: string;
+  cook: string;
+  price: number;
+  rating: number;
+  image: string;
+  cuisine: string;
+  preparationTime: string;
+  isVegetarian?: boolean;
+  spiceLevel: string;
+}
+
+const mockRecommendations: Dish[] = [
   {
-    name: "Punjabi Dal Makhani",
-    cook: "Aunty Manjeet",
-    price: 220,
+    name: "Butter Chicken",
+    cook: "Chef Priya",
+    price: 280,
     rating: 4.8,
-    image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?q=80&w=400",
-    story: "Rich and creamy black lentils slow-cooked for 8 hours",
-    matchReason: "Matches your Punjabi cuisine preference",
+    image: "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?q=80&w=400",
+    cuisine: "North Indian",
+    preparationTime: "35 mins",
     spiceLevel: "medium",
-    dietaryTags: ["Vegetarian"],
   },
   {
-    name: "Gluten-Free Quinoa Bowl",
-    cook: "Health Chef Priya",
-    price: 280,
-    rating: 4.7,
-    image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=400",
-    story: "Nutritious quinoa bowl with fresh vegetables",
-    matchReason: "Perfect for your gluten-free diet",
+    name: "Paneer Tikka Masala",
+    cook: "Aunty Sunita",
+    price: 220,
+    rating: 4.9,
+    image: "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?q=80&w=400",
+    cuisine: "Punjabi",
+    preparationTime: "30 mins",
+    isVegetarian: true,
     spiceLevel: "mild",
-    dietaryTags: ["Gluten-Free", "Vegan"],
+  },
+  {
+    name: "Masala Dosa",
+    cook: "Meena Amma",
+    price: 180,
+    rating: 5.0,
+    image: "https://images.unsplash.com/photo-1668665780325-b06253455de3?q=80&w=400",
+    cuisine: "South Indian",
+    preparationTime: "25 mins",
+    isVegetarian: true,
+    spiceLevel: "medium",
   },
 ];
 
 const PersonalizedRecommendations = () => {
   const { preferences } = useUserPreferences();
-  const { addToCart } = useCart();
   const navigate = useNavigate();
-  const { toast } = useToast();
 
-  const handleAddToCart = (dish: typeof mockPersonalizedDishes[0], e: React.MouseEvent) => {
-    e.stopPropagation();
-    addToCart({
-      dishName: dish.name,
-      cookName: dish.cook,
-      price: dish.price,
-      image: dish.image
-    });
-    toast({
-      title: "Added to cart!",
-      description: `${dish.name} added to your cart`,
-    });
-  };
-
-  const handleDishClick = (dish: typeof mockPersonalizedDishes[0]) => {
-    const dishSlug = dish.name.toLowerCase().replace(/\s+/g, '-');
-    navigate(`/dish/${dishSlug}`);
-  };
-
-  // Filter dishes based on user preferences
-  const filteredDishes = mockPersonalizedDishes.filter(dish => {
-    // Check dietary restrictions
-    if (preferences.dietaryRestrictions.length > 0) {
-      const hasMatchingDietary = preferences.dietaryRestrictions.some(restriction =>
-        dish.dietaryTags.includes(restriction)
-      );
-      if (hasMatchingDietary) return true;
+  // Filter recommendations based on user preferences
+  const filteredRecommendations = mockRecommendations.filter(dish => {
+    // Filter by dietary restrictions
+    if (preferences.dietaryRestrictions.includes("Vegetarian") && !dish.isVegetarian) {
+      return false;
     }
-
-    // Check spice level
-    if (preferences.spiceLevel && dish.spiceLevel === preferences.spiceLevel) {
-      return true;
+    
+    // Filter by favorite cuisines (if any selected)
+    if (preferences.favoriteCuisines.length > 0 && 
+        !preferences.favoriteCuisines.includes(dish.cuisine)) {
+      return false;
     }
-
-    // Default to showing all if no specific preferences
-    return preferences.dietaryRestrictions.length === 0;
+    
+    // Filter by spice level preference
+    const spiceLevels = ["mild", "medium", "hot", "very-hot"];
+    const userSpiceIndex = spiceLevels.indexOf(preferences.spiceLevel);
+    const dishSpiceIndex = spiceLevels.indexOf(dish.spiceLevel);
+    
+    // Only show dishes at or below user's spice tolerance
+    if (dishSpiceIndex > userSpiceIndex) {
+      return false;
+    }
+    
+    return true;
   });
 
-  if (filteredDishes.length === 0) {
-    return null;
-  }
+  const handleDishClick = (dishName: string) => {
+    navigate(`/dish/${encodeURIComponent(dishName)}`);
+  };
 
   return (
-    <Card className="mx-4 mb-4">
+    <Card>
       <CardHeader>
-        <CardTitle className="text-lg text-amber-800 flex items-center">
-          <Heart className="h-5 w-5 mr-2 text-rose-500" />
-          Just For You
+        <CardTitle className="flex items-center space-x-2">
+          <TrendingUp className="h-5 w-5 text-amber-600" />
+          <span>Recommended for You</span>
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-3">
-        {filteredDishes.map((dish, index) => (
-          <div
-            key={index}
-            className="flex items-center space-x-3 p-3 bg-sage-50 rounded-lg cursor-pointer hover:bg-sage-100 transition-colors"
-            onClick={() => handleDishClick(dish)}
-          >
-            <img 
-              src={dish.image} 
-              alt={dish.name} 
-              className="h-16 w-16 rounded-lg object-cover"
-            />
-            <div className="flex-1 min-w-0">
-              <h3 className="font-bold text-sm truncate">{dish.name}</h3>
-              <p className="text-xs text-sage-600 truncate">by {dish.cook}</p>
-              <div className="flex items-center space-x-2 mt-1">
-                <div className="flex items-center space-x-1">
-                  <Star className="h-3 w-3 text-yellow-400 fill-yellow-400" />
-                  <span className="text-xs font-medium">{dish.rating}</span>
+      <CardContent>
+        <div className="space-y-4">
+          {filteredRecommendations.slice(0, 3).map((dish, index) => (
+            <div
+              key={index}
+              className="flex items-center space-x-3 p-3 rounded-lg hover:bg-sage-50 cursor-pointer transition-colors"
+              onClick={() => handleDishClick(dish.name)}
+            >
+              <img
+                src={dish.image}
+                alt={dish.name}
+                className="w-16 h-16 rounded-lg object-cover"
+              />
+              <div className="flex-1">
+                <h4 className="font-semibold text-amber-800">{dish.name}</h4>
+                <p className="text-sm text-sage-600">by {dish.cook}</p>
+                <div className="flex items-center space-x-2 mt-1">
+                  <div className="flex items-center space-x-1">
+                    <Star className="h-3 w-3 text-yellow-500 fill-current" />
+                    <span className="text-xs text-sage-600">{dish.rating}</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <Clock className="h-3 w-3 text-sage-500" />
+                    <span className="text-xs text-sage-600">{dish.preparationTime}</span>
+                  </div>
+                  <Badge variant="outline" className="text-xs">
+                    {dish.cuisine}
+                  </Badge>
                 </div>
-                <Badge variant="secondary" className="text-xs bg-emerald-100 text-emerald-700">
-                  {dish.matchReason}
-                </Badge>
               </div>
-              <div className="flex items-center justify-between mt-2">
-                <p className="text-sm font-bold text-amber-700">₹{dish.price}</p>
-                <Button
-                  size="sm"
-                  onClick={(e) => handleAddToCart(dish, e)}
-                  className="h-7 px-3 text-xs"
-                >
+              <div className="text-right">
+                <p className="font-bold text-amber-700">₹{dish.price}</p>
+                <Button size="sm" variant="outline" className="mt-1">
+                  <Heart className="h-3 w-3 mr-1" />
                   Add
                 </Button>
               </div>
             </div>
+          ))}
+        </div>
+        
+        {filteredRecommendations.length === 0 && (
+          <div className="text-center py-4">
+            <p className="text-sage-600">No recommendations match your preferences yet.</p>
+            <Button variant="outline" size="sm" className="mt-2" onClick={() => navigate('/settings')}>
+              Update Preferences
+            </Button>
           </div>
-        ))}
+        )}
       </CardContent>
     </Card>
   );

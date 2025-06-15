@@ -1,255 +1,206 @@
 
-import { ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft, Bell, Globe, Shield, CreditCard, HelpCircle, LogOut, Moon, Sun, MapPin, Filter } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useUserPreferences } from "@/contexts/UserPreferencesContext";
-import { useToast } from "@/hooks/use-toast";
-
-const dietaryOptions = ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Keto", "Paleo"];
-const cuisineOptions = ["Punjabi", "Bengali", "South Indian", "Gujarati", "Rajasthani", "North Indian", "Chinese", "Continental"];
-const spiceLevels = ["mild", "medium", "hot", "very-hot"];
-const budgetRanges = ["Under ₹150", "₹150 - ₹300", "₹300 - ₹500", "Above ₹500"];
-const mealTimeOptions = ["Breakfast", "Lunch", "Dinner", "Snacks", "Brunch"];
-const allergenOptions = ["Nuts", "Shellfish", "Eggs", "Soy", "Fish", "Sesame"];
-const cookingStyleOptions = ["Traditional", "Fusion", "Healthy", "Comfort Food", "Street Food"];
 
 const Settings = () => {
   const navigate = useNavigate();
   const { preferences, updatePreferences } = useUserPreferences();
-  const { toast } = useToast();
-  const [localPreferences, setLocalPreferences] = useState(preferences);
+  const [darkMode, setDarkMode] = useState(false);
+  const [notifications, setNotifications] = useState(true);
+  const [locationSharing, setLocationSharing] = useState(true);
 
-  const toggleArrayItem = (array: string[], item: string): string[] => {
-    return array.includes(item) 
-      ? array.filter(i => i !== item)
-      : [...array, item];
+  const cuisineOptions = ["Punjabi", "Bengali", "South Indian", "Gujarati", "Rajasthani", "North Indian", "Chinese", "Continental"];
+  const dietaryOptions = ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Keto", "Low-Carb"];
+  const spiceLevels = ["mild", "medium", "hot", "very-hot"];
+
+  const toggleCuisine = (cuisine: string) => {
+    const updated = preferences.favoriteCuisines.includes(cuisine)
+      ? preferences.favoriteCuisines.filter(c => c !== cuisine)
+      : [...preferences.favoriteCuisines, cuisine];
+    updatePreferences({ favoriteCuisines: updated });
   };
 
-  const handleSave = () => {
-    updatePreferences(localPreferences);
-    toast({
-      title: "Preferences saved!",
-      description: "Your preferences have been updated successfully.",
-    });
+  const toggleDietary = (diet: string) => {
+    const updated = preferences.dietaryRestrictions.includes(diet)
+      ? preferences.dietaryRestrictions.filter(d => d !== diet)
+      : [...preferences.dietaryRestrictions, diet];
+    updatePreferences({ dietaryRestrictions: updated });
   };
 
   return (
     <div className="pb-16">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm p-4 border-b">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
-              <ArrowLeft className="h-6 w-6" />
-            </Button>
-            <h1 className="text-xl font-bold text-amber-800">Settings</h1>
-          </div>
-          <Button onClick={handleSave} className="bg-amber-600 hover:bg-amber-700">
-            <Save className="h-4 w-4 mr-2" />
-            Save
+      <header className="sticky top-0 z-10 bg-background/80 p-4 backdrop-blur-sm border-b">
+        <div className="flex items-center space-x-3">
+          <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
+            <ArrowLeft className="h-5 w-5" />
           </Button>
+          <h1 className="text-xl font-bold text-amber-800">Settings</h1>
         </div>
       </header>
 
-      <div className="p-4 space-y-4">
-        {/* Dietary Restrictions */}
+      <div className="p-4 space-y-6">
+        {/* App Settings */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg text-amber-800">Dietary Restrictions</CardTitle>
+            <CardTitle className="flex items-center space-x-2">
+              <Shield className="h-5 w-5" />
+              <span>App Settings</span>
+            </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-2">
-              {dietaryOptions.map((option) => (
-                <Badge
-                  key={option}
-                  variant={localPreferences.dietaryRestrictions.includes(option) ? "default" : "outline"}
-                  className={`cursor-pointer ${
-                    localPreferences.dietaryRestrictions.includes(option)
-                      ? "bg-amber-600 text-white"
-                      : "text-sage-700 hover:bg-sage-100"
-                  }`}
-                  onClick={() => setLocalPreferences(prev => ({
-                    ...prev,
-                    dietaryRestrictions: toggleArrayItem(prev.dietaryRestrictions, option)
-                  }))}
-                >
-                  {option}
-                </Badge>
-              ))}
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <Bell className="h-5 w-5 text-sage-600" />
+                <span>Push Notifications</span>
+              </div>
+              <Switch checked={notifications} onCheckedChange={setNotifications} />
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <MapPin className="h-5 w-5 text-sage-600" />
+                <span>Location Sharing</span>
+              </div>
+              <Switch checked={locationSharing} onCheckedChange={setLocationSharing} />
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                {darkMode ? <Moon className="h-5 w-5 text-sage-600" /> : <Sun className="h-5 w-5 text-sage-600" />}
+                <span>Dark Mode</span>
+              </div>
+              <Switch checked={darkMode} onCheckedChange={setDarkMode} />
             </div>
           </CardContent>
         </Card>
 
-        {/* Favorite Cuisines */}
+        {/* Food Preferences */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg text-amber-800">Favorite Cuisines</CardTitle>
+            <CardTitle className="flex items-center space-x-2">
+              <Filter className="h-5 w-5" />
+              <span>Food Preferences</span>
+            </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-2">
-              {cuisineOptions.map((cuisine) => (
-                <Badge
-                  key={cuisine}
-                  variant={localPreferences.favoriteCuisines.includes(cuisine) ? "default" : "outline"}
-                  className={`cursor-pointer ${
-                    localPreferences.favoriteCuisines.includes(cuisine)
-                      ? "bg-amber-600 text-white"
-                      : "text-sage-700 hover:bg-sage-100"
-                  }`}
-                  onClick={() => setLocalPreferences(prev => ({
-                    ...prev,
-                    favoriteCuisines: toggleArrayItem(prev.favoriteCuisines, cuisine)
-                  }))}
-                >
-                  {cuisine}
-                </Badge>
-              ))}
+          <CardContent className="space-y-4">
+            <div>
+              <h4 className="font-medium mb-2">Favorite Cuisines</h4>
+              <div className="flex flex-wrap gap-2">
+                {cuisineOptions.map((cuisine) => (
+                  <Badge
+                    key={cuisine}
+                    variant={preferences.favoriteCuisines.includes(cuisine) ? "default" : "outline"}
+                    className={`cursor-pointer ${
+                      preferences.favoriteCuisines.includes(cuisine)
+                        ? "bg-amber-600 text-white"
+                        : "text-sage-700 hover:bg-sage-100"
+                    }`}
+                    onClick={() => toggleCuisine(cuisine)}
+                  >
+                    {cuisine}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-medium mb-2">Dietary Restrictions</h4>
+              <div className="flex flex-wrap gap-2">
+                {dietaryOptions.map((diet) => (
+                  <Badge
+                    key={diet}
+                    variant={preferences.dietaryRestrictions.includes(diet) ? "default" : "outline"}
+                    className={`cursor-pointer ${
+                      preferences.dietaryRestrictions.includes(diet)
+                        ? "bg-emerald-600 text-white"
+                        : "text-sage-700 hover:bg-sage-100"
+                    }`}
+                    onClick={() => toggleDietary(diet)}
+                  >
+                    {diet}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-medium mb-2">Spice Level</h4>
+              <div className="flex flex-wrap gap-2">
+                {spiceLevels.map((level) => (
+                  <Badge
+                    key={level}
+                    variant={preferences.spiceLevel === level ? "default" : "outline"}
+                    className={`cursor-pointer ${
+                      preferences.spiceLevel === level
+                        ? "bg-red-600 text-white"
+                        : "text-sage-700 hover:bg-sage-100"
+                    }`}
+                    onClick={() => updatePreferences({ spiceLevel: level as any })}
+                  >
+                    {level.charAt(0).toUpperCase() + level.slice(1)}
+                  </Badge>
+                ))}
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Spice Level */}
+        {/* Account Settings */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg text-amber-800">Spice Preference</CardTitle>
+            <CardTitle className="flex items-center space-x-2">
+              <CreditCard className="h-5 w-5" />
+              <span>Account</span>
+            </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-2">
-              {spiceLevels.map((level) => (
-                <Badge
-                  key={level}
-                  variant={localPreferences.spiceLevel === level ? "default" : "outline"}
-                  className={`cursor-pointer capitalize ${
-                    localPreferences.spiceLevel === level
-                      ? "bg-amber-600 text-white"
-                      : "text-sage-700 hover:bg-sage-100"
-                  }`}
-                  onClick={() => setLocalPreferences(prev => ({
-                    ...prev,
-                    spiceLevel: level as typeof prev.spiceLevel
-                  }))}
-                >
-                  {level.replace('-', ' ')}
-                </Badge>
-              ))}
-            </div>
+          <CardContent className="space-y-3">
+            <Button variant="outline" className="w-full justify-start">
+              <CreditCard className="h-4 w-4 mr-2" />
+              Payment Methods
+            </Button>
+            <Button variant="outline" className="w-full justify-start">
+              <Shield className="h-4 w-4 mr-2" />
+              Privacy & Security
+            </Button>
+            <Button variant="outline" className="w-full justify-start">
+              <Globe className="h-4 w-4 mr-2" />
+              Language & Region
+            </Button>
           </CardContent>
         </Card>
 
-        {/* Budget Range */}
+        {/* Support */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg text-amber-800">Budget Range</CardTitle>
+            <CardTitle className="flex items-center space-x-2">
+              <HelpCircle className="h-5 w-5" />
+              <span>Support</span>
+            </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-2">
-              {budgetRanges.map((range) => (
-                <Badge
-                  key={range}
-                  variant={localPreferences.budgetRange === range ? "default" : "outline"}
-                  className={`cursor-pointer ${
-                    localPreferences.budgetRange === range
-                      ? "bg-amber-600 text-white"
-                      : "text-sage-700 hover:bg-sage-100"
-                  }`}
-                  onClick={() => setLocalPreferences(prev => ({
-                    ...prev,
-                    budgetRange: prev.budgetRange === range ? "" : range
-                  }))}
-                >
-                  {range}
-                </Badge>
-              ))}
-            </div>
+          <CardContent className="space-y-3">
+            <Button variant="outline" className="w-full justify-start">
+              <HelpCircle className="h-4 w-4 mr-2" />
+              Help Center
+            </Button>
+            <Button variant="outline" className="w-full justify-start">
+              Contact Support
+            </Button>
+            <Button variant="outline" className="w-full justify-start">
+              Report a Problem
+            </Button>
           </CardContent>
         </Card>
 
-        {/* Meal Times */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg text-amber-800">Preferred Meal Times</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-2">
-              {mealTimeOptions.map((time) => (
-                <Badge
-                  key={time}
-                  variant={localPreferences.mealTimes.includes(time) ? "default" : "outline"}
-                  className={`cursor-pointer ${
-                    localPreferences.mealTimes.includes(time)
-                      ? "bg-amber-600 text-white"
-                      : "text-sage-700 hover:bg-sage-100"
-                  }`}
-                  onClick={() => setLocalPreferences(prev => ({
-                    ...prev,
-                    mealTimes: toggleArrayItem(prev.mealTimes, time)
-                  }))}
-                >
-                  {time}
-                </Badge>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Allergens */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg text-amber-800">Allergens to Avoid</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-2">
-              {allergenOptions.map((allergen) => (
-                <Badge
-                  key={allergen}
-                  variant={localPreferences.allergens.includes(allergen) ? "default" : "outline"}
-                  className={`cursor-pointer ${
-                    localPreferences.allergens.includes(allergen)
-                      ? "bg-red-600 text-white"
-                      : "text-sage-700 hover:bg-sage-100"
-                  }`}
-                  onClick={() => setLocalPreferences(prev => ({
-                    ...prev,
-                    allergens: toggleArrayItem(prev.allergens, allergen)
-                  }))}
-                >
-                  {allergen}
-                </Badge>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Cooking Style */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg text-amber-800">Preferred Cooking Styles</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-2">
-              {cookingStyleOptions.map((style) => (
-                <Badge
-                  key={style}
-                  variant={localPreferences.cookingStyle.includes(style) ? "default" : "outline"}
-                  className={`cursor-pointer ${
-                    localPreferences.cookingStyle.includes(style)
-                      ? "bg-amber-600 text-white"
-                      : "text-sage-700 hover:bg-sage-100"
-                  }`}
-                  onClick={() => setLocalPreferences(prev => ({
-                    ...prev,
-                    cookingStyle: toggleArrayItem(prev.cookingStyle, style)
-                  }))}
-                >
-                  {style}
-                </Badge>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        {/* Logout */}
+        <Button variant="outline" className="w-full text-red-600 border-red-200 hover:bg-red-50">
+          <LogOut className="h-4 w-4 mr-2" />
+          Sign Out
+        </Button>
       </div>
     </div>
   );

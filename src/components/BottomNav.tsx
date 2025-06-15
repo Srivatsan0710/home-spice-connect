@@ -1,17 +1,18 @@
 
-import { Home, Compass, ShoppingBag, User } from 'lucide-react';
+import { Home, Compass, ShoppingBag, User, BarChart3 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
 const navItems = [
   { to: '/', icon: Home, label: 'Home' },
   { to: '/discover', icon: Compass, label: 'Discover' },
+  { to: '/dashboard', icon: BarChart3, label: 'Dashboard' },
   { to: '/orders', icon: ShoppingBag, label: 'Orders' },
   { to: '/profile', icon: User, label: 'Profile' },
 ];
 
 const BottomNav = () => {
   return (
-    <nav className="sticky bottom-0 z-10 grid h-16 grid-cols-4 items-center border-t bg-background">
+    <nav className="sticky bottom-0 z-10 grid h-16 grid-cols-5 items-center border-t bg-background">
       {navItems.map((item) => (
         <NavLink
           key={item.label}
@@ -22,7 +23,7 @@ const BottomNav = () => {
             }`
           }
         >
-          <item.icon className="h-6 w-6" />
+          <item.icon className="h-5 w-5" />
           <span className="text-xs font-medium">{item.label}</span>
         </NavLink>
       ))}

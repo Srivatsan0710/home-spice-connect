@@ -1,14 +1,24 @@
 
-import { Star, User } from "lucide-react";
+import { Star, ThumbsUp, MessageCircle, MoreHorizontal } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
 
 interface Review {
   id: string;
-  customerName: string;
+  userName: string;
+  userAvatar: string;
   rating: number;
-  comment: string;
-  date: string;
   dishName: string;
+  cookName: string;
+  reviewText: string;
+  images?: string[];
+  date: string;
+  likes: number;
+  isLiked: boolean;
+  isVerifiedPurchase: boolean;
 }
 
 interface ReviewCardProps {
@@ -16,34 +26,93 @@ interface ReviewCardProps {
 }
 
 const ReviewCard = ({ review }: ReviewCardProps) => {
+  const [isLiked, setIsLiked] = useState(review.isLiked);
+  const [likes, setLikes] = useState(review.likes);
+
+  const handleLike = () => {
+    setIsLiked(!isLiked);
+    setLikes(prev => isLiked ? prev - 1 : prev + 1);
+  };
+
+  const renderStars = (rating: number) => {
+    return Array.from({ length: 5 }, (_, index) => (
+      <Star
+        key={index}
+        className={`h-4 w-4 ${
+          index < rating ? "text-yellow-500 fill-current" : "text-gray-300"
+        }`}
+      />
+    ));
+  };
+
   return (
-    <Card className="mb-3">
+    <Card className="mb-4">
       <CardContent className="p-4">
         <div className="flex items-start space-x-3">
-          <div className="h-10 w-10 bg-secondary/30 rounded-full flex items-center justify-center flex-shrink-0">
-            <User className="h-5 w-5 text-primary" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between mb-1">
-              <h4 className="font-medium text-sm">{review.customerName}</h4>
-              <span className="text-xs text-muted-foreground">{review.date}</span>
+          <Avatar>
+            <AvatarImage src={review.userAvatar} />
+            <AvatarFallback>{review.userName.charAt(0)}</AvatarFallback>
+          </Avatar>
+          
+          <div className="flex-1">
+            <div className="flex items-center justify-between mb-2">
+              <div>
+                <div className="flex items-center space-x-2">
+                  <span className="font-semibold text-sage-800">{review.userName}</span>
+                  {review.isVerifiedPurchase && (
+                    <Badge variant="outline" className="text-xs text-emerald-600 border-emerald-200">
+                      Verified Purchase
+                    </Badge>
+                  )}
+                </div>
+                <div className="flex items-center space-x-1 mt-1">
+                  {renderStars(review.rating)}
+                  <span className="text-sm text-sage-600 ml-2">{review.date}</span>
+                </div>
+              </div>
+              <Button variant="ghost" size="icon">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
             </div>
-            <div className="flex items-center space-x-1 mb-2">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <Star
-                  key={star}
-                  className={`h-3 w-3 ${
-                    star <= review.rating
-                      ? "text-yellow-400 fill-yellow-400"
-                      : "text-gray-300"
-                  }`}
-                />
-              ))}
-              <span className="text-xs text-muted-foreground ml-2">
-                for {review.dishName}
-              </span>
+
+            <div className="mb-3">
+              <p className="text-sm text-sage-600 mb-1">
+                <span className="font-medium text-amber-700">{review.dishName}</span>
+                {" "}by {review.cookName}
+              </p>
+              <p className="text-sage-800">{review.reviewText}</p>
             </div>
-            <p className="text-sm text-muted-foreground">{review.comment}</p>
+
+            {review.images && review.images.length > 0 && (
+              <div className="flex space-x-2 mb-3">
+                {review.images.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image}
+                    alt={`Review image ${index + 1}`}
+                    className="w-16 h-16 rounded-lg object-cover cursor-pointer hover:opacity-80"
+                  />
+                ))}
+              </div>
+            )}
+
+            <div className="flex items-center space-x-4 text-sm text-sage-600">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleLike}
+                className={`flex items-center space-x-1 ${
+                  isLiked ? "text-red-600" : "text-sage-600"
+                }`}
+              >
+                <ThumbsUp className={`h-4 w-4 ${isLiked ? "fill-current" : ""}`} />
+                <span>{likes}</span>
+              </Button>
+              <Button variant="ghost" size="sm" className="flex items-center space-x-1">
+                <MessageCircle className="h-4 w-4" />
+                <span>Reply</span>
+              </Button>
+            </div>
           </div>
         </div>
       </CardContent>
