@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import BookingDialog from "./BookingDialog";
 
 interface Dish {
   name: string;
@@ -16,6 +17,8 @@ interface Dish {
   story: string;
   orders: number;
   isBestVoted: boolean;
+  mealType?: 'breakfast' | 'lunch' | 'dinner';
+  isHomeCook?: boolean;
 }
 
 interface DishCardProps {
@@ -59,6 +62,11 @@ const DishCard = ({ dish }: DishCardProps) => {
               Top Rated
             </Badge>
           )}
+          {dish.isHomeCook && (
+            <Badge className="absolute bottom-1 left-1 bg-green-500 text-white text-xs">
+              Home Cook
+            </Badge>
+          )}
         </div>
         <div className="flex-1 p-3">
           <div className="flex items-start justify-between">
@@ -78,13 +86,29 @@ const DishCard = ({ dish }: DishCardProps) => {
               </div>
               <p className="text-sm font-bold text-primary">₹{dish.price}</p>
             </div>
-            <Button
-              size="sm"
-              onClick={handleAddToCart}
-              className="ml-2 h-8 px-3 text-xs"
-            >
-              Add
-            </Button>
+            <div className="flex flex-col space-y-1 ml-2">
+              {dish.isHomeCook ? (
+                <BookingDialog
+                  dishName={dish.name}
+                  cookName={dish.cook}
+                  price={dish.price}
+                  image={dish.image}
+                  mealType={dish.mealType}
+                >
+                  <Button size="sm" className="h-8 px-3 text-xs">
+                    Book
+                  </Button>
+                </BookingDialog>
+              ) : (
+                <Button
+                  size="sm"
+                  onClick={handleAddToCart}
+                  className="h-8 px-3 text-xs"
+                >
+                  Add
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </div>

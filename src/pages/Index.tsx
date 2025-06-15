@@ -4,9 +4,12 @@ import CuisineCard from "@/components/CuisineCard";
 import CookCard from "@/components/CookCard";
 import DishCard from "@/components/DishCard";
 import PersonalizedRecommendations from "@/components/PersonalizedRecommendations";
+import BookingDialog from "@/components/BookingDialog";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { cuisines, cooks, dishes } from "@/lib/data";
+import { getFestiveBookingInfo, formatBookingDeadline } from "@/utils/bookingUtils";
 
 const festivalSpecials = [
   {
@@ -16,7 +19,8 @@ const festivalSpecials = [
     rating: 4.9,
     image: "https://images.unsplash.com/photo-1606491956689-2ea866880c84?q=80&w=400",
     story: "Traditional Diwali feast with sweets and savory delights",
-    festival: "Diwali"
+    festival: "Diwali",
+    bookByDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000) // 3 days from now
   },
   {
     name: "Christmas Plum Cake",
@@ -25,7 +29,47 @@ const festivalSpecials = [
     rating: 4.8,
     image: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?q=80&w=400",
     story: "Homemade Christmas cake with traditional spices",
-    festival: "Christmas"
+    festival: "Christmas",
+    bookByDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days from now
+  }
+];
+
+const homeCookSpecials = [
+  {
+    name: "Ghar Jaisa Rajma Chawal",
+    cook: "Aunty Priya",
+    price: 120,
+    rating: 4.9,
+    image: "https://images.unsplash.com/photo-1596797038530-2c107229654b?q=80&w=400",
+    story: "Authentic home-style rajma with basmati rice",
+    orders: 89,
+    isBestVoted: false,
+    mealType: "lunch" as const,
+    isHomeCook: true
+  },
+  {
+    name: "Morning Poha",
+    cook: "Meera Aunty",
+    price: 80,
+    rating: 4.7,
+    image: "https://images.unsplash.com/photo-1626132647346-f4d2f2d0a5f0?q=80&w=400",
+    story: "Fresh morning poha with peanuts and curry leaves",
+    orders: 156,
+    isBestVoted: true,
+    mealType: "breakfast" as const,
+    isHomeCook: true
+  },
+  {
+    name: "Dal Tadka with Roti",
+    cook: "Kamala Didi",
+    price: 100,
+    rating: 4.8,
+    image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?q=80&w=400",
+    story: "Simple dal tadka with fresh handmade rotis",
+    orders: 203,
+    isBestVoted: false,
+    mealType: "dinner" as const,
+    isHomeCook: true
   }
 ];
 
@@ -50,22 +94,50 @@ const Index = () => {
         {/* Festival Specials */}
         <Section title="🎉 Festival Specials">
           <div className="flex space-x-4 overflow-x-auto p-4 -mt-2">
-            {festivalSpecials.map((dish) => (
-              <div key={dish.name} className="flex-shrink-0 w-72">
-                <Card className="overflow-hidden rounded-2xl border-secondary shadow-sm">
-                  <div className="relative">
-                    <img src={dish.image} alt={dish.name} className="h-32 w-full object-cover" />
-                    <Badge className="absolute top-2 left-2 bg-red-500 text-white">
-                      {dish.festival}
-                    </Badge>
-                  </div>
-                  <div className="p-3">
-                    <h3 className="font-bold text-sm font-serif">{dish.name}</h3>
-                    <p className="text-xs text-muted-foreground">by {dish.cook}</p>
-                    <p className="text-sm font-bold text-primary mt-1">₹{dish.price}</p>
-                  </div>
-                </Card>
-              </div>
+            {festivalSpecials.map((dish) => {
+              const festiveBooking = getFestiveBookingInfo(dish.bookByDate);
+              return (
+                <div key={dish.name} className="flex-shrink-0 w-72">
+                  <Card className="overflow-hidden rounded-2xl border-secondary shadow-sm">
+                    <div className="relative">
+                      <img src={dish.image} alt={dish.name} className="h-32 w-full object-cover" />
+                      <Badge className="absolute top-2 left-2 bg-red-500 text-white">
+                        {dish.festival}
+                      </Badge>
+                      <Badge className="absolute top-2 right-2 bg-amber-600 text-white text-xs">
+                        Book by: {formatBookingDeadline(dish.bookByDate)}
+                      </Badge>
+                    </div>
+                    <div className="p-3">
+                      <h3 className="font-bold text-sm font-serif">{dish.name}</h3>
+                      <p className="text-xs text-muted-foreground">by {dish.cook}</p>
+                      <div className="flex items-center justify-between mt-2">
+                        <p className="text-sm font-bold text-primary">₹{dish.price}</p>
+                        <BookingDialog
+                          dishName={dish.name}
+                          cookName={dish.cook}
+                          price={dish.price}
+                          image={dish.image}
+                          festiveBooking={festiveBooking}
+                        >
+                          <Button size="sm" disabled={!festiveBooking.isBookable}>
+                            {festiveBooking.isBookable ? 'Book Now' : 'Booking Closed'}
+                          </Button>
+                        </BookingDialog>
+                      </div>
+                    </div>
+                  </Card>
+                </div>
+              );
+            })}
+          </div>
+        </Section>
+
+        {/* Today's Home Cooked Meals */}
+        <Section title="🏠 Today's Home Cooked Meals">
+          <div className="grid grid-cols-1 gap-4 p-4">
+            {homeCookSpecials.map((dish) => (
+              <DishCard key={dish.name} dish={dish} />
             ))}
           </div>
         </Section>
