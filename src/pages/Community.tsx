@@ -1,21 +1,51 @@
 
 import { useState } from "react";
-import { Search, Users, MessageSquare, Camera, Star } from "lucide-react";
+import { Search, Users, MessageSquare, Camera, Star, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import CommunityChat from "@/components/CommunityChat";
 
 const Community = () => {
   const [activeTab, setActiveTab] = useState("groups");
+  const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
 
   const regionalGroups = [
-    { name: "Bengalis in Bangalore", members: 1245, image: "🐟", description: "Traditional Bengali recipes and cultural connections" },
-    { name: "Punjabis in Chennai", members: 892, image: "🌾", description: "Authentic Punjabi food lovers unite!" },
-    { name: "South Indians in Delhi", members: 2156, image: "🥥", description: "Missing home food? We've got you covered!" },
-    { name: "Gujaratis in Mumbai", members: 1678, image: "🫓", description: "Gujarati thali and snacks community" }
+    { 
+      name: "Bengalis in Bangalore", 
+      members: 1245, 
+      image: "🐟", 
+      description: "Traditional Bengali recipes and cultural connections",
+      isJoined: false,
+      onlineMembers: 45
+    },
+    { 
+      name: "Punjabis in Chennai", 
+      members: 892, 
+      image: "🌾", 
+      description: "Authentic Punjabi food lovers unite!",
+      isJoined: true,
+      onlineMembers: 32
+    },
+    { 
+      name: "South Indians in Delhi", 
+      members: 2156, 
+      image: "🥥", 
+      description: "Missing home food? We've got you covered!",
+      isJoined: false,
+      onlineMembers: 78
+    },
+    { 
+      name: "Gujaratis in Mumbai", 
+      members: 1678, 
+      image: "🫓", 
+      description: "Gujarati thali and snacks community",
+      isJoined: true,
+      onlineMembers: 56
+    }
   ];
 
   const recipeRequests = [
@@ -29,6 +59,26 @@ const Community = () => {
     { user: "Suresh P.", dish: "Fish Curry & Rice", cook: "Mala Di", rating: 5, image: "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?q=80&w=200" },
     { user: "Kavya R.", dish: "Masala Dosa", cook: "Meena Amma", rating: 4, image: "https://images.unsplash.com/photo-1668665780325-b06253455de3?q=80&w=200" }
   ];
+
+  const handleJoinGroup = (groupName: string) => {
+    // Handle joining group
+    console.log(`Joining group: ${groupName}`);
+  };
+
+  const handleGroupClick = (groupName: string, isJoined: boolean) => {
+    if (isJoined) {
+      setSelectedGroup(groupName);
+    }
+  };
+
+  if (selectedGroup) {
+    return (
+      <CommunityChat 
+        groupName={selectedGroup} 
+        onBack={() => setSelectedGroup(null)} 
+      />
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-full bg-secondary/30">
@@ -71,9 +121,28 @@ const Community = () => {
                         <div className="flex items-center space-x-2 mt-2">
                           <Users className="h-4 w-4 text-muted-foreground" />
                           <span className="text-sm">{group.members} members</span>
+                          <span className="text-xs text-green-600">• {group.onlineMembers} online</span>
                         </div>
                       </div>
-                      <Button size="sm">Join</Button>
+                      <div className="flex flex-col space-y-2">
+                        {group.isJoined ? (
+                          <>
+                            <Badge className="bg-green-100 text-green-800">Joined</Badge>
+                            <Button 
+                              size="sm" 
+                              onClick={() => handleGroupClick(group.name, group.isJoined)}
+                              className="flex items-center space-x-1"
+                            >
+                              <MessageSquare className="h-3 w-3" />
+                              <span>Chat</span>
+                            </Button>
+                          </>
+                        ) : (
+                          <Button size="sm" onClick={() => handleJoinGroup(group.name)}>
+                            Join
+                          </Button>
+                        )}
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -160,12 +229,22 @@ const Community = () => {
                   <div className="p-4 bg-orange-50 rounded-lg border-l-4 border-l-orange-400">
                     <h3 className="font-semibold text-orange-800">Diwali Special Menu</h3>
                     <p className="text-sm text-orange-700">Traditional sweets and savory dishes available now!</p>
-                    <Badge className="mt-2 bg-orange-100 text-orange-800">Ongoing</Badge>
+                    <div className="flex items-center justify-between mt-2">
+                      <Badge className="bg-orange-100 text-orange-800">Ongoing</Badge>
+                      <Button size="sm" variant="outline">
+                        View Menu <ArrowRight className="h-3 w-3 ml-1" />
+                      </Button>
+                    </div>
                   </div>
                   <div className="p-4 bg-green-50 rounded-lg border-l-4 border-l-green-400">
                     <h3 className="font-semibold text-green-800">Christmas Feast</h3>
                     <p className="text-sm text-green-700">Pre-order your Christmas cakes and special meals</p>
-                    <Badge className="mt-2 bg-green-100 text-green-800">Coming Soon</Badge>
+                    <div className="flex items-center justify-between mt-2">
+                      <Badge className="bg-green-100 text-green-800">Coming Soon</Badge>
+                      <Button size="sm" variant="outline">
+                        Pre-order <ArrowRight className="h-3 w-3 ml-1" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </CardContent>

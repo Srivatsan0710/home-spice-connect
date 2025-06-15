@@ -1,11 +1,11 @@
 
-import { Home, Compass, ShoppingBag, User, BarChart3 } from 'lucide-react';
+import { Home, Compass, ShoppingBag, User, BarChart3, Users } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
 const navItems = [
   { to: '/', icon: Home, label: 'Home' },
   { to: '/discover', icon: Compass, label: 'Discover' },
-  { to: '/dashboard', icon: BarChart3, label: 'Dashboard' },
+  { to: '/community', icon: Users, label: 'Community' },
   { to: '/orders', icon: ShoppingBag, label: 'Orders' },
   { to: '/profile', icon: User, label: 'Profile' },
 ];
