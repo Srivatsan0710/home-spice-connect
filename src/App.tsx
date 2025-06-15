@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import BottomNav from "./components/BottomNav";
+import CookProfile from "./pages/CookProfile";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ const App = () => (
           <div className="flex-1 overflow-y-auto">
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/cook/:id" element={<CookProfile />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

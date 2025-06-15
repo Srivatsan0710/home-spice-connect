@@ -9,25 +9,31 @@ export const cuisines = [
 
 export const cooks = [
   {
+    id: "aunty-manjeet",
     name: "Aunty Manjeet",
     region: "Punjab",
     specialty: "Aloo Paratha",
     rating: 4.9,
     image: "https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=300",
+    story: "For me, cooking is not just a daily chore, it's a way of sharing love and keeping my family's traditions alive. Every paratha I make is filled with the warmth of my Amritsari home.",
   },
   {
+    id: "mala-di",
     name: "Mala Di",
     region: "Bengal",
     specialty: "Macher Jhol",
     rating: 4.8,
     image: "https://images.unsplash.com/photo-1593104547489-5cfb3839a3b5?q=80&w=300",
+    story: "The rivers of Bengal flow in my veins, and their bounty inspires my cooking. My Macher Jhol is a recipe that has been passed down through generations, a taste of Sunday afternoons in Kolkata.",
   },
   {
+    id: "meena-amma",
     name: "Meena Amma",
     region: "Tamil Nadu",
     specialty: "Idli & Sambar",
     rating: 4.9,
     image: "https://images.unsplash.com/photo-1554151228-14d9def656e4?q=80&w=300",
+    story: "Waking up to the smell of fresh idlis is a core memory from my childhood in Madurai. I use my grandmother's stone grinder to make the batter, and I believe that's my secret to the softest idlis.",
   },
 ];
 

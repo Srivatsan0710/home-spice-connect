@@ -10,6 +10,7 @@ interface DishCardProps {
     price: number;
     rating: number;
     image: string;
+    story: string;
   };
 }
 
