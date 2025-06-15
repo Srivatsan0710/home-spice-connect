@@ -32,6 +32,13 @@ const DishCard = ({ dish }: DishCardProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  console.log('DishCard render:', {
+    dishName: dish.name,
+    isHomeCook: dish.isHomeCook,
+    mealType: dish.mealType,
+    hasSubscription: dish.hasSubscription
+  });
+
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
     addToCart({
@@ -110,7 +117,10 @@ const DishCard = ({ dish }: DishCardProps) => {
                   mealType={dish.mealType}
                   hasSubscription={dish.hasSubscription}
                 >
-                  <Button size="sm" className="h-8 px-3 text-xs">
+                  <Button size="sm" className="h-8 px-3 text-xs" onClick={(e) => {
+                    console.log('Book button clicked for:', dish.name);
+                    e.stopPropagation();
+                  }}>
                     Book
                   </Button>
                 </BookingDialog>
