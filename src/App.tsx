@@ -14,6 +14,7 @@ import Orders from "./pages/Orders";
 import Profile from "./pages/Profile";
 import DishDetail from "./pages/DishDetail";
 import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
 import CartDrawer from "./components/CartDrawer";
 import { CartProvider } from "./contexts/CartContext";
 import { UserPreferencesProvider } from "./contexts/UserPreferencesContext";
@@ -49,6 +50,7 @@ const App = () => (
                   <Route path="/cook-dashboard" element={<CookDashboard />} />
                   <Route path="/dish/:dishName" element={<DishDetail />} />
                   <Route path="/cart" element={<Cart />} />
+                  <Route path="/checkout" element={<Checkout />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </div>
