@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import DishCard from "@/components/DishCard";
 import CookCard from "@/components/CookCard";
@@ -18,7 +17,7 @@ const CookProfile = () => {
   if (!cook) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
-        <h1 className="text-2xl font-bold mb-4">Cook not found</h1>
+        <h1 className="text-2xl font-bold mb-4">Chef not found</h1>
         <Button onClick={() => navigate('/')}>Go Back Home</Button>
       </div>
     );
@@ -58,7 +57,7 @@ const CookProfile = () => {
       <Header />
 
       <main className="flex-1 pb-4">
-        {/* Cook Info */}
+        {/* Chef Info */}
         <section className="p-4">
           <Card className="p-4">
             <div className="flex items-center space-x-4 mb-4">
@@ -70,7 +69,7 @@ const CookProfile = () => {
                 <h1 className="text-2xl font-bold font-serif">{cook.name}</h1>
                 <div className="flex items-center space-x-2 text-muted-foreground">
                   <Verified className="h-4 w-4 text-blue-500" />
-                  <span className="text-sm">Verified Cook</span>
+                  <span className="text-sm">Verified Chef</span>
                 </div>
                 <div className="flex items-center space-x-2 text-muted-foreground">
                   <MapPin className="h-4 w-4" />
@@ -93,12 +92,12 @@ const CookProfile = () => {
               </div>
               <div className="flex items-center space-x-2">
                 <ChefHat className="h-4 w-4" />
-                <span className="text-sm">Home Cook</span>
+                <span className="text-sm">Home Chef</span>
               </div>
             </div>
 
             <div className="mt-4">
-              <p className="text-sm text-muted-foreground">{cook.story || 'Passionate cook bringing authentic flavors to your table.'}</p>
+              <p className="text-sm text-muted-foreground">{cook.story || 'Passionate chef bringing authentic flavors to your table.'}</p>
             </div>
 
             <div className="mt-4 flex space-x-2">
@@ -114,7 +113,7 @@ const CookProfile = () => {
           </Card>
         </section>
 
-        {/* Cook's Dishes */}
+        {/* Chef's Dishes */}
         <section className="mt-6">
           <h2 className="text-xl font-bold font-serif px-4 mb-4">Available Dishes</h2>
           <div className="grid grid-cols-1 gap-4 px-4">

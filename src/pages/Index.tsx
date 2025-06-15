@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import CuisineCard from "@/components/CuisineCard";
 import CookCard from "@/components/CookCard";
@@ -73,7 +72,7 @@ const Index = () => {
           <Card className="bg-gradient-to-r from-primary/10 to-secondary/20 p-4 border-primary/20">
             <h2 className="font-bold text-lg font-serif">Welcome back, Sachin! 🏠</h2>
             <p className="text-sm text-muted-foreground">
-              Your favorite home cooks are ready with delicious meals just for you
+              Your favorite home chefs are ready with delicious meals just for you
             </p>
           </Card>
         </div>
@@ -142,10 +141,10 @@ const Index = () => {
           </div>
         </Section>
         
-        {/* Top Rated Cooks for User */}
+        {/* Top Rated Chefs for User */}
         <TopRatedCooksSection />
         
-        <Section title="Featured Cooks from your Region">
+        <Section title="Featured Chefs from your Region">
           <div className="flex space-x-4 overflow-x-auto p-4 -mt-2">
             {cooks.map((cook) => (
               <CookCard key={cook.name} cook={cook} />

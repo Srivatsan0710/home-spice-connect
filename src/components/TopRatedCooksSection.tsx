@@ -22,7 +22,7 @@ const TopRatedCooksSection = () => {
     preferredCuisines: ["South Indian", "Punjabi"], // Max 2 as requested
   };
 
-  // Top rated cooks based on user preferences
+  // Top rated chefs based on user preferences
   const topRatedCooks: Cook[] = [
     {
       id: "meera-amma",
@@ -30,7 +30,7 @@ const TopRatedCooksSection = () => {
       region: "Tamil Nadu",
       specialty: "South Indian",
       rating: 4.9,
-      image: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?q=80&w=400"
+      image: "https://images.unsplash.com/photo-1494790108755-2616c36a8db1?q=80&w=400"
     },
     {
       id: "aunty-manjeet",
@@ -38,7 +38,7 @@ const TopRatedCooksSection = () => {
       region: "Punjab",
       specialty: "Punjabi",
       rating: 4.8,
-      image: "https://images.unsplash.com/photo-1494790108755-2616c36a8db1?q=80&w=400"
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=400"
     },
     {
       id: "priya-aunty",
@@ -46,7 +46,7 @@ const TopRatedCooksSection = () => {
       region: "Kerala",
       specialty: "South Indian",
       rating: 4.8,
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=400"
+      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=400"
     }
   ];
 
@@ -65,7 +65,7 @@ const TopRatedCooksSection = () => {
     <section className="mt-6">
       <div className="px-4 mb-4">
         <h2 className="text-xl font-bold font-serif mb-1">
-          Top Rated Cooks for You
+          Top Rated Chefs for You
         </h2>
         <p className="text-sm text-muted-foreground">
           Based on your preferences for {getCuisineText()} food

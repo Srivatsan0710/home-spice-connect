@@ -32,7 +32,13 @@ const ComfortFoodRecommendation = () => {
     "Family WhatsApp active with celebrations 📱"
   ];
 
-  const selectedReason = comfortReasons[Math.floor(Math.random() * comfortReasons.length)];
+  // Select 2 random reasons
+  const getRandomReasons = () => {
+    const shuffled = [...comfortReasons].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, 2);
+  };
+
+  const selectedReasons = getRandomReasons();
 
   const handleDishClick = () => {
     const dishSlug = comfortDish.name.toLowerCase().replace(/\s+/g, '-');
@@ -48,8 +54,14 @@ const ComfortFoodRecommendation = () => {
             <h2 className="text-md font-bold font-serif text-gray-800">Comfort Food Alert</h2>
           </div>
           
-          <p className="text-sm text-gray-700 mb-3">
-            {selectedReason} • <strong className="text-orange-700">22% off</strong> comfort food today! 💙
+          <p className="text-sm text-gray-700 mb-2">
+            {selectedReasons.join(" • ")}
+          </p>
+          
+          <p className="text-sm text-orange-800 font-medium mb-3">
+            When life feels overwhelming, there's nothing like the warmth of home-cooked comfort food. 
+            Let Aunty Priya's loving hands recreate those precious childhood memories. 
+            <strong className="text-orange-700"> 22% off today!</strong> 💙
           </p>
 
           {/* Comfort Dish Card */}

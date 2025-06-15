@@ -19,7 +19,7 @@ const Profile = () => {
     { icon: HelpCircle, label: "Help & Support", action: () => {} },
   ];
 
-  // Sample subscription data
+  // Sample subscription data with images
   const subscriptions = [
     {
       id: "sub1",
