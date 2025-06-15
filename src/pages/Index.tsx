@@ -1,10 +1,10 @@
-
 import Header from "@/components/Header";
 import CuisineCard from "@/components/CuisineCard";
 import CookCard from "@/components/CookCard";
 import DishCard from "@/components/DishCard";
 import PersonalizedRecommendations from "@/components/PersonalizedRecommendations";
 import ComfortFoodRecommendation from "@/components/ComfortFoodRecommendation";
+import TopRatedCooksSection from "@/components/TopRatedCooksSection";
 import BookingDialog from "@/components/BookingDialog";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -140,6 +140,9 @@ const Index = () => {
             ))}
           </div>
         </Section>
+        
+        {/* Top Rated Cooks for User */}
+        <TopRatedCooksSection />
         
         <Section title="Featured Cooks from your Region">
           <div className="flex space-x-4 overflow-x-auto p-4 -mt-2">
