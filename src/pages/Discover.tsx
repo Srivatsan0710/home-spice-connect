@@ -1,126 +1,196 @@
 
-import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
-import { Search, Filter, MapPin, Star } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import Header from "@/components/Header";
+import DishCard from "@/components/DishCard";
+import CookCard from "@/components/CookCard";
+import AdvancedSearch from "@/components/AdvancedSearch";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { cuisines, cooks, dishes } from "@/lib/data";
-import CookCard from "@/components/CookCard";
-import DishCard from "@/components/DishCard";
+import { Filter, MapPin } from "lucide-react";
+import { useState } from "react";
+import { cuisines, cooks } from "@/lib/data";
+import BookingDialog from "@/components/BookingDialog";
+import { getFestiveBookingInfo, formatBookingDeadline } from "@/utils/bookingUtils";
+
+// Extended dishes data with booking information
+const discoverDishes = [
+  {
+    name: "Butter Chicken",
+    cook: "Chef Rajesh",
+    price: 280,
+    rating: 4.8,
+    image: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?q=80&w=400",
+    story: "Rich and creamy North Indian classic",
+    orders: 245,
+    isBestVoted: true,
+    isHomeCook: false
+  },
+  {
+    name: "Homestyle Rajma",
+    cook: "Aunty Kumar",
+    price: 150,
+    rating: 4.9,
+    image: "https://images.unsplash.com/photo-1596797038530-2c107229654b?q=80&w=400",
+    story: "Traditional kidney beans curry",
+    orders: 189,
+    isBestVoted: false,
+    mealType: "lunch" as const,
+    isHomeCook: true
+  },
+  {
+    name: "Fresh Idli Sambar",
+    cook: "Meera Amma",
+    price: 120,
+    rating: 4.7,
+    image: "https://images.unsplash.com/photo-1630383249896-424e482df921?q=80&w=400",
+    story: "Soft idlis with aromatic sambar",
+    orders: 156,
+    isBestVoted: false,
+    mealType: "breakfast" as const,
+    isHomeCook: true
+  },
+  {
+    name: "Festive Biryani Special",
+    cook: "Chef Amina",
+    price: 380,
+    rating: 4.9,
+    image: "https://images.unsplash.com/photo-1563379091339-03246963d913?q=80&w=400",
+    story: "Special occasion biryani with premium ingredients",
+    orders: 78,
+    isBestVoted: true,
+    isHomeCook: true,
+    isFestive: true,
+    bookByDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000) // 5 days from now
+  }
+];
 
 const Discover = () => {
-  const [searchParams] = useSearchParams();
-  const [activeTab, setActiveTab] = useState<"dishes" | "cooks">("dishes");
-  const [selectedCuisine, setSelectedCuisine] = useState<string>("");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState("all");
 
-  // Set initial cuisine filter from URL params
-  useEffect(() => {
-    const cuisineParam = searchParams.get('cuisine');
-    if (cuisineParam) {
-      setSelectedCuisine(cuisineParam);
-    }
-  }, [searchParams]);
-
-  const filteredDishes = dishes.filter(dish => {
-    const matchesSearch = dish.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCuisine = !selectedCuisine || dish.cook.toLowerCase().includes(selectedCuisine.toLowerCase());
-    return matchesSearch && matchesCuisine;
-  });
-
-  const filteredCooks = cooks.filter(cook => {
-    const matchesSearch = cook.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         cook.region.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCuisine = !selectedCuisine || cook.region.toLowerCase().includes(selectedCuisine.toLowerCase());
-    return matchesSearch && matchesCuisine;
+  const filteredDishes = discoverDishes.filter(dish => {
+    if (selectedFilter === "all") return true;
+    if (selectedFilter === "home-cook") return dish.isHomeCook;
+    if (selectedFilter === "restaurant") return !dish.isHomeCook;
+    if (selectedFilter === "festive") return dish.isFestive;
+    return true;
   });
 
   return (
-    <div className="pb-16">
-      <header className="sticky top-0 z-10 bg-background/80 p-4 backdrop-blur-sm">
-        <h1 className="text-2xl font-bold font-serif text-primary mb-4">Discover</h1>
-        
-        <div className="relative mb-4">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-          <Input 
-            placeholder="Search dishes, cooks, or regions..." 
-            className="pl-10"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+    <div className="flex flex-col min-h-full bg-secondary/30">
+      <Header />
+      <main className="flex-1 pb-4">
+        {/* Location Header */}
+        <div className="flex items-center justify-between p-4 bg-white border-b">
+          <div className="flex items-center space-x-2">
+            <MapPin className="h-4 w-4 text-primary" />
+            <span className="font-medium">Bangalore, Karnataka</span>
+          </div>
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={() => setShowFilters(!showFilters)}
+          >
+            <Filter className="h-4 w-4 mr-2" />
+            Filter
+          </Button>
         </div>
 
-        <div className="flex space-x-2 mb-4 overflow-x-auto">
-          <Button
-            variant={selectedCuisine === "" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setSelectedCuisine("")}
-          >
-            All
-          </Button>
-          {cuisines.map((cuisine) => (
+        {/* Advanced Search */}
+        {showFilters && <AdvancedSearch />}
+
+        {/* Filter Tabs */}
+        <div className="flex space-x-2 p-4 overflow-x-auto">
+          {[
+            { key: "all", label: "All Dishes" },
+            { key: "home-cook", label: "Home Cooked" },
+            { key: "restaurant", label: "Restaurant" },
+            { key: "festive", label: "Festive Special" }
+          ].map(filter => (
             <Button
-              key={cuisine.name}
-              variant={selectedCuisine === cuisine.name ? "default" : "outline"}
+              key={filter.key}
+              variant={selectedFilter === filter.key ? "default" : "outline"}
               size="sm"
-              onClick={() => setSelectedCuisine(cuisine.name)}
+              onClick={() => setSelectedFilter(filter.key)}
               className="whitespace-nowrap"
             >
-              {cuisine.name}
+              {filter.label}
             </Button>
           ))}
         </div>
 
-        <div className="flex space-x-2">
-          <Button
-            variant={activeTab === "dishes" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setActiveTab("dishes")}
-            className="flex-1"
-          >
-            Dishes
-          </Button>
-          <Button
-            variant={activeTab === "cooks" ? "default" : "outline"}
-            size="sm"
-            onClick={() => setActiveTab("cooks")}
-            className="flex-1"
-          >
-            Cooks
-          </Button>
-        </div>
-      </header>
-
-      <main className="p-4">
-        {activeTab === "dishes" ? (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold">
-                {filteredDishes.length} dishes found
-              </h2>
+        {/* Festive Specials Section */}
+        {selectedFilter === "all" || selectedFilter === "festive" ? (
+          <section className="mb-6">
+            <h2 className="text-xl font-bold font-serif px-4 mb-4">🎉 Festive Specials</h2>
+            <div className="grid grid-cols-1 gap-4 px-4">
+              {discoverDishes
+                .filter(dish => dish.isFestive)
+                .map(dish => {
+                  const festiveBooking = getFestiveBookingInfo(dish.bookByDate!);
+                  return (
+                    <Card key={dish.name} className="overflow-hidden rounded-2xl border-secondary shadow-sm">
+                      <div className="flex">
+                        <div className="relative flex-shrink-0">
+                          <img src={dish.image} alt={dish.name} className="h-24 w-24 object-cover" />
+                          <Badge className="absolute top-1 left-1 bg-red-500 text-white text-xs">
+                            Festive
+                          </Badge>
+                          <Badge className="absolute bottom-1 left-1 bg-amber-600 text-white text-xs">
+                            Book by: {formatBookingDeadline(dish.bookByDate!)}
+                          </Badge>
+                        </div>
+                        <div className="flex-1 p-3">
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1 min-w-0">
+                              <h3 className="font-bold text-sm font-serif truncate">{dish.name}</h3>
+                              <p className="text-xs text-muted-foreground truncate">by {dish.cook}</p>
+                              <p className="text-sm font-bold text-primary mt-2">₹{dish.price}</p>
+                            </div>
+                            <div className="ml-2">
+                              <BookingDialog
+                                dishName={dish.name}
+                                cookName={dish.cook}
+                                price={dish.price}
+                                image={dish.image}
+                                festiveBooking={festiveBooking}
+                              >
+                                <Button size="sm" disabled={!festiveBooking.isBookable}>
+                                  {festiveBooking.isBookable ? 'Book Now' : 'Booking Closed'}
+                                </Button>
+                              </BookingDialog>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  );
+                })}
             </div>
-            {filteredDishes.map((dish) => (
-              <DishCard key={dish.name} dish={dish} />
+          </section>
+        ) : null}
+
+        {/* Dishes Grid */}
+        <section>
+          <h2 className="text-xl font-bold font-serif px-4 mb-4">Discover Dishes</h2>
+          <div className="grid grid-cols-1 gap-4 px-4">
+            {filteredDishes
+              .filter(dish => !dish.isFestive)
+              .map((dish) => (
+                <DishCard key={dish.name} dish={dish} />
+              ))}
+          </div>
+        </section>
+
+        {/* Featured Cooks */}
+        <section className="mt-8">
+          <h2 className="text-xl font-bold font-serif px-4 mb-4">Featured Cooks</h2>
+          <div className="flex space-x-4 overflow-x-auto px-4">
+            {cooks.slice(0, 5).map((cook) => (
+              <CookCard key={cook.name} cook={cook} />
             ))}
           </div>
-        ) : (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold">
-                {filteredCooks.length} cooks found
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 gap-4">
-              {filteredCooks.map((cook) => (
-                <div key={cook.id} className="w-full">
-                  <CookCard cook={cook} />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        </section>
       </main>
     </div>
   );
