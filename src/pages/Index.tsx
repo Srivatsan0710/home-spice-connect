@@ -1,3 +1,4 @@
+
 import Header from "@/components/Header";
 import CuisineCard from "@/components/CuisineCard";
 import CookCard from "@/components/CookCard";
@@ -70,9 +71,9 @@ const Index = () => {
         {/* Regional Welcome Banner */}
         <div className="p-4">
           <Card className="bg-gradient-to-r from-primary/10 to-secondary/20 p-4 border-primary/20">
-            <h2 className="font-bold text-lg font-serif">Welcome back, Rajesh! 🏠</h2>
+            <h2 className="font-bold text-lg font-serif">Welcome back, Sachin! 🏠</h2>
             <p className="text-sm text-muted-foreground">
-              Cooks from Karnataka are preparing your favorite dishes
+              Your favorite home cooks are ready with delicious meals just for you
             </p>
           </Card>
         </div>
