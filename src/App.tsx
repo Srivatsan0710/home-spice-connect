@@ -15,39 +15,44 @@ import Profile from "./pages/Profile";
 import DishDetail from "./pages/DishDetail";
 import CartDrawer from "./components/CartDrawer";
 import { CartProvider } from "./contexts/CartContext";
+import { UserPreferencesProvider } from "./contexts/UserPreferencesContext";
 import Subscriptions from "./pages/Subscriptions";
 import SearchPage from "./pages/Search";
+import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <CartProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <div className="relative mx-auto flex h-screen max-h-[960px] w-full max-w-[450px] flex-col overflow-hidden border-4 border-black rounded-3xl bg-background shadow-2xl">
-            <div className="flex-1 overflow-y-auto">
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/cook/:id" element={<CookProfile />} />
-                <Route path="/cook/:cookId/profile" element={<DetailedCookProfile />} />
-                <Route path="/discover" element={<Discover />} />
-                <Route path="/search" element={<SearchPage />} />
-                <Route path="/orders" element={<Orders />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/subscriptions" element={<Subscriptions />} />
-                <Route path="/dish/:dishName" element={<DishDetail />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+    <UserPreferencesProvider>
+      <CartProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <div className="relative mx-auto flex h-screen max-h-[960px] w-full max-w-[450px] flex-col overflow-hidden border-4 border-black rounded-3xl bg-background shadow-2xl">
+              <div className="flex-1 overflow-y-auto">
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/cook/:id" element={<CookProfile />} />
+                  <Route path="/cook/:cookId/profile" element={<DetailedCookProfile />} />
+                  <Route path="/discover" element={<Discover />} />
+                  <Route path="/search" element={<SearchPage />} />
+                  <Route path="/orders" element={<Orders />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/subscriptions" element={<Subscriptions />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/dish/:dishName" element={<DishDetail />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </div>
+              <BottomNav />
+              <CartDrawer />
             </div>
-            <BottomNav />
-            <CartDrawer />
-          </div>
-        </BrowserRouter>
-      </TooltipProvider>
-    </CartProvider>
+          </BrowserRouter>
+        </TooltipProvider>
+      </CartProvider>
+    </UserPreferencesProvider>
   </QueryClientProvider>
 );
 

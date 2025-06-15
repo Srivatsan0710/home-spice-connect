@@ -1,137 +1,116 @@
-import { User, Settings, Heart, Clock, MapPin, Phone, Mail, Bell } from "lucide-react";
+
+import { User, MapPin, Settings, Heart, Clock, Gift, Bell, HelpCircle, LogOut, ChevronRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const navigate = useNavigate();
+
+  const menuItems = [
+    { icon: Settings, label: "Preferences & Settings", action: () => navigate('/settings') },
+    { icon: Heart, label: "Favorites", action: () => {} },
+    { icon: Clock, label: "Order History", action: () => navigate('/orders') },
+    { icon: Gift, label: "Meal Subscriptions", action: () => navigate('/subscriptions') },
+    { icon: Bell, label: "Notifications", action: () => {} },
+    { icon: HelpCircle, label: "Help & Support", action: () => {} },
+  ];
+
   return (
     <div className="pb-16">
-      <header className="sticky top-0 z-10 bg-background/80 p-4 backdrop-blur-sm">
-        <h1 className="text-2xl font-bold font-serif text-primary">Profile</h1>
+      {/* Header */}
+      <header className="bg-gradient-to-r from-amber-50 to-orange-50 p-6">
+        <div className="flex items-center space-x-4">
+          <Avatar className="h-16 w-16">
+            <AvatarImage src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150" />
+            <AvatarFallback>RK</AvatarFallback>
+          </Avatar>
+          <div>
+            <h1 className="text-xl font-bold text-amber-800">Rajesh Kumar</h1>
+            <div className="flex items-center space-x-1 mt-1">
+              <MapPin className="h-4 w-4 text-sage-600" />
+              <span className="text-sm text-sage-600">Koramangala, Bangalore</span>
+            </div>
+            <Badge className="mt-2 bg-emerald-100 text-emerald-700">Food Explorer</Badge>
+          </div>
+        </div>
       </header>
 
-      <main className="p-4 space-y-6">
-        {/* User Info Card */}
+      <div className="p-4 space-y-4">
+        {/* Stats Cards */}
+        <div className="grid grid-cols-3 gap-3">
+          <Card className="text-center">
+            <CardContent className="p-3">
+              <p className="text-xl font-bold text-amber-700">127</p>
+              <p className="text-xs text-muted-foreground">Orders</p>
+            </CardContent>
+          </Card>
+          <Card className="text-center">
+            <CardContent className="p-3">
+              <p className="text-xl font-bold text-amber-700">23</p>
+              <p className="text-xs text-muted-foreground">Favorites</p>
+            </CardContent>
+          </Card>
+          <Card className="text-center">
+            <CardContent className="p-3">
+              <p className="text-xl font-bold text-amber-700">8</p>
+              <p className="text-xs text-muted-foreground">Reviews</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Menu Items */}
         <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center space-x-4">
-              <div className="h-16 w-16 bg-primary/10 rounded-full flex items-center justify-center">
-                <User className="h-8 w-8 text-primary" />
-              </div>
-              <div className="flex-1">
-                <h2 className="text-xl font-bold">Rajesh Kumar</h2>
-                <p className="text-muted-foreground">rajesh.kumar@email.com</p>
-                <div className="flex items-center mt-2 space-x-2">
-                  <MapPin className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">Bangalore, Karnataka</span>
+          <CardContent className="p-0">
+            {menuItems.map((item, index) => (
+              <div
+                key={item.label}
+                className={`flex items-center justify-between p-4 cursor-pointer hover:bg-sage-50 ${
+                  index !== menuItems.length - 1 ? 'border-b border-sage-100' : ''
+                }`}
+                onClick={item.action}
+              >
+                <div className="flex items-center space-x-3">
+                  <item.icon className="h-5 w-5 text-sage-600" />
+                  <span className="text-sage-800">{item.label}</span>
                 </div>
+                <ChevronRight className="h-4 w-4 text-sage-400" />
               </div>
-              <Button variant="ghost" size="icon">
-                <Settings className="h-5 w-5" />
-              </Button>
-            </div>
+            ))}
           </CardContent>
         </Card>
 
-        {/* Quick Stats */}
-        <div className="grid grid-cols-3 gap-4">
-          <Card className="text-center">
-            <CardContent className="p-4">
-              <div className="text-2xl font-bold text-primary">24</div>
-              <div className="text-sm text-muted-foreground">Orders</div>
-            </CardContent>
-          </Card>
-          <Card className="text-center">
-            <CardContent className="p-4">
-              <div className="text-2xl font-bold text-primary">8</div>
-              <div className="text-sm text-muted-foreground">Favorites</div>
-            </CardContent>
-          </Card>
-          <Card className="text-center">
-            <CardContent className="p-4">
-              <div className="text-2xl font-bold text-primary">4.8</div>
-              <div className="text-sm text-muted-foreground">Avg Rating</div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Menu Options */}
-        <div className="space-y-2">
-          <Card className="cursor-pointer hover:shadow-md transition-shadow">
-            <CardContent className="p-4">
-              <div className="flex items-center space-x-3">
-                <Heart className="h-5 w-5 text-primary" />
-                <span className="font-medium">My Favorites</span>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card
-            className="cursor-pointer hover:shadow-md transition-shadow"
-            onClick={() => navigate("/subscriptions")}
-            tabIndex={0}
-            role="button"
-            aria-label="Go to Meal Subscriptions"
-          >
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <Clock className="h-5 w-5 text-primary" />
-                  <span className="font-medium">Meal Subscriptions</span>
-                </div>
-                <Badge variant="secondary">2 Active</Badge>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="cursor-pointer hover:shadow-md transition-shadow">
-            <CardContent className="p-4">
-              <div className="flex items-center space-x-3">
-                <MapPin className="h-5 w-5 text-primary" />
-                <span className="font-medium">Delivery Addresses</span>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="cursor-pointer hover:shadow-md transition-shadow">
-            <CardContent className="p-4">
-              <div className="flex items-center space-x-3">
-                <Bell className="h-5 w-5 text-primary" />
-                <span className="font-medium">Notifications</span>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="cursor-pointer hover:shadow-md transition-shadow">
-            <CardContent className="p-4">
-              <div className="flex items-center space-x-3">
-                <Phone className="h-5 w-5 text-primary" />
-                <span className="font-medium">Help & Support</span>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Regional Preferences */}
+        {/* Account Section */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Regional Preferences</CardTitle>
+            <CardTitle className="text-lg text-amber-800">Account</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-wrap gap-2">
-              <Badge variant="secondary">Punjabi</Badge>
-              <Badge variant="secondary">South Indian</Badge>
-              <Badge variant="secondary">Bengali</Badge>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sage-700">Email</span>
+                <span className="text-sm text-muted-foreground">rajesh.kumar@email.com</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sage-700">Phone</span>
+                <span className="text-sm text-muted-foreground">+91 98765 43210</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sage-700">Member Since</span>
+                <span className="text-sm text-muted-foreground">January 2024</span>
+              </div>
             </div>
           </CardContent>
         </Card>
 
+        {/* Logout */}
         <Button variant="outline" className="w-full text-red-600 border-red-200 hover:bg-red-50">
+          <LogOut className="h-4 w-4 mr-2" />
           Sign Out
         </Button>
-      </main>
+      </div>
     </div>
   );
 };

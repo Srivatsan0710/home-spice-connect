@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import CuisineCard from "@/components/CuisineCard";
 import CookCard from "@/components/CookCard";
 import DishCard from "@/components/DishCard";
+import PersonalizedRecommendations from "@/components/PersonalizedRecommendations";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { cuisines, cooks, dishes } from "@/lib/data";
@@ -42,6 +43,9 @@ const Index = () => {
             </p>
           </Card>
         </div>
+
+        {/* Personalized Recommendations */}
+        <PersonalizedRecommendations />
 
         {/* Festival Specials */}
         <Section title="🎉 Festival Specials">
