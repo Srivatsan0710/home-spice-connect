@@ -23,6 +23,9 @@ import SearchPage from "./pages/Search";
 import Settings from "./pages/Settings";
 import Dashboard from "./pages/Dashboard";
 import CookDashboard from "./pages/CookDashboard";
+import MealPlanning from "./pages/MealPlanning";
+import Community from "./pages/Community";
+import Personalization from "./pages/Personalization";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +48,9 @@ const App = () => (
                   <Route path="/orders" element={<Orders />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/subscriptions" element={<Subscriptions />} />
+                  <Route path="/meal-planning" element={<MealPlanning />} />
+                  <Route path="/community" element={<Community />} />
+                  <Route path="/personalization" element={<Personalization />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/cook-dashboard" element={<CookDashboard />} />

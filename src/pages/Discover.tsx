@@ -101,7 +101,8 @@ const Discover = () => {
 
   const filteredData = getFilteredData().filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (item.cook && item.cook.toLowerCase().includes(searchQuery.toLowerCase()))
+    (filterType !== "Cooks" && 'cook' in item && item.cook.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    (filterType === "Cooks" && 'specialty' in item && item.specialty.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   const handleCartClick = () => {
@@ -177,7 +178,7 @@ const Discover = () => {
               <div className="flex">
                 <div className="relative flex-shrink-0">
                   <img src={item.image} alt={item.name} className="h-24 w-24 object-cover" />
-                  {item.isBestVoted && (
+                  {'isBestVoted' in item && item.isBestVoted && (
                     <Badge className="absolute top-1 left-1 bg-yellow-500 text-yellow-900 text-xs">
                       Top Rated
                     </Badge>
@@ -187,10 +188,16 @@ const Discover = () => {
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
                       <h3 className="font-bold text-sm font-serif truncate">{item.name}</h3>
-                      {item.cook && (
+                      {filterType !== "Cooks" && 'cook' in item && (
                         <div className="flex items-center space-x-1 mb-1">
                           <User className="h-3 w-3 text-muted-foreground" />
                           <p className="text-xs text-muted-foreground truncate">{item.cook}</p>
+                        </div>
+                      )}
+                      {filterType === "Cooks" && 'specialty' in item && (
+                        <div className="flex items-center space-x-1 mb-1">
+                          <User className="h-3 w-3 text-muted-foreground" />
+                          <p className="text-xs text-muted-foreground truncate">{item.specialty}</p>
                         </div>
                       )}
                       
@@ -200,15 +207,19 @@ const Discover = () => {
                           <span className="text-xs font-medium">{item.rating}</span>
                         </div>
                         <span className="text-xs text-muted-foreground">•</span>
-                        <span className="text-xs text-muted-foreground">{item.orders} orders</span>
+                        <span className="text-xs text-muted-foreground">
+                          {'orders' in item ? `${item.orders} orders` : 'Cook Profile'}
+                        </span>
                       </div>
-                      <p className="text-sm font-bold text-primary">₹{item.price}</p>
+                      {'price' in item && (
+                        <p className="text-sm font-bold text-primary">₹{item.price}</p>
+                      )}
                     </div>
                     <div className="flex flex-col space-y-1 ml-2">
-                      {filterType === "Dishes" || filterType === "Festive Specials" ? (
+                      {(filterType === "Dishes" || filterType === "Festive Specials") && 'cook' in item && 'price' in item ? (
                         <BookingDialog
                           dishName={item.name}
-                          cookName={item.cook || "Chef"}
+                          cookName={item.cook}
                           price={item.price}
                           image={item.image}
                           hasSubscription={true}
