@@ -1,8 +1,9 @@
 
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Plus, Minus, X, ShoppingBag } from "lucide-react";
+import { ArrowLeft, Plus, Minus, X, ShoppingBag, Clock, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/hooks/use-toast";
 
@@ -103,6 +104,19 @@ const Cart = () => {
               <div className="flex-1 min-w-0">
                 <h3 className="font-bold text-lg mb-1">{item.dishName}</h3>
                 <p className="text-sm text-muted-foreground mb-2">by {item.cookName}</p>
+                
+                {/* Booking Slot Information */}
+                <div className="flex flex-wrap gap-2 mb-2">
+                  <Badge variant="outline" className="text-xs">
+                    <Calendar className="h-3 w-3 mr-1" />
+                    Today
+                  </Badge>
+                  <Badge variant="outline" className="text-xs">
+                    <Clock className="h-3 w-3 mr-1" />
+                    6:00 PM - 8:00 PM
+                  </Badge>
+                </div>
+                
                 <p className="text-lg font-bold text-primary mb-3">₹{item.price}</p>
                 
                 {/* Quantity Controls */}

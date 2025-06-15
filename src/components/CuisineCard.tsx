@@ -13,7 +13,7 @@ const CuisineCard = ({ cuisine }: CuisineCardProps) => {
   const navigate = useNavigate();
 
   const handleCuisineClick = () => {
-    navigate(`/discover?cuisine=${encodeURIComponent(cuisine.name)}`);
+    navigate(`/discover?region=${encodeURIComponent(cuisine.name)}`);
   };
 
   return (

@@ -35,51 +35,6 @@ const festivalSpecials = [
   }
 ];
 
-const homeCookSpecials = [
-  {
-    name: "Ghar Jaisa Rajma Chawal",
-    cook: "Aunty Priya",
-    price: 120,
-    rating: 4.9,
-    image: "https://images.unsplash.com/photo-1596797038530-2c107229654b?q=80&w=400",
-    story: "Authentic home-style rajma with basmati rice",
-    orders: 89,
-    isBestVoted: false,
-    mealType: "lunch" as const,
-    isHomeCook: true,
-    availableMeals: ["Lunch", "Dinner"],
-    hasSubscription: true
-  },
-  {
-    name: "Morning Poha",
-    cook: "Meera Aunty",
-    price: 80,
-    rating: 4.7,
-    image: "https://images.unsplash.com/photo-1626132647346-f4d2f2d0a5f0?q=80&w=400",
-    story: "Fresh morning poha with peanuts and curry leaves",
-    orders: 156,
-    isBestVoted: true,
-    mealType: "breakfast" as const,
-    isHomeCook: true,
-    availableMeals: ["Breakfast"],
-    hasSubscription: true
-  },
-  {
-    name: "Dal Tadka with Roti",
-    cook: "Kamala Didi",
-    price: 100,
-    rating: 4.8,
-    image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?q=80&w=400",
-    story: "Simple dal tadka with fresh handmade rotis",
-    orders: 203,
-    isBestVoted: false,
-    mealType: "dinner" as const,
-    isHomeCook: true,
-    availableMeals: ["Lunch", "Dinner"],
-    hasSubscription: false
-  }
-];
-
 const Index = () => {
   return (
     <div className="flex flex-col min-h-full bg-secondary/30">
@@ -142,17 +97,8 @@ const Index = () => {
             })}
           </div>
         </Section>
-
-        {/* Today's Home Cooked Meals */}
-        <Section title="🏠 Today's Home Cooked Meals">
-          <div className="grid grid-cols-1 gap-4 p-4">
-            {homeCookSpecials.map((dish) => (
-              <DishCard key={dish.name} dish={dish} />
-            ))}
-          </div>
-        </Section>
         
-        <Section title="Explore Cuisines">
+        <Section title="Explore Regional Cuisines">
           <div className="flex space-x-4 overflow-x-auto p-4 -mt-2">
             {cuisines.map((cuisine) => (
               <CuisineCard key={cuisine.name} cuisine={cuisine} />
