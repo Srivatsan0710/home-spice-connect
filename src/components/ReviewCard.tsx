@@ -8,17 +8,19 @@ import { useState } from "react";
 
 interface Review {
   id: string;
-  userName: string;
-  userAvatar: string;
+  userName?: string;
+  customerName?: string;
+  userAvatar?: string;
   rating: number;
   dishName: string;
-  cookName: string;
-  reviewText: string;
+  cookName?: string;
+  reviewText?: string;
+  comment?: string;
   images?: string[];
   date: string;
-  likes: number;
-  isLiked: boolean;
-  isVerifiedPurchase: boolean;
+  likes?: number;
+  isLiked?: boolean;
+  isVerifiedPurchase?: boolean;
 }
 
 interface ReviewCardProps {
@@ -26,8 +28,8 @@ interface ReviewCardProps {
 }
 
 const ReviewCard = ({ review }: ReviewCardProps) => {
-  const [isLiked, setIsLiked] = useState(review.isLiked);
-  const [likes, setLikes] = useState(review.likes);
+  const [isLiked, setIsLiked] = useState(review.isLiked || false);
+  const [likes, setLikes] = useState(review.likes || 0);
 
   const handleLike = () => {
     setIsLiked(!isLiked);
@@ -45,20 +47,24 @@ const ReviewCard = ({ review }: ReviewCardProps) => {
     ));
   };
 
+  const displayName = review.userName || review.customerName || "Anonymous";
+  const displayText = review.reviewText || review.comment || "";
+  const displayCook = review.cookName || "";
+
   return (
     <Card className="mb-4">
       <CardContent className="p-4">
         <div className="flex items-start space-x-3">
           <Avatar>
             <AvatarImage src={review.userAvatar} />
-            <AvatarFallback>{review.userName.charAt(0)}</AvatarFallback>
+            <AvatarFallback>{displayName.charAt(0)}</AvatarFallback>
           </Avatar>
           
           <div className="flex-1">
             <div className="flex items-center justify-between mb-2">
               <div>
                 <div className="flex items-center space-x-2">
-                  <span className="font-semibold text-sage-800">{review.userName}</span>
+                  <span className="font-semibold text-sage-800">{displayName}</span>
                   {review.isVerifiedPurchase && (
                     <Badge variant="outline" className="text-xs text-emerald-600 border-emerald-200">
                       Verified Purchase
@@ -78,9 +84,9 @@ const ReviewCard = ({ review }: ReviewCardProps) => {
             <div className="mb-3">
               <p className="text-sm text-sage-600 mb-1">
                 <span className="font-medium text-amber-700">{review.dishName}</span>
-                {" "}by {review.cookName}
+                {displayCook && ` by ${displayCook}`}
               </p>
-              <p className="text-sage-800">{review.reviewText}</p>
+              <p className="text-sage-800">{displayText}</p>
             </div>
 
             {review.images && review.images.length > 0 && (
