@@ -3,7 +3,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar } from "@/components/ui/calendar";
-import { Clock, Calendar as CalendarIcon, AlertCircle } from "lucide-react";
+import { Clock, Calendar as CalendarIcon, AlertCircle, Info } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { getBookingTimeSlots, formatBookingDeadline, FestiveBooking } from "@/utils/bookingUtils";
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
@@ -45,7 +46,7 @@ const BookingDialog = ({
     return availableMeals.some(meal => meal.toLowerCase() === slot.type);
   });
 
-  const handleBooking = (type: 'breakfast' | 'lunch' | 'dinner' | 'festive') => {
+  const handleBooking = (type: 'breakfast' | 'lunch' | 'dinner' | 'festive', isPremium = false) => {
     if (type === 'festive' && festiveBooking) {
       if (!festiveBooking.isBookable) {
         toast({
@@ -67,18 +68,21 @@ const BookingDialog = ({
       }
     }
 
+    const finalPrice = isPremium ? price * 1.2 : price; // 20% premium
+    const priceLabel = isPremium ? ` (Premium: ₹${finalPrice})` : '';
+
     // Add to cart
     addToCart({
-      dishName,
+      dishName: `${dishName}${priceLabel}`,
       cookName,
-      price,
+      price: finalPrice,
       image
     });
 
     const dateText = selectedDate ? selectedDate.toLocaleDateString() : 'today';
     toast({
       title: "Added to Cart!",
-      description: `${dishName} has been added to your cart for ${dateText}`,
+      description: `${dishName} has been added to your cart for ${dateText}${isPremium ? ' with premium pricing' : ''}`,
     });
     setIsOpen(false);
   };
@@ -106,7 +110,26 @@ const BookingDialog = ({
       </DialogTrigger>
       <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Book Your Meal</DialogTitle>
+          <div className="flex items-center justify-between">
+            <DialogTitle>Book Your Meal</DialogTitle>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <div className="space-y-2 text-xs">
+                    <div><strong>Booking Deadlines:</strong></div>
+                    <div>• Tomorrow's Breakfast & Lunch: Today 6:00 PM</div>
+                    <div>• Tomorrow's Dinner: Tomorrow 12:00 PM</div>
+                    <div className="pt-1 border-t">
+                      <strong>Premium Pricing:</strong> Available for 2 hours after deadline with 20% extra charge
+                    </div>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         </DialogHeader>
         
         <div className="space-y-4">
@@ -180,11 +203,19 @@ const BookingDialog = ({
                     <p className="text-xs text-muted-foreground">
                       Book by: {formatBookingDeadline(slot.bookingDeadline)}
                     </p>
+                    {slot.isPremium && (
+                      <p className="text-xs text-orange-600">
+                        Premium pricing: ₹{Math.round(price * 1.2)} (+20%)
+                      </p>
+                    )}
                   </div>
                   <div className="flex items-center space-x-2">
                     {slot.isBookable ? (
-                      <Badge variant="outline" className="text-green-600 border-green-200 text-xs">
-                        Available
+                      <Badge 
+                        variant="outline" 
+                        className={`text-xs ${slot.isPremium ? 'text-orange-600 border-orange-200' : 'text-green-600 border-green-200'}`}
+                      >
+                        {slot.isPremium ? 'Premium' : 'Available'}
                       </Badge>
                     ) : (
                       <div className="flex items-center space-x-1">
@@ -196,8 +227,9 @@ const BookingDialog = ({
                     )}
                     <Button 
                       size="sm"
-                      onClick={() => handleBooking(slot.type)}
+                      onClick={() => handleBooking(slot.type, slot.isPremium)}
                       disabled={!slot.isBookable}
+                      variant={slot.isPremium ? "outline" : "default"}
                     >
                       Add
                     </Button>

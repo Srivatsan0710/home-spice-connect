@@ -1,3 +1,4 @@
+
 import Header from "@/components/Header";
 import CuisineCard from "@/components/CuisineCard";
 import CookCard from "@/components/CookCard";
@@ -31,6 +32,25 @@ const festivalSpecials = [
     story: "Homemade Christmas cake with traditional spices",
     festival: "Christmas",
     bookByDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days from now
+  }
+];
+
+// Enhanced dishes with better images for Today's Specials
+const todaysSpecials = [
+  {
+    ...dishes[0],
+    image: "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?q=80&w=400", // Butter chicken
+    availableMeals: ["Lunch", "Dinner"]
+  },
+  {
+    ...dishes[1],
+    image: "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?q=80&w=400", // Fish curry
+    availableMeals: ["Lunch", "Dinner"]
+  },
+  {
+    ...dishes[2],
+    image: "https://images.unsplash.com/photo-1596560548464-f010549b84d7?q=80&w=400", // Rice dish
+    availableMeals: ["Breakfast", "Lunch", "Dinner"]
   }
 ];
 
@@ -115,13 +135,12 @@ const Index = () => {
         
         <Section title="Today's Specials">
           <div className="grid grid-cols-1 gap-4 p-4">
-            {dishes.slice(0, 3).map((dish) => {
+            {todaysSpecials.map((dish) => {
               // Convert regular dishes to have booking properties for home cooks
               const dishWithBooking = {
                 ...dish,
                 isHomeCook: dish.cook.includes('Aunty') || dish.cook.includes('Amma'),
                 mealType: 'lunch' as const,
-                availableMeals: ["Lunch", "Dinner"],
                 hasSubscription: true
               };
               return <DishCard key={dish.name} dish={dishWithBooking} />;
