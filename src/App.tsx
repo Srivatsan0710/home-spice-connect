@@ -8,6 +8,9 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import BottomNav from "./components/BottomNav";
 import CookProfile from "./pages/CookProfile";
+import Discover from "./pages/Discover";
+import Orders from "./pages/Orders";
+import Profile from "./pages/Profile";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +25,9 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/cook/:id" element={<CookProfile />} />
+              <Route path="/discover" element={<Discover />} />
+              <Route path="/orders" element={<Orders />} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
