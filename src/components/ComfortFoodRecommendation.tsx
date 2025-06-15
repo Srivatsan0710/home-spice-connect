@@ -22,6 +22,15 @@ const ComfortFoodRecommendation = () => {
     discountPercent: 22
   };
 
+  // Crisp reasons for comfort food suggestion
+  const comfortReasons = [
+    "Rainy weather detected 🌧️",
+    "3 missed calls from home 📞", 
+    "It's been a tough Monday 😴"
+  ];
+
+  const selectedReason = comfortReasons[Math.floor(Math.random() * comfortReasons.length)];
+
   const handleDishClick = () => {
     const dishSlug = comfortDish.name.toLowerCase().replace(/\s+/g, '-');
     navigate(`/dish/${dishSlug}?overlay=true`);
@@ -30,15 +39,14 @@ const ComfortFoodRecommendation = () => {
   return (
     <section className="mt-6">
       <div className="px-4">
-        <Card className="bg-gradient-to-r from-orange-50 to-amber-50 p-4 border-orange-200">
-          <div className="flex items-center space-x-2 mb-3">
+        <Card className="bg-gradient-to-r from-orange-50 to-amber-50 p-3 border-orange-200">
+          <div className="flex items-center space-x-2 mb-2">
             <Heart className="h-4 w-4 text-red-500 fill-red-500" />
             <h2 className="text-md font-bold font-serif text-gray-800">Comfort Food Alert</h2>
           </div>
           
           <p className="text-sm text-gray-700 mb-3">
-            Missing home today? Our AI detected you could use some comfort food. 
-            <strong className="text-orange-700"> 22% off</strong> on dishes made with love! 💙
+            {selectedReason} • <strong className="text-orange-700">22% off</strong> comfort food today! 💙
           </p>
 
           {/* Comfort Dish Card */}
