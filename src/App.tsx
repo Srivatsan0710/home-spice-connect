@@ -16,6 +16,7 @@ import DishDetail from "./pages/DishDetail";
 import CartDrawer from "./components/CartDrawer";
 import { CartProvider } from "./contexts/CartContext";
 import Subscriptions from "./pages/Subscriptions";
+import SearchPage from "./pages/Search";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const App = () => (
                 <Route path="/cook/:id" element={<CookProfile />} />
                 <Route path="/cook/:cookId/profile" element={<DetailedCookProfile />} />
                 <Route path="/discover" element={<Discover />} />
+                <Route path="/search" element={<SearchPage />} />
                 <Route path="/orders" element={<Orders />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/subscriptions" element={<Subscriptions />} />
