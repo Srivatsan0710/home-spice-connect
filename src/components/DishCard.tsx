@@ -1,40 +1,93 @@
 
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Star, Heart } from "lucide-react";
-import { Button } from "./ui/button";
+import { Star, Clock, User } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { useCart } from "@/contexts/CartContext";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+
+interface Dish {
+  name: string;
+  cook: string;
+  price: number;
+  rating: number;
+  image: string;
+  story: string;
+  orders: number;
+  isBestVoted: boolean;
+}
 
 interface DishCardProps {
-  dish: {
-    name: string;
-    cook: string;
-    price: number;
-    rating: number;
-    image: string;
-    story: string;
-  };
+  dish: Dish;
 }
 
 const DishCard = ({ dish }: DishCardProps) => {
+  const { addToCart } = useCart();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    addToCart({
+      dishName: dish.name,
+      cookName: dish.cook,
+      price: dish.price,
+      image: dish.image
+    });
+    toast({
+      title: "Added to cart!",
+      description: `${dish.name} added to your cart`,
+    });
+  };
+
+  const handleCardClick = () => {
+    const dishSlug = dish.name.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/dish/${dishSlug}`);
+  };
+
   return (
-    <Card className="overflow-hidden rounded-2xl border-secondary shadow-sm transition-shadow hover:shadow-lg">
-      <div className="relative">
-        <img src={dish.image} alt={dish.name} className="h-40 w-full object-cover" />
-        <Button variant="ghost" size="icon" className="absolute top-2 right-2 bg-white/70 rounded-full h-8 w-8">
-            <Heart className="h-4 w-4 text-primary" />
-        </Button>
-      </div>
-      <CardContent className="p-4">
-        <h3 className="font-bold text-lg font-serif">{dish.name}</h3>
-        <p className="text-sm text-muted-foreground">by {dish.cook}</p>
-        <div className="flex items-center mt-2">
-          <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
-          <span className="ml-1 text-sm font-bold">{dish.rating}</span>
+    <Card 
+      className="overflow-hidden rounded-2xl border-secondary shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+      onClick={handleCardClick}
+    >
+      <div className="flex">
+        <div className="relative flex-shrink-0">
+          <img src={dish.image} alt={dish.name} className="h-24 w-24 object-cover" />
+          {dish.isBestVoted && (
+            <Badge className="absolute top-1 left-1 bg-yellow-500 text-yellow-900 text-xs">
+              Top Rated
+            </Badge>
+          )}
         </div>
-      </CardContent>
-      <CardFooter className="flex justify-between items-center p-4 pt-0">
-        <p className="text-lg font-bold text-primary">₹{dish.price}</p>
-        <Button size="sm">Add to cart</Button>
-      </CardFooter>
+        <div className="flex-1 p-3">
+          <div className="flex items-start justify-between">
+            <div className="flex-1 min-w-0">
+              <h3 className="font-bold text-sm font-serif truncate">{dish.name}</h3>
+              <div className="flex items-center space-x-1 mb-1">
+                <User className="h-3 w-3 text-muted-foreground" />
+                <p className="text-xs text-muted-foreground truncate">{dish.cook}</p>
+              </div>
+              <div className="flex items-center space-x-2 mb-2">
+                <div className="flex items-center space-x-1">
+                  <Star className="h-3 w-3 text-yellow-400 fill-yellow-400" />
+                  <span className="text-xs font-medium">{dish.rating}</span>
+                </div>
+                <span className="text-xs text-muted-foreground">•</span>
+                <span className="text-xs text-muted-foreground">{dish.orders} orders</span>
+              </div>
+              <p className="text-sm font-bold text-primary">₹{dish.price}</p>
+            </div>
+            <Button
+              size="sm"
+              onClick={handleAddToCart}
+              className="ml-2 h-8 px-3 text-xs"
+            >
+              Add
+            </Button>
+          </div>
+        </div>
+      </div>
     </Card>
   );
 };
