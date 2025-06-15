@@ -1,4 +1,3 @@
-
 import { Star, Clock, User } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,20 +21,36 @@ interface Dish {
 }
 
 interface DishCardProps {
-  dish: Dish;
+  dish: {
+    name: string;
+    cook: string;
+    price: number;
+    rating: number;
+    image: string;
+    story: string;
+    orders: number;
+    isBestVoted: boolean;
+    isHomeCook?: boolean;
+    mealType?: 'breakfast' | 'lunch' | 'dinner';
+    hasSubscription?: boolean;
+    availableMeals?: string[];
+  };
+  redirectToHome?: boolean;
 }
 
-const DishCard = ({ dish }: DishCardProps) => {
+const DishCard = ({ dish, redirectToHome = false }: DishCardProps) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    const dishSlug = dish.name.toLowerCase().replace(/\s+/g, '-');
-    navigate(`/dish/${dishSlug}`);
+    if (!redirectToHome) {
+      const dishSlug = dish.name.toLowerCase().replace(/\s+/g, '-');
+      navigate(`/dish/${dishSlug}`);
+    }
   };
 
   return (
     <Card 
-      className="overflow-hidden rounded-2xl border-secondary shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+      className="overflow-hidden rounded-2xl border-secondary shadow-sm cursor-pointer transition-shadow hover:shadow-lg"
       onClick={handleCardClick}
     >
       <div className="flex">
@@ -47,7 +62,7 @@ const DishCard = ({ dish }: DishCardProps) => {
             </Badge>
           )}
         </div>
-        <div className="flex-1 p-3">
+        <div className="flex-1 p-4">
           <div className="flex items-start justify-between">
             <div className="flex-1 min-w-0">
               <h3 className="font-bold text-sm font-serif truncate">{dish.name}</h3>
@@ -75,7 +90,7 @@ const DishCard = ({ dish }: DishCardProps) => {
                 <span className="text-xs text-muted-foreground">•</span>
                 <span className="text-xs text-muted-foreground">{dish.orders} orders</span>
               </div>
-              <p className="text-sm font-bold text-primary">₹{dish.price}</p>
+              <p className="text-lg font-bold text-primary">₹{dish.price}</p>
             </div>
             <div className="flex flex-col space-y-1 ml-2">
               <BookingDialog
@@ -83,6 +98,7 @@ const DishCard = ({ dish }: DishCardProps) => {
                 cookName={dish.cook}
                 price={dish.price}
                 image={dish.image}
+                mealType={dish.mealType}
                 hasSubscription={dish.hasSubscription}
                 availableMeals={dish.availableMeals}
               >

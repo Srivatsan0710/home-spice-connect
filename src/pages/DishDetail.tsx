@@ -4,16 +4,25 @@ import { ArrowLeft, Star, Clock, User, Heart, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useCart } from "@/contexts/CartContext";
-import { useToast } from "@/hooks/use-toast";
 import { dishes } from "@/lib/data";
 
-// Extended dish data
+// Extended dish data with nutritional information
 const extendedDishes = [
-  ...dishes.map(dish => ({
+  ...dishes.map((dish, index) => ({
     ...dish,
     isHomeCook: dish.cook.includes('Aunty') || dish.cook.includes('Amma'),
-    mealType: 'lunch' as const
+    mealType: 'lunch' as const,
+    ingredients: [
+      "Chicken", "Tomatoes", "Onions", "Garlic", "Ginger", "Spices", "Cream", "Butter"
+    ],
+    nutrients: {
+      calories: 450,
+      protein: 35,
+      fat: 28,
+      carbs: 15,
+      fiber: 3,
+      sodium: 890
+    }
   })),
   {
     name: "Homestyle Rajma",
@@ -25,7 +34,18 @@ const extendedDishes = [
     orders: 189,
     isBestVoted: false,
     mealType: "lunch" as const,
-    isHomeCook: true
+    isHomeCook: true,
+    ingredients: [
+      "Kidney beans", "Onions", "Tomatoes", "Ginger-garlic paste", "Cumin", "Coriander", "Red chili powder", "Garam masala"
+    ],
+    nutrients: {
+      calories: 320,
+      protein: 18,
+      fat: 8,
+      carbs: 45,
+      fiber: 12,
+      sodium: 650
+    }
   },
   {
     name: "Fresh Morning Idli",
@@ -37,15 +57,24 @@ const extendedDishes = [
     orders: 156,
     isBestVoted: false,
     mealType: "breakfast" as const,
-    isHomeCook: true
+    isHomeCook: true,
+    ingredients: [
+      "Rice", "Urad dal", "Fenugreek seeds", "Salt", "Sambar", "Coconut chutney"
+    ],
+    nutrients: {
+      calories: 280,
+      protein: 12,
+      fat: 4,
+      carbs: 52,
+      fiber: 6,
+      sodium: 420
+    }
   }
 ];
 
 const DishDetail = () => {
   const { dishName } = useParams();
   const navigate = useNavigate();
-  const { addToCart } = useCart();
-  const { toast } = useToast();
 
   const dish = extendedDishes.find(
     d => d.name.toLowerCase().replace(/\s+/g, '-') === dishName
@@ -60,17 +89,10 @@ const DishDetail = () => {
     );
   }
 
-  const handleAddToCart = () => {
-    addToCart({
-      dishName: dish.name,
-      cookName: dish.cook,
-      price: dish.price,
-      image: dish.image
-    });
-    toast({
-      title: "Added to cart!",
-      description: `${dish.name} added to your cart`,
-    });
+  const handleCookClick = () => {
+    // Navigate to cook profile - assuming cook ID is derived from name
+    const cookId = dish.cook.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/cook/${cookId}`);
   };
 
   return (
@@ -123,10 +145,13 @@ const DishDetail = () => {
             <h1 className="text-2xl font-bold font-serif mb-2">{dish.name}</h1>
             
             <div className="flex items-center space-x-4 mb-4">
-              <div className="flex items-center space-x-1">
+              <button 
+                onClick={handleCookClick}
+                className="flex items-center space-x-1 hover:text-primary transition-colors"
+              >
                 <User className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">by {dish.cook}</span>
-              </div>
+                <span className="text-sm text-muted-foreground underline">by {dish.cook}</span>
+              </button>
               <div className="flex items-center space-x-1">
                 <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
                 <span className="text-sm font-medium">{dish.rating}</span>
@@ -141,9 +166,53 @@ const DishDetail = () => {
             
             <div className="flex items-center justify-between">
               <span className="text-2xl font-bold text-primary">₹{dish.price}</span>
-              <Button size="lg" onClick={handleAddToCart}>
-                Add to Cart
-              </Button>
+            </div>
+          </Card>
+        </div>
+
+        {/* Ingredients */}
+        <div className="p-4">
+          <Card className="p-4">
+            <h2 className="text-lg font-semibold mb-3">Ingredients</h2>
+            <div className="flex flex-wrap gap-2">
+              {dish.ingredients.map((ingredient, index) => (
+                <Badge key={index} variant="outline" className="text-sm">
+                  {ingredient}
+                </Badge>
+              ))}
+            </div>
+          </Card>
+        </div>
+
+        {/* Nutritional Information */}
+        <div className="p-4">
+          <Card className="p-4">
+            <h2 className="text-lg font-semibold mb-3">Nutritional Information</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="text-center p-3 bg-secondary/20 rounded-lg">
+                <p className="text-2xl font-bold text-primary">{dish.nutrients.calories}</p>
+                <p className="text-sm text-muted-foreground">Calories</p>
+              </div>
+              <div className="text-center p-3 bg-secondary/20 rounded-lg">
+                <p className="text-2xl font-bold text-primary">{dish.nutrients.protein}g</p>
+                <p className="text-sm text-muted-foreground">Protein</p>
+              </div>
+              <div className="text-center p-3 bg-secondary/20 rounded-lg">
+                <p className="text-2xl font-bold text-primary">{dish.nutrients.fat}g</p>
+                <p className="text-sm text-muted-foreground">Fat</p>
+              </div>
+              <div className="text-center p-3 bg-secondary/20 rounded-lg">
+                <p className="text-2xl font-bold text-primary">{dish.nutrients.carbs}g</p>
+                <p className="text-sm text-muted-foreground">Carbs</p>
+              </div>
+              <div className="text-center p-3 bg-secondary/20 rounded-lg">
+                <p className="text-2xl font-bold text-primary">{dish.nutrients.fiber}g</p>
+                <p className="text-sm text-muted-foreground">Fiber</p>
+              </div>
+              <div className="text-center p-3 bg-secondary/20 rounded-lg">
+                <p className="text-2xl font-bold text-primary">{dish.nutrients.sodium}mg</p>
+                <p className="text-sm text-muted-foreground">Sodium</p>
+              </div>
             </div>
           </Card>
         </div>
@@ -152,7 +221,10 @@ const DishDetail = () => {
         <div className="p-4">
           <Card className="p-4">
             <h2 className="text-lg font-semibold mb-2">About the Cook</h2>
-            <div className="flex items-center space-x-3">
+            <button 
+              onClick={handleCookClick}
+              className="flex items-center space-x-3 w-full text-left hover:bg-secondary/20 p-2 rounded-lg transition-colors"
+            >
               <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
                 <User className="h-6 w-6 text-primary" />
               </div>
@@ -162,7 +234,7 @@ const DishDetail = () => {
                   {dish.isHomeCook ? 'Home Cook' : 'Professional Chef'} • 4.8 rating
                 </p>
               </div>
-            </div>
+            </button>
           </Card>
         </div>
       </main>

@@ -99,15 +99,21 @@ const Checkout = () => {
           
           <div className="space-y-3">
             {items.map((item) => (
-              <div key={item.dishName} className="flex items-center space-x-3">
+              <div key={item.dishName} className="flex items-start space-x-3">
                 <img 
                   src={item.image} 
                   alt={item.dishName}
-                  className="h-16 w-16 rounded-lg object-cover"
+                  className="h-16 w-16 rounded-lg object-cover flex-shrink-0"
                 />
                 <div className="flex-1">
                   <h4 className="font-medium">{item.dishName}</h4>
                   <p className="text-sm text-muted-foreground">by {item.cookName}</p>
+                  {item.instructions && (
+                    <div className="mt-1 p-2 bg-amber-50 rounded text-xs">
+                      <p className="font-medium text-amber-800">Instructions:</p>
+                      <p className="text-amber-700">{item.instructions}</p>
+                    </div>
+                  )}
                   <div className="flex items-center space-x-2 mt-1">
                     <Badge variant="outline" className="text-xs">
                       <Calendar className="h-3 w-3 mr-1" />

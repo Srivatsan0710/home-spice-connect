@@ -4,7 +4,6 @@ import CuisineCard from "@/components/CuisineCard";
 import CookCard from "@/components/CookCard";
 import DishCard from "@/components/DishCard";
 import PersonalizedRecommendations from "@/components/PersonalizedRecommendations";
-import SchedulingOptions from "@/components/SchedulingOptions";
 import BookingDialog from "@/components/BookingDialog";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -68,9 +67,6 @@ const Index = () => {
             </p>
           </Card>
         </div>
-
-        {/* Scheduling Options */}
-        <SchedulingOptions />
 
         {/* Personalized Recommendations */}
         <PersonalizedRecommendations />
@@ -143,7 +139,7 @@ const Index = () => {
                 mealType: 'lunch' as const,
                 hasSubscription: true
               };
-              return <DishCard key={dish.name} dish={dishWithBooking} />;
+              return <DishCard key={dish.name} dish={dishWithBooking} redirectToHome={true} />;
             })}
           </div>
         </Section>

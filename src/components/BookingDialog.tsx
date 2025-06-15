@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar } from "@/components/ui/calendar";
+import { Textarea } from "@/components/ui/textarea";
 import { Clock, Calendar as CalendarIcon, AlertCircle, Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { getBookingTimeSlots, formatBookingDeadline, FestiveBooking } from "@/utils/bookingUtils";
@@ -36,6 +37,7 @@ const BookingDialog = ({
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
+  const [instructions, setInstructions] = useState("");
   const { toast } = useToast();
   const { addToCart } = useCart();
   const bookingSlots = getBookingTimeSlots();
@@ -71,12 +73,13 @@ const BookingDialog = ({
     const finalPrice = isPremium ? price * 1.2 : price; // 20% premium
     const priceLabel = isPremium ? ` (Premium: ₹${finalPrice})` : '';
 
-    // Add to cart
+    // Add to cart with instructions
     addToCart({
       dishName: `${dishName}${priceLabel}`,
       cookName,
       price: finalPrice,
-      image
+      image,
+      instructions: instructions.trim() || undefined
     });
 
     const dateText = selectedDate ? selectedDate.toLocaleDateString() : 'today';
@@ -85,15 +88,17 @@ const BookingDialog = ({
       description: `${dishName} has been added to your cart for ${dateText}${isPremium ? ' with premium pricing' : ''}`,
     });
     setIsOpen(false);
+    setInstructions(""); // Reset instructions
   };
 
   const handleSubscription = (type: 'weekly' | 'monthly') => {
-    // Add to cart for subscription
+    // Add to cart for subscription with instructions
     addToCart({
       dishName: `${dishName} (${type} subscription)`,
       cookName,
       price: type === 'weekly' ? price * 7 : price * 30,
-      image
+      image,
+      instructions: instructions.trim() || undefined
     });
 
     toast({
@@ -101,6 +106,7 @@ const BookingDialog = ({
       description: `${type} subscription for ${dishName} has been added to your cart`,
     });
     setIsOpen(false);
+    setInstructions(""); // Reset instructions
   };
 
   return (
@@ -263,6 +269,20 @@ const BookingDialog = ({
               </div>
             </div>
           )}
+
+          {/* Instructions for Cook */}
+          <div className="border rounded-lg p-3">
+            <label htmlFor="instructions" className="block text-sm font-medium mb-2">
+              Any instructions to the cook
+            </label>
+            <Textarea
+              id="instructions"
+              placeholder="e.g., Less spicy, extra rice, no onions..."
+              value={instructions}
+              onChange={(e) => setInstructions(e.target.value)}
+              className="min-h-[80px]"
+            />
+          </div>
 
           {/* Quick Scheduling Options */}
           <div className="p-3 bg-secondary/20 rounded-lg">
