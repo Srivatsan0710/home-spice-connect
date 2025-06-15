@@ -24,12 +24,12 @@ const DiscoverFilters = ({ filterType, setFilterType, regionFilter, setRegionFil
         </Select>
         
         {filterType === "Dishes" && (
-          <Select value={regionFilter || "all"} onValueChange={(value) => setRegionFilter(value === "all" ? "" : value)}>
+          <Select value={regionFilter} onValueChange={setRegionFilter}>
             <SelectTrigger className="w-40">
               <SelectValue placeholder="All Regions" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Regions</SelectItem>
+              <SelectItem value="">All Regions</SelectItem>
               <SelectItem value="South Indian">South Indian</SelectItem>
               <SelectItem value="Bengali">Bengali</SelectItem>
               <SelectItem value="Punjabi">Punjabi</SelectItem>
