@@ -6,6 +6,7 @@ import DishCard from "@/components/DishCard";
 import PersonalizedRecommendations from "@/components/PersonalizedRecommendations";
 import SchedulingOptions from "@/components/SchedulingOptions";
 import BookingDialog from "@/components/BookingDialog";
+import MealScheduleBanner from "@/components/MealScheduleBanner";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -50,6 +51,9 @@ const Index = () => {
           </Card>
         </div>
 
+        {/* Meal Schedule Banner */}
+        <MealScheduleBanner />
+
         {/* Scheduling Options */}
         <SchedulingOptions />
 
@@ -86,7 +90,7 @@ const Index = () => {
                           festiveBooking={festiveBooking}
                         >
                           <Button size="sm" disabled={!festiveBooking.isBookable}>
-                            {festiveBooking.isBookable ? 'Book Now' : 'Booking Closed'}
+                            {festiveBooking.isBookable ? 'Add' : 'Booking Closed'}
                           </Button>
                         </BookingDialog>
                       </div>

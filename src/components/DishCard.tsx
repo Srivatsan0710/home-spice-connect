@@ -3,9 +3,8 @@ import { Star, Clock, User } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useCart } from "@/contexts/CartContext";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import BookingDialog from "@/components/BookingDialog";
 
 interface Dish {
   name: string;
@@ -27,23 +26,7 @@ interface DishCardProps {
 }
 
 const DishCard = ({ dish }: DishCardProps) => {
-  const { addToCart } = useCart();
   const navigate = useNavigate();
-  const { toast } = useToast();
-
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    addToCart({
-      dishName: dish.name,
-      cookName: dish.cook,
-      price: dish.price,
-      image: dish.image
-    });
-    toast({
-      title: "Added to cart!",
-      description: `${dish.name} added to your cart`,
-    });
-  };
 
   const handleCardClick = () => {
     const dishSlug = dish.name.toLowerCase().replace(/\s+/g, '-');
@@ -95,13 +78,22 @@ const DishCard = ({ dish }: DishCardProps) => {
               <p className="text-sm font-bold text-primary">₹{dish.price}</p>
             </div>
             <div className="flex flex-col space-y-1 ml-2">
-              <Button
-                size="sm"
-                onClick={handleAddToCart}
-                className="h-8 px-3 text-xs"
+              <BookingDialog
+                dishName={dish.name}
+                cookName={dish.cook}
+                price={dish.price}
+                image={dish.image}
+                hasSubscription={dish.hasSubscription}
+                availableMeals={dish.availableMeals}
               >
-                Add
-              </Button>
+                <Button
+                  size="sm"
+                  onClick={(e) => e.stopPropagation()}
+                  className="h-8 px-3 text-xs"
+                >
+                  Add
+                </Button>
+              </BookingDialog>
             </div>
           </div>
         </div>

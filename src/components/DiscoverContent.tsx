@@ -79,7 +79,7 @@ const DiscoverContent = ({ filteredData, filterType }: DiscoverContentProps) => 
                         hasSubscription={true}
                       >
                         <Button size="sm" className="h-8 px-3 text-xs">
-                          Book
+                          Add
                         </Button>
                       </BookingDialog>
                     ) : (

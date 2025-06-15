@@ -6,6 +6,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Clock, Calendar as CalendarIcon, AlertCircle } from "lucide-react";
 import { getBookingTimeSlots, formatBookingDeadline, FestiveBooking } from "@/utils/bookingUtils";
 import { useToast } from "@/hooks/use-toast";
+import { useCart } from "@/contexts/CartContext";
 import { useState } from "react";
 
 interface BookingDialogProps {
@@ -16,6 +17,7 @@ interface BookingDialogProps {
   mealType?: 'breakfast' | 'lunch' | 'dinner';
   festiveBooking?: FestiveBooking;
   hasSubscription?: boolean;
+  availableMeals?: string[];
   children: React.ReactNode;
 }
 
@@ -27,14 +29,21 @@ const BookingDialog = ({
   mealType, 
   festiveBooking,
   hasSubscription = false,
+  availableMeals = [],
   children 
 }: BookingDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
-  const [subscriptionType, setSubscriptionType] = useState<'weekly' | 'monthly' | null>(null);
   const { toast } = useToast();
+  const { addToCart } = useCart();
   const bookingSlots = getBookingTimeSlots();
+
+  // Filter booking slots based on available meals
+  const availableSlots = bookingSlots.filter(slot => {
+    if (availableMeals.length === 0) return true;
+    return availableMeals.some(meal => meal.toLowerCase() === slot.type);
+  });
 
   const handleBooking = (type: 'breakfast' | 'lunch' | 'dinner' | 'festive') => {
     if (type === 'festive' && festiveBooking) {
@@ -58,18 +67,34 @@ const BookingDialog = ({
       }
     }
 
+    // Add to cart
+    addToCart({
+      dishName,
+      cookName,
+      price,
+      image
+    });
+
     const dateText = selectedDate ? selectedDate.toLocaleDateString() : 'today';
     toast({
-      title: "Booking Confirmed!",
-      description: `Your ${dishName} has been booked for ${dateText}`,
+      title: "Added to Cart!",
+      description: `${dishName} has been added to your cart for ${dateText}`,
     });
     setIsOpen(false);
   };
 
   const handleSubscription = (type: 'weekly' | 'monthly') => {
+    // Add to cart for subscription
+    addToCart({
+      dishName: `${dishName} (${type} subscription)`,
+      cookName,
+      price: type === 'weekly' ? price * 7 : price * 30,
+      image
+    });
+
     toast({
-      title: "Subscription Added!",
-      description: `${type} subscription for ${dishName} has been set up`,
+      title: "Subscription Added to Cart!",
+      description: `${type} subscription for ${dishName} has been added to your cart`,
     });
     setIsOpen(false);
   };
@@ -138,7 +163,7 @@ const BookingDialog = ({
                 disabled={!festiveBooking.isBookable}
                 className="w-full"
               >
-                {festiveBooking.isBookable ? 'Book Festive Special' : 'Booking Closed'}
+                {festiveBooking.isBookable ? 'Add to Cart' : 'Booking Closed'}
               </Button>
             </div>
           ) : (
@@ -148,7 +173,7 @@ const BookingDialog = ({
                 <span className="font-medium">Select Meal Time</span>
               </div>
               
-              {bookingSlots.map((slot) => (
+              {availableSlots.map((slot) => (
                 <div key={slot.type} className="flex items-center justify-between p-3 border rounded-lg">
                   <div>
                     <p className="font-medium capitalize">{slot.type}</p>
@@ -174,7 +199,7 @@ const BookingDialog = ({
                       onClick={() => handleBooking(slot.type)}
                       disabled={!slot.isBookable}
                     >
-                      Book
+                      Add
                     </Button>
                   </div>
                 </div>
@@ -193,7 +218,7 @@ const BookingDialog = ({
                   className="w-full"
                   onClick={() => handleSubscription('weekly')}
                 >
-                  Weekly Subscription
+                  Weekly Subscription (₹{price * 7})
                 </Button>
                 <Button 
                   variant="outline" 
@@ -201,7 +226,7 @@ const BookingDialog = ({
                   className="w-full"
                   onClick={() => handleSubscription('monthly')}
                 >
-                  Monthly Subscription
+                  Monthly Subscription (₹{price * 30})
                 </Button>
               </div>
             </div>
