@@ -13,6 +13,7 @@ import Discover from "./pages/Discover";
 import Orders from "./pages/Orders";
 import Profile from "./pages/Profile";
 import DishDetail from "./pages/DishDetail";
+import Cart from "./pages/Cart";
 import CartDrawer from "./components/CartDrawer";
 import { CartProvider } from "./contexts/CartContext";
 import { UserPreferencesProvider } from "./contexts/UserPreferencesContext";
@@ -47,6 +48,7 @@ const App = () => (
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/cook-dashboard" element={<CookDashboard />} />
                   <Route path="/dish/:dishName" element={<DishDetail />} />
+                  <Route path="/cart" element={<Cart />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </div>

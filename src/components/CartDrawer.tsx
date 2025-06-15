@@ -29,6 +29,10 @@ const CartDrawer = () => {
     clearCart();
   };
 
+  const handleViewFullCart = () => {
+    navigate('/cart');
+  };
+
   return (
     <Drawer>
       <DrawerTrigger asChild>
@@ -98,9 +102,12 @@ const CartDrawer = () => {
             <div className="flex items-center justify-between mb-2">
               <span className="font-bold">Total: ₹{getTotalPrice()}</span>
             </div>
+            <Button onClick={handleViewFullCart} variant="outline" className="w-full mb-2">
+              View Full Cart
+            </Button>
             <DrawerClose asChild>
               <Button onClick={handleCheckout} className="w-full">
-                Proceed to Checkout
+                Quick Checkout
               </Button>
             </DrawerClose>
           </DrawerFooter>
