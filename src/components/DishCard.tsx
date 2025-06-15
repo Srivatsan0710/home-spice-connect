@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import BookingDialog from "./BookingDialog";
 
 interface Dish {
   name: string;
@@ -31,13 +30,6 @@ const DishCard = ({ dish }: DishCardProps) => {
   const { addToCart } = useCart();
   const navigate = useNavigate();
   const { toast } = useToast();
-
-  console.log('DishCard render:', {
-    dishName: dish.name,
-    isHomeCook: dish.isHomeCook,
-    mealType: dish.mealType,
-    hasSubscription: dish.hasSubscription
-  });
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -103,31 +95,13 @@ const DishCard = ({ dish }: DishCardProps) => {
               <p className="text-sm font-bold text-primary">₹{dish.price}</p>
             </div>
             <div className="flex flex-col space-y-1 ml-2">
-              {dish.isHomeCook ? (
-                <BookingDialog
-                  dishName={dish.name}
-                  cookName={dish.cook}
-                  price={dish.price}
-                  image={dish.image}
-                  mealType={dish.mealType}
-                  hasSubscription={dish.hasSubscription}
-                >
-                  <Button size="sm" className="h-8 px-3 text-xs" onClick={(e) => {
-                    console.log('Book button clicked for:', dish.name);
-                    e.stopPropagation();
-                  }}>
-                    Book
-                  </Button>
-                </BookingDialog>
-              ) : (
-                <Button
-                  size="sm"
-                  onClick={handleAddToCart}
-                  className="h-8 px-3 text-xs"
-                >
-                  Add
-                </Button>
-              )}
+              <Button
+                size="sm"
+                onClick={handleAddToCart}
+                className="h-8 px-3 text-xs"
+              >
+                Add
+              </Button>
             </div>
           </div>
         </div>

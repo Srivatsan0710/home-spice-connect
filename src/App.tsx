@@ -15,6 +15,7 @@ import Profile from "./pages/Profile";
 import DishDetail from "./pages/DishDetail";
 import Cart from "./pages/Cart";
 import CartDrawer from "./components/CartDrawer";
+import CartBanner from "./components/CartBanner";
 import { CartProvider } from "./contexts/CartContext";
 import { UserPreferencesProvider } from "./contexts/UserPreferencesContext";
 import Subscriptions from "./pages/Subscriptions";

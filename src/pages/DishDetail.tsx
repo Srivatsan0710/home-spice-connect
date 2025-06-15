@@ -7,10 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { dishes } from "@/lib/data";
-import BookingDialog from "@/components/BookingDialog";
-import { getFestiveBookingInfo, formatBookingDeadline } from "@/utils/bookingUtils";
 
-// Extended dish data with booking info
+// Extended dish data
 const extendedDishes = [
   ...dishes.map(dish => ({
     ...dish,
@@ -75,10 +73,6 @@ const DishDetail = () => {
     });
   };
 
-  // Check if it's a festive dish (for demo purposes)
-  const isFestive = dish.name.toLowerCase().includes('special') || dish.name.toLowerCase().includes('festive');
-  const festiveBooking = isFestive ? getFestiveBookingInfo(new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)) : undefined;
-
   return (
     <div className="flex flex-col min-h-full bg-secondary/30">
       {/* Header */}
@@ -121,11 +115,6 @@ const DishDetail = () => {
               Home Cook
             </Badge>
           )}
-          {isFestive && festiveBooking && (
-            <Badge className="absolute bottom-4 left-4 bg-amber-600 text-white">
-              Book by: {formatBookingDeadline(festiveBooking.bookByDate)}
-            </Badge>
-          )}
         </div>
 
         {/* Dish Info */}
@@ -152,27 +141,9 @@ const DishDetail = () => {
             
             <div className="flex items-center justify-between">
               <span className="text-2xl font-bold text-primary">₹{dish.price}</span>
-              {dish.isHomeCook ? (
-                <BookingDialog
-                  dishName={dish.name}
-                  cookName={dish.cook}
-                  price={dish.price}
-                  image={dish.image}
-                  mealType={dish.mealType}
-                  festiveBooking={festiveBooking}
-                >
-                  <Button size="lg">
-                    {isFestive ? 
-                      (festiveBooking?.isBookable ? 'Book Festive Special' : 'Booking Closed') :
-                      'Book Now'
-                    }
-                  </Button>
-                </BookingDialog>
-              ) : (
-                <Button size="lg" onClick={handleAddToCart}>
-                  Add to Cart
-                </Button>
-              )}
+              <Button size="lg" onClick={handleAddToCart}>
+                Add to Cart
+              </Button>
             </div>
           </Card>
         </div>

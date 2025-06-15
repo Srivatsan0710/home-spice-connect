@@ -4,10 +4,13 @@ import { Badge } from "@/components/ui/badge";
 import { Star, User } from "lucide-react";
 import { useUserPreferences } from "@/contexts/UserPreferencesContext";
 import { Button } from "@/components/ui/button";
-import BookingDialog from "./BookingDialog";
+import { useCart } from "@/contexts/CartContext";
+import { useToast } from "@/hooks/use-toast";
 
 const PersonalizedRecommendations = () => {
   const { preferences } = useUserPreferences();
+  const { addToCart } = useCart();
+  const { toast } = useToast();
 
   const recommendedDishes = [
     {
@@ -37,6 +40,20 @@ const PersonalizedRecommendations = () => {
       isHomeCook: true
     }
   ];
+
+  const handleAddToCart = (dish: any, e: React.MouseEvent) => {
+    e.stopPropagation();
+    addToCart({
+      dishName: dish.name,
+      cookName: dish.cook,
+      price: dish.price,
+      image: dish.image
+    });
+    toast({
+      title: "Added to cart!",
+      description: `${dish.name} added to your cart`,
+    });
+  };
 
   return (
     <section className="mt-6">
@@ -77,17 +94,13 @@ const PersonalizedRecommendations = () => {
                     <p className="text-sm font-bold text-primary">₹{dish.price}</p>
                   </div>
                   <div className="flex flex-col space-y-1 ml-2">
-                    <BookingDialog
-                      dishName={dish.name}
-                      cookName={dish.cook}
-                      price={dish.price}
-                      image={dish.image}
-                      mealType={dish.mealType}
+                    <Button 
+                      size="sm" 
+                      className="h-8 px-3 text-xs"
+                      onClick={(e) => handleAddToCart(dish, e)}
                     >
-                      <Button size="sm" className="h-8 px-3 text-xs">
-                        Book
-                      </Button>
-                    </BookingDialog>
+                      Add
+                    </Button>
                   </div>
                 </div>
               </div>
