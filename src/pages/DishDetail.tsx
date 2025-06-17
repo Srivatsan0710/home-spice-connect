@@ -352,7 +352,7 @@ const DishDetail = () => {
         {/* Cook Info */}
         <div className="p-4">
           <Card className="p-4">
-            <h2 className="text-lg font-semibold mb-2">About the Cook</h2>
+            <h2 className="text-lg font-semibold mb-2">About the Chef</h2>
             <button 
               onClick={handleCookClick}
               className="flex items-center space-x-3 w-full text-left hover:bg-secondary/20 p-2 rounded-lg transition-colors"
@@ -376,7 +376,7 @@ const DishDetail = () => {
   if (isOverlay) {
     return (
       <Drawer open={true} onOpenChange={(open) => !open && handleClose()}>
-        <DrawerContent className="h-[80vh] max-h-[80vh] sm:h-[60vh] sm:max-h-[60vh]">
+        <DrawerContent className="h-[85vh] max-h-[85vh] mx-auto max-w-[450px] rounded-t-2xl">
           <DishContent />
         </DrawerContent>
       </Drawer>
