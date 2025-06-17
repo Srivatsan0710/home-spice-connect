@@ -21,7 +21,7 @@ const TopRatedCooksSection = () => {
   // Top rated chefs with more variety
   const topRatedCooks: Cook[] = [
     {
-      id: "meera-amma",
+      id: "chef-meera",
       name: "Chef Meera Krishnan",
       region: "Tamil Nadu",
       specialty: "South Indian",

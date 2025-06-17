@@ -1,3 +1,4 @@
+
 import Header from "@/components/Header";
 import CuisineCard from "@/components/CuisineCard";
 import CookCard from "@/components/CookCard";
@@ -72,7 +73,7 @@ const Index = () => {
           <Card className="bg-gradient-to-r from-primary/10 to-secondary/20 p-4 border-primary/20">
             <h2 className="font-bold text-lg font-serif">Welcome back, Sachin! 🏠</h2>
             <p className="text-sm text-muted-foreground">
-              Your favorite home chefs are ready with delicious meals just for you
+              Taste the love of home with every meal from our trusted local chefs who cook just like family.
             </p>
           </Card>
         </div>

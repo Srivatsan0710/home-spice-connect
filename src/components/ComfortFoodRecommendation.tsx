@@ -22,23 +22,11 @@ const ComfortFoodRecommendation = () => {
     discountPercent: 22
   };
 
-  // Crisp reasons for comfort food suggestion
-  const comfortReasons = [
+  // Selected reasons for comfort food suggestion
+  const selectedReasons = [
     "Rainy weather detected 🌧️",
-    "3 missed calls from home 📞", 
-    "It's been a tough Monday 😴",
-    "Diwali approaching in hometown 🪔",
-    "Festival season starting back home 🎉",
-    "Family WhatsApp active with celebrations 📱"
+    "Diwali approaching in hometown 🪔"
   ];
-
-  // Select 2 random reasons
-  const getRandomReasons = () => {
-    const shuffled = [...comfortReasons].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, 2);
-  };
-
-  const selectedReasons = getRandomReasons();
 
   const handleDishClick = () => {
     const dishSlug = comfortDish.name.toLowerCase().replace(/\s+/g, '-');
@@ -59,7 +47,7 @@ const ComfortFoodRecommendation = () => {
           </p>
           
           <p className="text-sm text-orange-800 font-medium mb-3">
-            <strong>Every meal tells a story of home.</strong> When life feels distant from family, let our trusted home chefs recreate those precious memories with authentic recipes passed down through generations. <strong className="text-orange-700"> 22% off today!</strong> 💙
+            <strong>When your heart yearns for home, let our trusted chefs bridge the distance with authentic flavors that tell stories of love.</strong> Every bite carries the warmth of generations-old recipes. <strong className="text-orange-700">22% off today!</strong> 💙
           </p>
 
           {/* Comfort Dish Card */}

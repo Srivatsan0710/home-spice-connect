@@ -26,14 +26,14 @@ const DishCard = ({ dish }: DishCardProps) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    // Create a safe dish slug and navigate to a working dish detail page
+    // Create a safe dish slug and navigate to dish detail with overlay
     const dishSlug = dish.name.toLowerCase()
       .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
       .replace(/\s+/g, '-') // Replace spaces with hyphens
       .replace(/-+/g, '-'); // Replace multiple hyphens with single
     
-    // For now, navigate to a working dish detail with proper params
-    navigate(`/dish/${dishSlug}`, { 
+    // Always open as overlay for dish cards
+    navigate(`/dish/${dishSlug}?overlay=true`, { 
       state: { 
         dish: dish,
         dishName: dish.name,
