@@ -9,10 +9,10 @@ import BookingDialog from "@/components/BookingDialog";
 const ComfortFoodRecommendation = () => {
   const navigate = useNavigate();
 
-  // AI-predicted comfort food based on homesickness indicators
+  // AI-predicted comfort food based on homesickness indicators - using existing dish name
   const comfortDish = {
-    name: "Maa Ke Haath Ka Rajma",
-    cook: "Chef Priya Sharma",
+    name: "Homestyle Rajma",
+    cook: "Aunty Kumar", 
     price: 140,
     rating: 4.9,
     image: "https://images.unsplash.com/photo-1596797038530-2c107229654b?q=80&w=400",

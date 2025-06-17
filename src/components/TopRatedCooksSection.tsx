@@ -18,10 +18,10 @@ const TopRatedCooksSection = () => {
     preferredCuisines: ["South Indian", "Punjabi"], // Max 2 as requested
   };
 
-  // Top rated chefs with more variety
+  // Top rated chefs with existing IDs that match the cook data
   const topRatedCooks: Cook[] = [
     {
-      id: "chef-meera",
+      id: "meena-amma",
       name: "Chef Meera Krishnan",
       region: "Tamil Nadu",
       specialty: "South Indian",
@@ -29,7 +29,7 @@ const TopRatedCooksSection = () => {
       image: "https://images.unsplash.com/photo-1494790108755-2616c36a8db1?q=80&w=400"
     },
     {
-      id: "chef-gurpreet",
+      id: "aunty-manjeet",
       name: "Chef Gurpreet Singh",
       region: "Punjab",
       specialty: "Punjabi",
@@ -37,7 +37,7 @@ const TopRatedCooksSection = () => {
       image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400"
     },
     {
-      id: "chef-lakshmi",
+      id: "mala-di",
       name: "Chef Lakshmi Narayanan",
       region: "Kerala",
       specialty: "South Indian",
