@@ -12,7 +12,7 @@ const ComfortFoodRecommendation = () => {
   // AI-predicted comfort food based on homesickness indicators
   const comfortDish = {
     name: "Maa Ke Haath Ka Rajma",
-    cook: "Aunty Priya",
+    cook: "Chef Priya Sharma",
     price: 140,
     rating: 4.9,
     image: "https://images.unsplash.com/photo-1596797038530-2c107229654b?q=80&w=400",
@@ -59,9 +59,7 @@ const ComfortFoodRecommendation = () => {
           </p>
           
           <p className="text-sm text-orange-800 font-medium mb-3">
-            When life feels overwhelming, there's nothing like the warmth of home-cooked comfort food. 
-            Let Aunty Priya's loving hands recreate those precious childhood memories. 
-            <strong className="text-orange-700"> 22% off today!</strong> 💙
+            <strong>Every meal tells a story of home.</strong> When life feels distant from family, let our trusted home chefs recreate those precious memories with authentic recipes passed down through generations. <strong className="text-orange-700"> 22% off today!</strong> 💙
           </p>
 
           {/* Comfort Dish Card */}

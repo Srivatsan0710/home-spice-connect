@@ -26,8 +26,24 @@ const DishCard = ({ dish }: DishCardProps) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    const dishSlug = dish.name.toLowerCase().replace(/\s+/g, '-');
-    navigate(`/dish/${dishSlug}?overlay=true`);
+    // Create a safe dish slug and navigate to a working dish detail page
+    const dishSlug = dish.name.toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .replace(/-+/g, '-'); // Replace multiple hyphens with single
+    
+    // For now, navigate to a working dish detail with proper params
+    navigate(`/dish/${dishSlug}`, { 
+      state: { 
+        dish: dish,
+        dishName: dish.name,
+        cookName: dish.cook,
+        price: dish.price,
+        rating: dish.rating,
+        image: dish.image,
+        story: dish.story
+      }
+    });
   };
 
   return (

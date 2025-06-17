@@ -1,3 +1,4 @@
+
 import { User, MapPin, Settings, Heart, Clock, Gift, Bell, HelpCircle, LogOut, ChevronRight, Coins } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,13 +20,13 @@ const Profile = () => {
     { icon: HelpCircle, label: "Help & Support", action: () => {} },
   ];
 
-  // Sample subscription data with images
+  // Updated subscription data with more variety
   const subscriptions = [
     {
       id: "sub1",
-      dishName: "Morning Poha",
-      cookName: "Meera Aunty",
-      price: 80,
+      dishName: "Authentic Aloo Paratha",
+      cookName: "Sunita Devi",
+      price: 85,
       frequency: "weekly" as const,
       status: "active" as const,
       nextDelivery: "Tomorrow 8:00 AM",
@@ -33,9 +34,9 @@ const Profile = () => {
     },
     {
       id: "sub2",
-      dishName: "Ghar Jaisa Rajma Chawal",
-      cookName: "Aunty Priya",
-      price: 120,
+      dishName: "Homestyle Chole Bhature",
+      cookName: "Chef Ramesh",
+      price: 140,
       frequency: "monthly" as const,
       status: "paused" as const,
       nextDelivery: "Paused",
@@ -114,7 +115,7 @@ const Profile = () => {
               </Button>
             </div>
             <div className="mt-3 text-xs text-amber-600">
-              <p>• Earned from cook investments</p>
+              <p>• Earned from chef investments</p>
               <p>• Use for exclusive menu access</p>
               <p>• Get special discounts</p>
             </div>

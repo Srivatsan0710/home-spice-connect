@@ -1,5 +1,5 @@
 
-import { Clock, CheckCircle, Truck, Star } from "lucide-react";
+import { Clock, CheckCircle, Truck, Star, Package } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,37 +9,40 @@ const mockOrders = [
     id: "ORD001",
     date: "Today, 2:30 PM",
     status: "preparing",
-    cook: "Aunty Manjeet",
+    cook: "Chef Gurpreet Singh",
     dishes: [
-      { name: "Aloo Paratha Special", quantity: 2, price: 150 },
-      { name: "Sarson da Saag", quantity: 1, price: 250 }
+      { name: "Authentic Aloo Paratha", quantity: 2, price: 170, image: "https://images.unsplash.com/photo-1626132647346-f4d2f2d0a5f0?q=80&w=200" },
+      { name: "Sarson da Saag", quantity: 1, price: 160, image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?q=80&w=200" }
     ],
-    total: 550,
-    estimatedTime: "45 mins"
+    total: 330,
+    estimatedTime: "45 mins",
+    packageType: "Eco-friendly Container"
   },
   {
     id: "ORD002",
     date: "Yesterday, 7:15 PM",
     status: "delivered",
-    cook: "Mala Di",
+    cook: "Chef Shilpa Banerjee",
     dishes: [
-      { name: "Shorshe Ilish", quantity: 1, price: 350 },
-      { name: "Kosha Mangsho", quantity: 1, price: 320 }
+      { name: "Bengali Fish Curry", quantity: 1, price: 200, image: "https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?q=80&w=200" },
+      { name: "Steamed Rice", quantity: 1, price: 80, image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?q=80&w=200" }
     ],
-    total: 670,
-    rating: 5
+    total: 280,
+    rating: 5,
+    packageType: "Sealed Fresh Container"
   },
   {
     id: "ORD003",
     date: "Dec 13, 1:00 PM",
     status: "delivered",
-    cook: "Meena Amma",
+    cook: "Chef Lakshmi Narayanan",
     dishes: [
-      { name: "Masala Dosa", quantity: 3, price: 180 },
-      { name: "Hyderabadi Biryani", quantity: 1, price: 300 }
+      { name: "Traditional Masala Dosa", quantity: 3, price: 135, image: "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?q=80&w=200" },
+      { name: "Coconut Chutney", quantity: 1, price: 45, image: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?q=80&w=200" }
     ],
-    total: 840,
-    rating: 4
+    total: 450,
+    rating: 4,
+    packageType: "Temperature Controlled Box"
   }
 ];
 
@@ -106,14 +109,32 @@ const Orders = () => {
                 )}
               </div>
 
-              <div className="space-y-2">
+              {/* Dish Items with Images */}
+              <div className="space-y-3">
                 {order.dishes.map((dish, index) => (
-                  <div key={index} className="flex items-center justify-between text-sm">
-                    <span>{dish.quantity}x {dish.name}</span>
-                    <span>₹{dish.price}</span>
+                  <div key={index} className="flex items-center space-x-3 p-2 bg-gray-50 rounded-lg">
+                    <img 
+                      src={dish.image} 
+                      alt={dish.name} 
+                      className="w-12 h-12 rounded-lg object-cover"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium text-sm">{dish.quantity}x {dish.name}</span>
+                        <span className="font-bold text-sm">₹{dish.price}</span>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
+
+              {/* Package Information */}
+              {order.status === "delivered" && (
+                <div className="flex items-center space-x-2 p-2 bg-green-50 rounded-lg border border-green-200">
+                  <Package className="h-4 w-4 text-green-600" />
+                  <span className="text-sm text-green-700">Delivered in: {order.packageType}</span>
+                </div>
+              )}
 
               <div className="flex items-center justify-between border-t pt-2">
                 <span className="font-bold">Total: ₹{order.total}</span>
