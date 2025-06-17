@@ -1,10 +1,9 @@
-
 import { ArrowLeft, MapPin, Phone, MessageCircle, Heart, Star, Clock, Award } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate, useParams } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DishCard from "@/components/DishCard";
 import CookRating from "@/components/CookRating";
 import ReviewCard from "@/components/ReviewCard";
@@ -86,6 +85,11 @@ const DetailedCookProfile = () => {
   const navigate = useNavigate();
   const [isFollowing, setIsFollowing] = useState(false);
   const [activeTab, setActiveTab] = useState<"dishes" | "reviews" | "about">("dishes");
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const cook = mockCookData[cookId as keyof typeof mockCookData];
 

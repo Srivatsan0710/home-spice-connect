@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import DishCard from "@/components/DishCard";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -8,11 +7,17 @@ import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Verified, MapPin, Star, Utensils, ChefHat, Phone, Mail, Award, Clock, Shield, CheckCircle2, Calendar, Users, TrendingUp, Play, FileText, Camera } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { cooks } from "@/lib/data";
 
 const CookProfile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const cook = cooks.find((c) => c.id === id);
 
